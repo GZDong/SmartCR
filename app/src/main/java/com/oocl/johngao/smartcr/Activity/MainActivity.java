@@ -1,7 +1,9 @@
-package com.oocl.johngao.smartcr;
+package com.oocl.johngao.smartcr.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.oocl.johngao.smartcr.R;
 
 public class MainActivity extends AppCompatActivity {
 
