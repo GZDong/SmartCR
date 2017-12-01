@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,8 +42,6 @@ import java.util.List;
 public class TakePhotoActivity extends AppCompatActivity {
 
     public static final String TAG = "CameraSimple";
-    private android.hardware.Camera mCamera;
-    private int mCameraId = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
     private CameraPreview mPreview;
     private Button mTakePictureBtn;
     private FrameLayout mCameraLayout;
@@ -58,37 +57,17 @@ public class TakePhotoActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_take_photo);
 
-        if (ContextCompat.checkSelfPermission(TakePhotoActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(TakePhotoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(TakePhotoActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
+
+        //检查相机是否可用
         if (!checkCameraHardware(this)) {
             Toast.makeText(this, "相机不支持", Toast.LENGTH_SHORT).show();
         }else {
-            mCamera = getCameraInstance();
-            mPreview = new CameraPreview(TakePhotoActivity.this, mCamera);
-            CameraPreview.setCameraDisplayOrientation(this, mCameraId, mCamera);
-            mCameraLayout = (FrameLayout) findViewById(R.id.camera_preview);
-            mCameraLayout.addView(mPreview);
+            //初始化相机
+            initCamera();
         }
 
         initList();
-        mPicListApater = new PicListApater(this, mPicList);
-        mRecyclerView = (RecyclerView) findViewById(R.id.picture_list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(mPicListApater);
-
-        mTakePictureBtn = (Button) findViewById(R.id.btn_capture);
-        mTakePictureBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCamera == null){
-                    Log.e(TAG, "1.onCreate: this is null");
-                }
-                mCamera.takePicture(null, null, mPictureCallback);
-            }
-        });
+        initView();
     }
 
     private void initList() {
@@ -108,19 +87,19 @@ public class TakePhotoActivity extends AppCompatActivity {
         }
     }
 
-    // 获取相机
-    public static android.hardware.Camera getCameraInstance() {
+    // 打开相机设备
+    /*public static android.hardware.Camera getCameraInstance() {
         android.hardware.Camera camera = null;
         try {
-            camera = android.hardware.Camera.open();  //打开相机
+            camera = android.hardware.Camera.open();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "getCameraInstance: 相机打不开");
         }
         return camera;
-    }
+    }*/
 
-    //释放相机
+    /*//释放相机设备
     public void releaseCamera() {
         if (mCamera != null) {
             mCamera.setPreviewCallback(null);
@@ -128,10 +107,41 @@ public class TakePhotoActivity extends AppCompatActivity {
             mCamera.release();
             mCamera = null;
         }
+    }*/
+    //初始化相机
+    public void initCamera(){
+        mPreview = new CameraPreview(TakePhotoActivity.this);
+        /*mPreview.setOnTouchListener(new View.OnTouchListener() {   //设置聚焦
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mCamera.autoFocus(null);
+                return false;
+            }
+        });*/
+        mCameraLayout = (FrameLayout) findViewById(R.id.camera_preview);
+        mCameraLayout.addView(mPreview);
+    }
+
+    public void initView(){
+        mPicListApater = new PicListApater(this, mPicList);
+        mRecyclerView = (RecyclerView) findViewById(R.id.picture_list);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setAdapter(mPicListApater);
+
+        mTakePictureBtn = (Button) findViewById(R.id.btn_capture);
+        mTakePictureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*mCamera.autoFocus(mAutoFocusCallback);*/
+                mPreview.takePicture();
+            }
+        });
     }
 
     //拍照回调
-    private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
+   /* private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
             Date date = new Date(System.currentTimeMillis());
@@ -160,11 +170,20 @@ public class TakePhotoActivity extends AppCompatActivity {
                     }
                 }
             }).start();
-
+            mCamera.stopPreview();
             mCamera.startPreview();
         }
-    };
-    //旋转图片
+    };*/
+    //聚焦回调
+    /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean success, android.hardware.Camera camera) {
+            if (success){
+                mCamera.takePicture(null,null,mPictureCallback);
+            }
+        }
+    };*/
+    /*旋转图片进行储存
     public static Bitmap rotateBitmapByDegress(Bitmap bm, int degree){
         Bitmap returnBm = null;
         Matrix matrix = new Matrix();
@@ -181,33 +200,13 @@ public class TakePhotoActivity extends AppCompatActivity {
             bm.recycle();
         }
         return returnBm;
-    }
+    }*/
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    if (!checkCameraHardware(this)) {
-                        Toast.makeText(TakePhotoActivity.this, "Can not take photo!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (mCamera == null){
-                            mCamera = getCameraInstance();
-                            mPreview = new CameraPreview(TakePhotoActivity.this, mCamera);
-                            CameraPreview.setCameraDisplayOrientation(this, mCameraId, mCamera);
-                            mCameraLayout = (FrameLayout) findViewById(R.id.camera_preview);
-                            mCameraLayout.addView(mPreview);
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "no permission!", Toast.LENGTH_SHORT).show();
-                }
-        }
-    }
 
-    @Override
+
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         releaseCamera();
-    }
+    }*/
 }
