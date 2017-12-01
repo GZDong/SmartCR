@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     tools:context="com.oocl.johngao.smartcr.Activity.TakePhotoActivity">
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <FrameLayout
+        android:id="@+id/camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" ></SurfaceView>
+        android:layout_height="match_parent" ></FrameLayout>
     <RelativeLayout
         android:id="@+id/buttonLayout"
 
@@ -25,7 +25,7 @@
             android:layout_alignParentBottom="true"
             android:padding="2dp">
             <Button
-                android:id="@+id/btn_take_photo"
+                android:id="@+id/btn_capture"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/btn_take_photo"
