@@ -1,22 +1,11 @@
 package com.oocl.johngao.smartcr.Activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.Matrix;
-import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,19 +13,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.oocl.johngao.smartcr.Adapter.PicListApater;
+import com.oocl.johngao.smartcr.Adapter.PicListAdapter;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.CameraPreview;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TakePhotoActivity extends AppCompatActivity {
@@ -47,7 +28,7 @@ public class TakePhotoActivity extends AppCompatActivity {
     private FrameLayout mCameraLayout;
 
     private RecyclerView mRecyclerView;
-    private PicListApater mPicListApater;
+    private PicListAdapter mPicListAdapter;
     private List<String> mPicList;
 
     @Override
@@ -123,12 +104,12 @@ public class TakePhotoActivity extends AppCompatActivity {
     }
 
     public void initView(){
-        mPicListApater = new PicListApater(this, mPicList);
+        mPicListAdapter = new PicListAdapter(this, mPicList);
         mRecyclerView = (RecyclerView) findViewById(R.id.picture_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(mPicListApater);
+        mRecyclerView.setAdapter(mPicListAdapter);
 
         mTakePictureBtn = (Button) findViewById(R.id.btn_capture);
         mTakePictureBtn.setOnClickListener(new View.OnClickListener() {

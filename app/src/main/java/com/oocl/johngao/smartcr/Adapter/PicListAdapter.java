@@ -1,15 +1,12 @@
 package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.R;
 
@@ -19,12 +16,12 @@ import java.util.List;
  * Created by johngao on 17/11/30.
  */
 
-public class PicListApater extends RecyclerView.Adapter<PicListApater.MyViewHodler> {
+public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHodler> {
 
     private Context mContext;
     private List<String> mInsideList;
 
-    public PicListApater(Context context,List<String> list) {
+    public PicListAdapter(Context context, List<String> list) {
         mContext = context;
         mInsideList = list;
     }

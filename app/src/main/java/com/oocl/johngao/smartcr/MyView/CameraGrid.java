@@ -25,7 +25,7 @@ public class CameraGrid extends View {
 
     private void init(){
         mPaint = new Paint();
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(Color.BLUE);
         mPaint.setAlpha(120);
         mPaint.setStrokeWidth(1f);
     }

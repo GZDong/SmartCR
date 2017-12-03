@@ -67,11 +67,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.e(TAG, "surfaceCreated");
-       // mCamera = getCameraInstance();     //创建Camera实例，一般也在这个方法进行子线程操作
-        mCamera = Camera.open();
-        if (mCamera == null){
-            Log.e(TAG, "surfaceCreated: 4444444");
-        }
+        mCamera = getCameraInstance();     //创建Camera实例，一般也在这个方法进行子线程操作
+        //mCamera = Camera.open();
         setCameraDisplayOrientation((Activity) mContext,mCameraId,mCamera);
         try {
             mCamera.setPreviewDisplay(holder); //holder与Camera实例进行绑定，摄像头显示在Surface上
@@ -125,28 +122,28 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId,info);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int degress = 0;
+        int degree = 0;
         switch (rotation){
             case Surface.ROTATION_0:
-                degress = 0;
+                degree = 0;
                 break;
             case Surface.ROTATION_90:
-                degress = 90;
+                degree = 90;
                 break;
             case Surface.ROTATION_180:
-                degress = 180;
+                degree = 180;
                 break;
             case Surface.ROTATION_270:
-                degress = 270;
+                degree = 270;
                 break;
         }
 
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT){
-            result = (info.orientation + degress)%360;
+            result = (info.orientation + degree)%360;
             result = (360 - result) % 360;
         }else {
-            result = (info.orientation - degress + 360) % 360;
+            result = (info.orientation - degree + 360) % 360;
         }
         camera.setDisplayOrientation(result);
     }
@@ -288,7 +285,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     try {
                         //获取当前旋转角度，并旋转照片
                         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0,data.length);
-                        bitmap = rotateBitmapByDegress(bitmap,90);
+                        bitmap = rotateBitmapByDegree(bitmap,90);
                         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
                         bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
                         bos.flush();
@@ -306,7 +303,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     };
     //旋转图片进行储存
-    public static Bitmap rotateBitmapByDegress(Bitmap bm, int degree){
+    public static Bitmap rotateBitmapByDegree(Bitmap bm, int degree){
         Bitmap returnBm = null;
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);
