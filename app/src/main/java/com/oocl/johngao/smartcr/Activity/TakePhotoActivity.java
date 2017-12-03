@@ -26,6 +26,7 @@ public class TakePhotoActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     private Button mTakePictureBtn;
     private FrameLayout mCameraLayout;
+    private CameraPreview mCameraPreview;
 
     private RecyclerView mRecyclerView;
     private PicListAdapter mPicListAdapter;
@@ -34,7 +35,7 @@ public class TakePhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_take_photo);
 
@@ -111,6 +112,8 @@ public class TakePhotoActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mPicListAdapter);
 
+        //mCameraPreview = (CameraPreview) findViewById(R.id.camera_view);
+
         mTakePictureBtn = (Button) findViewById(R.id.btn_capture);
         mTakePictureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,41 +123,6 @@ public class TakePhotoActivity extends AppCompatActivity {
             }
         });
     }
-
-    //拍照回调
-   /* private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
-            Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String pictureName = simpleDateFormat.format(date) + ".png";
-            File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            final String picturePath = pictureDir + File.separator + pictureName;
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    File file = new File(picturePath);
-                    try {
-                        //获取当前旋转角度，并旋转照片
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0,data.length);
-                        bitmap = rotateBitmapByDegress(bitmap,90);
-                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos);
-                        bos.flush();
-                        bos.close();
-                        bitmap.recycle();
-                    }catch (FileNotFoundException e){
-                        e.printStackTrace();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-            mCamera.stopPreview();
-            mCamera.startPreview();
-        }
-    };*/
     //聚焦回调
     /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {
         @Override
@@ -164,30 +132,4 @@ public class TakePhotoActivity extends AppCompatActivity {
             }
         }
     };*/
-    /*旋转图片进行储存
-    public static Bitmap rotateBitmapByDegress(Bitmap bm, int degree){
-        Bitmap returnBm = null;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        try{
-            returnBm = Bitmap.createBitmap(bm, 0, 0,bm.getWidth(),bm.getHeight(),matrix,true);
-        }catch (OutOfMemoryError e){
-
-        }
-        if (returnBm == null){
-            returnBm = bm;
-        }
-        if (bm != returnBm){
-            bm.recycle();
-        }
-        return returnBm;
-    }*/
-
-
-
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        releaseCamera();
-    }*/
 }

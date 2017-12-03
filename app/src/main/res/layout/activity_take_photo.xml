@@ -10,12 +10,18 @@
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" ></FrameLayout>
+        android:layout_height="match_parent">
+
+    </FrameLayout>
     <RelativeLayout
         android:id="@+id/buttonLayout"
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+        <com.oocl.johngao.smartcr.MyView.SideBar
+            android:id="@+id/sideBar"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"/>
         <RelativeLayout
             android:id="@+id/panel_take_photo"
             android:layout_width="match_parent"
@@ -73,12 +79,12 @@
             </RelativeLayout>
 
         </LinearLayout>
-        <com.oocl.johngao.smartcr.MyView.CameraGrid
+        <!--<com.oocl.johngao.smartcr.MyView.CameraGrid
             android:id="@+id/masking"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/photo_area"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"/>-->
         <!--<View
             android:id="@+id/focus_index"
             android:layout_width="40dp"
@@ -86,6 +92,5 @@
             android:background="@mipmap/ic_launcher"
             android:layout_above="@id/photo_area"/>-->
     </RelativeLayout>
-
 
 </FrameLayout>

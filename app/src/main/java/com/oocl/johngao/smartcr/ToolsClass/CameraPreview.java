@@ -94,7 +94,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }catch (Exception e){
             e.printStackTrace();
         }*/
-        setCameraParams(mCamera,mScreenWidth,mScreenHeight);
+        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*0.77));
         mCamera.startPreview();
     }
 
@@ -264,7 +264,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
     public void takePicture(){
-         setCameraParams(mCamera, mScreenWidth, mScreenHeight);
+        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*0.77));
          mCamera.takePicture(null,null,mPictureCallback);
     }
 
