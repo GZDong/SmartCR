@@ -85,7 +85,7 @@ public class SideBar extends View {
             //UP事件产生：1.清除背景颜色 2.隐藏textView
             case MotionEvent.ACTION_UP:
                 setBackground(new ColorDrawable(0x00000000));
-                choose = -1;//清除被选中的值
+                //choose = -1;//清除被选中的值
                 invalidate();
                 if (mTextDialog != null) {
                     mTextDialog.setVisibility(View.INVISIBLE);

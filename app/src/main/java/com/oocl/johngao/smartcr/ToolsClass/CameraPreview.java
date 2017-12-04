@@ -17,6 +17,8 @@ import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.oocl.johngao.smartcr.Data.Pictures;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +43,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private int mScreenWidth;
     private int mScreenHeight;
+
+    private OnCaptureListener mOnCaptureListener;
+    private DataLab mDataLab;
 
     public CameraPreview(Context context) {
         super(context);
@@ -112,6 +117,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void initView(){
+        mDataLab = DataLab.get(mContext);
         getScreenMetrix(mContext);   //获取屏幕长宽的像素
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
@@ -272,11 +278,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
-            Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
-            String pictureName = simpleDateFormat.format(date) + ".png";
+            /*Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");*/
+
+            Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
+            String pictureName = pictures.getName();
+
             File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            final String picturePath = pictureDir + File.separator + pictureName;
+            File inDir = new File(pictureDir,pictures.getTCode());
+            inDir.mkdirs();
+            final String picturePath = inDir + File.separator + pictureName;
+            Log.e(TAG, "onPictureTaken: " + picturePath );
 
             new Thread(new Runnable() {
                 @Override
@@ -300,6 +312,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }).start();
             mCamera.stopPreview();
             mCamera.startPreview();
+            mOnCaptureListener.onCapture(pictureName);
         }
     };
     //旋转图片进行储存
@@ -319,5 +332,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             bm.recycle();
         }
         return returnBm;
+    }
+
+    public interface OnCaptureListener {
+        void onCapture(String name);
+    }
+    public void setOnCaptureListener(OnCaptureListener onCaptureListener){
+        mOnCaptureListener = onCaptureListener;
     }
 }

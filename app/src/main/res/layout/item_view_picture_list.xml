@@ -3,6 +3,7 @@
     android:id="@+id/picture_took"
     android:layout_width="80dp"
     android:layout_height="80dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
     android:src="@mipmap/ic_launcher">
-
 </ImageView>
