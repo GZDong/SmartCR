@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
 import org.w3c.dom.Text;
 
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +51,10 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private DataLab mDataLab;
     private BroadcastReceiver mBroadcastReceiver;
 
+    private ImageButton mImageButton;
+
     private int flag = 0;
+    private boolean swtch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +174,26 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         mSideBar.setTextView(mDialog);
 
         mNameText = (TextView) findViewById(R.id.picture_name);
+
+        mImageButton = (ImageButton) findViewById(R.id.light_btn);
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (swtch == true){
+                    Intent intent = new Intent("com.oocl.john.switchlight");
+                    intent.putExtra("sign",false);
+                    sendBroadcast(intent);
+                    swtch = false;
+                    mImageButton.setImageResource(R.drawable.offs);
+                }else {
+                    Intent intent = new Intent("com.oocl.john.switchlight");
+                    intent.putExtra("sign",true);
+                    sendBroadcast(intent);
+                    swtch = true;
+                    mImageButton.setImageResource(R.drawable.ons);
+                }
+            }
+        });
     }
     //聚焦回调
     /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {

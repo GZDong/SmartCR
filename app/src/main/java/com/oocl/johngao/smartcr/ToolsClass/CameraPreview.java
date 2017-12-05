@@ -1,8 +1,10 @@
 package com.oocl.johngao.smartcr.ToolsClass;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -41,6 +43,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private SurfaceHolder mSurfaceHolder;
     private Camera mCamera;
+    private Camera.Parameters parameters;
     private Context mContext;
 
     private int mScreenWidth;
@@ -48,6 +51,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     private OnCaptureListener mOnCaptureListener;
     private DataLab mDataLab;
+    private BroadcastReceiver mBroadcastReceiver;
 
     public CameraPreview(Context context) {
         super(context);
@@ -82,6 +86,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }catch (IOException e){
             e.printStackTrace();
         }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.oocl.john.switchlight");
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e(TAG, "onReceive: here get an message");
+                if (intent.getBooleanExtra("sign",false)==true){
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    mCamera.setParameters(parameters);
+
+                }else if (intent.getBooleanExtra("sign",false)==false){
+                    parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                    mCamera.setParameters(parameters);
+
+                }
+            }
+        };
+        mContext.registerReceiver(mBroadcastReceiver,intentFilter);
     }
 
     @Override
@@ -185,6 +207,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mSurfaceHolder = null;
         }
         mOnCaptureListener = null;
+        mContext.unregisterReceiver(mBroadcastReceiver);
     }
 
     /**
@@ -196,7 +219,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      */
     private void setCameraParams(Camera camera, int width, int height){
         Log.i(TAG, "setCameraParams:  width = " + width + "height" + height);
-        Camera.Parameters parameters = camera.getParameters();  //获取指定Camera的参数对象
+        parameters = camera.getParameters();  //获取指定Camera的参数对象
         //通过参数对象获取Camera所能支持的PictureSize列表
         List<Camera.Size> pictureSizeList = parameters.getSupportedPictureSizes();
         for (Camera.Size size : pictureSizeList){
@@ -281,14 +304,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
-            /*Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");*/
 
             Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
             String pictureName = pictures.getName();
 
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            //File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             File inDir = new File(pictureDir,pictures.getTCode());
             inDir.mkdirs();
             final String picturePath = inDir + File.separator + pictureName;
