@@ -2,11 +2,13 @@ package com.oocl.johngao.smartcr.Data;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by johngao on 17/12/4.
  */
 
-public class Pictures extends DataSupport{
+public class Pictures extends DataSupport implements Serializable{
     private String ConNo;
     private String TCode;
     private int SeqNo;

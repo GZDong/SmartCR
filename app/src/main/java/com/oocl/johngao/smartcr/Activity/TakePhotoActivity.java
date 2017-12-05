@@ -1,6 +1,9 @@
 package com.oocl.johngao.smartcr.Activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +32,7 @@ import java.util.List;
 
 public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener{
 
-    public static final String TAG = "CameraSimple";
+    public static final String TAG = "CameraPreview";
     private CameraPreview mPreview;
     private Button mTakePictureBtn;
     private FrameLayout mCameraLayout;
@@ -43,6 +46,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private TextView mNameText;
 
     private DataLab mDataLab;
+    private BroadcastReceiver mBroadcastReceiver;
+
+    private int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,16 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
 
         initList();
         initView();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.oocl.john.fresh");
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                mPicListAdapter.notifyDataSetChanged();
+            }
+        };
+        registerReceiver(mBroadcastReceiver,intentFilter);
+
     }
 
     private void initList() {
@@ -134,6 +150,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mPicListAdapter);
+        mRecyclerView.scrollToPosition(mPicList.size()-1);
 
         //mCameraPreview = (CameraPreview) findViewById(R.id.camera_view);
 
@@ -167,5 +184,38 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         mNameText.setText(name);
         mNameText.setVisibility(View.VISIBLE);
         mPicListAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(mPicList.size()-1);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        flag = 1;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (flag ==1){
+            mDataLab = DataLab.get(this);
+
+            //检查相机是否可用
+            if (!checkCameraHardware(this)) {
+                Toast.makeText(this, "相机不支持", Toast.LENGTH_SHORT).show();
+            }else {
+                //初始化相机
+                initCamera();
+            }
+
+            initList();
+            initView();
+            flag = 0;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 }

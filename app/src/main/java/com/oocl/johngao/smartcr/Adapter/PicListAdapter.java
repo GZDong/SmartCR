@@ -1,6 +1,7 @@
 package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.oocl.johngao.smartcr.Activity.PicShowActivity;
 import com.oocl.johngao.smartcr.Data.Pictures;
 import com.oocl.johngao.smartcr.R;
 
@@ -45,21 +47,28 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHodler holder, int position) {
+    public void onBindViewHolder(MyViewHodler holder, final int position) {
         if(mInsideList.size() > 0){
             Pictures pic = mInsideList.get(position);
-            File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String path = file + File.separator+ pic.getTCode()+ File.separator + pic.getName();
             Log.e(TAG, "onBindViewHolder: " +path );
 
                 /*BufferedInputStream in = new BufferedInputStream(new FileInputStream(path));
                 Bitmap bitmap = BitmapFactory.decodeStream(in);*/
                 Glide.with(mContext).load(path).asBitmap().centerCrop().into(holder.imageView);
-
+                holder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, PicShowActivity.class);
+                        intent.putExtra("position",position);
+                        mContext.startActivity(intent);
+                    }
+                });
 
             //holder.imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+            holder.imageView.setImageResource(R.drawable.loading);
         }
 
     }
@@ -74,17 +83,6 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
         public MyViewHodler(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.picture_took);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Snackbar.make(imageView,"test", Snackbar.LENGTH_LONG).setAction("test2", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    }).show();
-                }
-            });
         }
     }
 }

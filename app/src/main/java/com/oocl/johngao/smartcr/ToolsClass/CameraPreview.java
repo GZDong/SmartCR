@@ -2,6 +2,7 @@ package com.oocl.johngao.smartcr.ToolsClass;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -35,6 +36,7 @@ import java.util.List;
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback,Camera.AutoFocusCallback{
 
     private static final String TAG = "CameraPreview";
+    private static final double Rate = 0.77;
     private int mCameraId = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
 
     private SurfaceHolder mSurfaceHolder;
@@ -99,7 +101,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }catch (Exception e){
             e.printStackTrace();
         }*/
-        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*0.77));
+        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*Rate));
         mCamera.startPreview();
     }
 
@@ -182,6 +184,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera = null;
             mSurfaceHolder = null;
         }
+        mOnCaptureListener = null;
     }
 
     /**
@@ -270,7 +273,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
     public void takePicture(){
-        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*0.77));
+        setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*Rate));
          mCamera.takePicture(null,null,mPictureCallback);
     }
 
@@ -284,10 +287,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
             String pictureName = pictures.getName();
 
-            File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            //File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             File inDir = new File(pictureDir,pictures.getTCode());
             inDir.mkdirs();
             final String picturePath = inDir + File.separator + pictureName;
+            File DeFile = new File(picturePath);
             Log.e(TAG, "onPictureTaken: " + picturePath );
 
             new Thread(new Runnable() {
@@ -303,6 +308,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         bos.flush();
                         bos.close();
                         bitmap.recycle();
+                        Intent intent = new Intent("com.oocl.john.fresh");
+                        mContext.sendBroadcast(intent);
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
                     }catch (IOException e){

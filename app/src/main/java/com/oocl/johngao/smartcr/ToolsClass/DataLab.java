@@ -9,6 +9,8 @@ import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class DataLab {
             Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
             pictures.save();
             Log.e(TAG, "addPicsToDB: save to DB just now" );
+            mPicturesList.add(pictures);
             return pictures;
         }catch (Exception e){
             e.printStackTrace();
