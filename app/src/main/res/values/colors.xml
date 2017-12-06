@@ -8,4 +8,7 @@
     <color name="blue">#63B8FF</color>
     <color name="black">#000000</color>
     <color name="theme_blue">#00F5FF</color>
+    <color name="gray">#363942</color>
+    <color name="line">#5c606b</color>
+    <color name="bound">#e34e70</color>
 </resources>
