@@ -53,10 +53,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private DataLab mDataLab;
     private BroadcastReceiver mBroadcastReceiver;
 
+    private boolean mSwitch = false;
+
     public CameraPreview(Context context) {
         super(context);
         mContext = context;
-        Log.e(TAG, "CameraPreview: 1" );
+        Log.e(TAG, "CameraPreview: 1. 调用 SurfaceView的构造方法，创建surfaceView实例" );
         initView();
     }
 
@@ -77,7 +79,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.e(TAG, "surfaceCreated");
+        Log.e(TAG, " 3.调用 surfaceCreated 方法");
         mCamera = getCameraInstance();     //创建Camera实例，一般也在这个方法进行子线程操作
         //mCamera = Camera.open();
         setCameraDisplayOrientation((Activity) mContext,mCameraId,mCamera);
@@ -91,24 +93,27 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.e(TAG, "onReceive: here get an message");
                 if (intent.getBooleanExtra("sign",false)==true){
+                    Log.e(TAG, "onReceive: 获得广播去打开手电筒");
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     mCamera.setParameters(parameters);
+                    mSwitch = true;
 
                 }else if (intent.getBooleanExtra("sign",false)==false){
+                    Log.e(TAG, "onReceive: 获得广播去关闭手电筒");
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                     mCamera.setParameters(parameters);
-
+                    mSwitch = false;
                 }
             }
         };
+        Log.e(TAG, "surfaceCreated: 注册广播接受器");
         mContext.registerReceiver(mBroadcastReceiver,intentFilter);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        Log.e(TAG, "surfaceChanged");
+        Log.e(TAG, "4 : 调用 surfaceChanged 方法,在这里");
         /*if (mSurfaceHolder.getSurface() == null){
             return;
         }
@@ -129,7 +134,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.e(TAG, "surfaceDestroyed");
+        Log.e(TAG, "surfaceDestroyed方法被调用");
         releaseCamera();    //释放资源
     }
 
@@ -141,6 +146,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void initView(){
+        Log.e(TAG, "initView: 2. 创建和初始化 SurfaceHodler");
         mDataLab = DataLab.get(mContext);
         getScreenMetrix(mContext);   //获取屏幕长宽的像素
         mSurfaceHolder = getHolder();
@@ -190,6 +196,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             if (mCamera == null){
                 mCamera = Camera.open();
+                Log.e(TAG, "getCameraInstance : 3.1 .在Created方法里用open获得Camera实例");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,6 +215,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
         mOnCaptureListener = null;
         mContext.unregisterReceiver(mBroadcastReceiver);
+        Log.e(TAG, "releaseCamera: 释放资源，Camera holder listener receiver 被释放" );
     }
 
     /**
@@ -218,6 +226,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
      * @param height
      */
     private void setCameraParams(Camera camera, int width, int height){
+        Log.e(TAG, "setCameraParams: 配置相机系数，开始配置。。。" );
         Log.i(TAG, "setCameraParams:  width = " + width + "height" + height);
         parameters = camera.getParameters();  //获取指定Camera的参数对象
         //通过参数对象获取Camera所能支持的PictureSize列表
@@ -266,6 +275,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         //设置自动对焦
         mCamera.cancelAutoFocus();
         mCamera.setParameters(parameters);
+        Log.e(TAG, "setCameraParams: 结束配置。。。");
     }
     /**
      * 从列表中选取合适的分辨率
@@ -296,15 +306,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
     public void takePicture(){
+        Log.e(TAG, "takePicture: 在takePicture方法里" );
         setCameraParams(mCamera,mScreenWidth,(int) (mScreenHeight*Rate));
-         mCamera.takePicture(null,null,mPictureCallback);
+        mCamera.takePicture(null,null,mPictureCallback);
+        Log.e(TAG, "takePicture: 执行完之后。。。" );
     }
 
     //拍照回调
     private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
-
+            Log.e(TAG, "onPictureTaken: 点击了拍照按钮，触发回调接口");
             Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
             String pictureName = pictures.getName();
 
@@ -313,11 +325,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             inDir.mkdirs();
             final String picturePath = inDir + File.separator + pictureName;
             File DeFile = new File(picturePath);
-            Log.e(TAG, "onPictureTaken: " + picturePath );
+            Log.e(TAG, "onPictureTaken: 点击拍照后，图片储存在 :" + picturePath );
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.e(TAG, "run: 开启线程进行储存。。。");
                     File file = new File(picturePath);
                     try {
                         //获取当前旋转角度，并旋转照片
@@ -330,6 +343,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         bitmap.recycle();
                         Intent intent = new Intent("com.oocl.john.fresh");
                         mContext.sendBroadcast(intent);
+                        Log.e(TAG, "run: 线程执行完毕。。。");
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
                     }catch (IOException e){
@@ -339,6 +353,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             }).start();
             mCamera.stopPreview();
             mCamera.startPreview();
+            Log.e(TAG, "onPictureTaken: 拍照的此时，手电筒开关： " + mSwitch );
+            Log.e(TAG, "onPictureTaken: 拍照回调接口执行完之后。。。");
+            /*if (mSwitch == true){
+                Intent intent = new Intent("com.oocl.john.switchlight");
+                intent.putExtra("sign",true);
+                mContext.sendBroadcast(intent);
+                Log.e(TAG, "onPictureTaken: 在回调接口里发送开灯的广播");
+            }else {
+                Intent intent = new Intent("com.oocl.john.switchlight");
+                intent.putExtra("sign",false);
+                mContext.sendBroadcast(intent);
+                Log.e(TAG, "onPictureTaken: 在回调接口里发送关灯的广播");
+            }*/
             mOnCaptureListener.onCapture(pictureName);
         }
     };

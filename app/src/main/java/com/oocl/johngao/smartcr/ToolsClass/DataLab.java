@@ -44,7 +44,7 @@ public class DataLab {
             int SeqNo = mPicturesList.size() + 1;
             Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
             pictures.save();
-            Log.e(TAG, "addPicsToDB: save to DB just now" );
+            Log.e(TAG, "addPicsToDB: 点击拍照，将数据储存进数据库" );
             mPicturesList.add(pictures);
             return pictures;
         }catch (Exception e){
@@ -61,11 +61,13 @@ public class DataLab {
         mPicturesList = new ArrayList<>();
         mPicturesList = DataSupport.where("TCode = ?", "W").find(Pictures.class);
         if (mPicturesList.size() == 0){
-            Log.e(TAG, "initPicList: It's null from DB!" );
+            Log.e(TAG, "initPicList: 当前，数据库中没有数据" );
         }else {
-            Log.e(TAG, "initPicList: yeah!");
+            Log.e(TAG, "initPicList: 从数据库获取数据 :");
+            int i = 0;
             for (Pictures pictures : mPicturesList){
-                Log.e(TAG, "initPicList: "+ pictures.getName() );
+                i++;
+                Log.e(TAG, "initPicList: data " + i  + " "+ pictures.getName() );
             }
         }
     }

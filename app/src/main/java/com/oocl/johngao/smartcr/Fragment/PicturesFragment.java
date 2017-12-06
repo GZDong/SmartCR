@@ -60,7 +60,7 @@ public class PicturesFragment extends Fragment {
         File file = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String path = file + File.separator+ mPictures.getTCode()+ File.separator + mPictures.getName();
         Glide.with(getActivity()).load(path).asBitmap().centerCrop().into(mImageView);
-        Log.e(TAG, "onCreateView: " + mPictures.getName() );
+        Log.e(TAG, "onCreateView: to be showed in fragment is/are " + mPictures.getName() );
         mTextView.setText(mPictures.getName());
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override

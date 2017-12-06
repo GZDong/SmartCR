@@ -35,7 +35,7 @@ import java.util.List;
 
 public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener{
 
-    public static final String TAG = "CameraPreview";
+    public static final String TAG = "TakePhotoActivity";
     private CameraPreview mPreview;
     private Button mTakePictureBtn;
     private FrameLayout mCameraLayout;
@@ -62,12 +62,14 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_take_photo);
+        Log.e(TAG, "onCreate: ");
         mDataLab = DataLab.get(this);
 
         //检查相机是否可用
         if (!checkCameraHardware(this)) {
             Toast.makeText(this, "相机不支持", Toast.LENGTH_SHORT).show();
         }else {
+            Log.e(TAG, "onCreate: Here, start to init Camera :");
             //初始化相机
             initCamera();
         }
@@ -79,23 +81,33 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.e(TAG, "onReceive: 拍照完用于刷新照片列表和重启手电筒的接受器");
                 mPicListAdapter.notifyDataSetChanged();
+
+                if (swtch == true){
+                    Intent intent1 = new Intent("com.oocl.john.switchlight");
+                    intent1.putExtra("sign",false);
+                    sendBroadcast(intent1);
+                    Intent intent2 = new Intent("com.oocl.john.switchlight");
+                    intent2.putExtra("sign",true);
+                    sendBroadcast(intent2);
+                    Log.e(TAG, "onReceive: 线程执行完，先发送关灯广播，再发送开灯广播");
+                }else {
+                    Intent intent1 = new Intent("com.oocl.john.switchlight");
+                    intent1.putExtra("sign",false);
+                    sendBroadcast(intent1);
+                    Log.e(TAG, "onReceive: 线程执行完再发送关灯广播");
+                }
             }
         };
         registerReceiver(mBroadcastReceiver,intentFilter);
 
     }
 
+
     private void initList() {
         mPicList = new ArrayList<>();
         mPicList = mDataLab.getPicturesList();
-        if (mPicList.size() >0){
-            for (Pictures pictures : mPicList){
-                Log.e(TAG, "initList: "+ pictures.getName());
-            }
-        }else {
-            Log.e(TAG, "initList: no pictureList" );
-        }
 
         /*for (int i = 1; i <= 10; i++) {
             String test = "test";
@@ -183,12 +195,14 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                     Intent intent = new Intent("com.oocl.john.switchlight");
                     intent.putExtra("sign",false);
                     sendBroadcast(intent);
+                    Log.e(TAG, "onClick: 在左下角点击后发送关灯广播");
                     swtch = false;
                     mImageButton.setImageResource(R.drawable.offs);
                 }else {
                     Intent intent = new Intent("com.oocl.john.switchlight");
                     intent.putExtra("sign",true);
                     sendBroadcast(intent);
+                    Log.e(TAG, "onClick: 在左下角点击后发送开灯广播");
                     swtch = true;
                     mImageButton.setImageResource(R.drawable.ons);
                 }
@@ -223,6 +237,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     protected void onStart() {
         super.onStart();
         if (flag ==1){
+            mCameraLayout.removeAllViews();
             mDataLab = DataLab.get(this);
 
             //检查相机是否可用
@@ -236,12 +251,17 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             initList();
             initView();
             flag = 0;
+            if (swtch == true) {
+                swtch = false;
+                mImageButton.setImageResource(R.drawable.offs);
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e(TAG, "onDestroy: ");
         unregisterReceiver(mBroadcastReceiver);
     }
 }

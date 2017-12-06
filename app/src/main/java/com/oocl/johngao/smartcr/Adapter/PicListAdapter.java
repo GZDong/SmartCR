@@ -37,7 +37,6 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
     public PicListAdapter(Context context, List<Pictures> list) {
         mContext = context;
         mInsideList = list;
-        Log.e(TAG, "PicListAdapter: initList" );
     }
 
     @Override
@@ -52,7 +51,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
             Pictures pic = mInsideList.get(position);
             File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             String path = file + File.separator+ pic.getTCode()+ File.separator + pic.getName();
-            Log.e(TAG, "onBindViewHolder: " +path );
+            Log.e(TAG, "onBindViewHolder: to show pic from : " +path );
 
                 /*BufferedInputStream in = new BufferedInputStream(new FileInputStream(path));
                 Bitmap bitmap = BitmapFactory.decodeStream(in);*/
