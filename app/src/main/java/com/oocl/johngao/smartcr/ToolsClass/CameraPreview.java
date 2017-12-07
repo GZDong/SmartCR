@@ -317,7 +317,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
             Log.e(TAG, "onPictureTaken: 点击了拍照按钮，触发回调接口");
-            Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
+            final Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
             String pictureName = pictures.getName();
 
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -342,6 +342,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         bos.close();
                         bitmap.recycle();
                         Intent intent = new Intent("com.oocl.john.fresh");
+                        intent.putExtra("index",pictures.getSeqNo());
                         mContext.sendBroadcast(intent);
                         Log.e(TAG, "run: 线程执行完毕。。。");
                     }catch (FileNotFoundException e){
@@ -366,7 +367,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 mContext.sendBroadcast(intent);
                 Log.e(TAG, "onPictureTaken: 在回调接口里发送关灯的广播");
             }*/
-            mOnCaptureListener.onCapture(pictureName);
+            mOnCaptureListener.onCapture(pictureName,pictures.getSeqNo());
         }
     };
     //旋转图片进行储存
@@ -389,9 +390,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public interface OnCaptureListener {
-        void onCapture(String name);
+        void onCapture(String name, int seq);
     }
     public void setOnCaptureListener(OnCaptureListener onCaptureListener){
         mOnCaptureListener = onCaptureListener;
     }
+
 }

@@ -43,18 +43,20 @@ public class DataLab {
 
     public Pictures addPicsToDB(String ConNo,String TCode,String EndCode){
         try {
+            Log.e(TAG, "addPicsToDB: ..... 前四个还剩 " + nullNum );
             if (nullNum == 0){
-                int SeqNo = mPicturesList.size() + 1;
+                int SeqNo = mPicturesList.size();
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
                 pictures.save();
-                Log.e(TAG, "addPicsToDB: 点击拍照，将数据储存进数据库" );
-                mPicturesList.add(pictures);
+                mPicturesList.set(SeqNo-1,pictures);
+                addNull();
                 return pictures;
             }else if (nullNum ==1){
                 int SeqNo = 4;
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
                 pictures.save();
                 mPicturesList.set(3,pictures);
+                addNull();
                 nullNum --;
                 return pictures;
             }else if (nullNum ==2){
@@ -98,6 +100,7 @@ public class DataLab {
         if (mPicturesList.size() <= 4){
             initIcon(mPicturesList.size());
         }else {
+            nullNum = 0;
             Log.e(TAG, "initPicList: 从数据库获取数据 :");
             int i = 0;
             for (Pictures pictures : mPicturesList){
@@ -136,5 +139,10 @@ public class DataLab {
         if (size == 4){
             nullNum = nullNum - 4;
         }
+    }
+
+    public void addNull(){
+        Pictures pictures2 = new Pictures(Const.NullConNo,Const.NullTCode,mPicturesList.size()+1,".png");
+        mPicturesList.add(pictures2);
     }
 }

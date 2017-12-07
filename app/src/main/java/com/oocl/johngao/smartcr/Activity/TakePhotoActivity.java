@@ -82,8 +82,10 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.e(TAG, "onReceive: 拍照完用于刷新照片列表和重启手电筒的接受器");
+                int index = intent.getIntExtra("index",0);
+                mPicListAdapter.s = index + 1;
                 mPicListAdapter.notifyDataSetChanged();
-
+                mRecyclerView.scrollToPosition(mPicList.size()-1);
                 if (swtch == true){
                     Intent intent1 = new Intent("com.oocl.john.switchlight");
                     intent1.putExtra("sign",false);
@@ -220,11 +222,11 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     };*/
 
     @Override
-    public void onCapture(String name) {
+    public void onCapture(String name, int seq) {
         mNameText.setText(name);
         mNameText.setVisibility(View.VISIBLE);
-        mPicListAdapter.notifyDataSetChanged();
-        mRecyclerView.scrollToPosition(mPicList.size()-1);
+        /*mPicListAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(mPicList.size()-1);*/
     }
 
     @Override
@@ -264,4 +266,5 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         Log.e(TAG, "onDestroy: ");
         unregisterReceiver(mBroadcastReceiver);
     }
+
 }

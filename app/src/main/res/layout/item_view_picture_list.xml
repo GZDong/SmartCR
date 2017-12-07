@@ -6,5 +6,5 @@
     android:layout_marginRight="5dp"
     android:layout_marginLeft="5dp"
     android:padding="1dp"
-    android:background="@color/gray">
+    android:background="@drawable/img_bg">
 </ImageView>
