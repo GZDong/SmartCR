@@ -19,10 +19,8 @@ import com.oocl.johngao.smartcr.R;
 
 public class SideBar extends View {
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
-    public static String[] b = { "A", "B", "C", "D", "E", "F", "G", "H", "I",
-            "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-            "W", "X", "Y", "Z", "#" };
-    private int choose = -1;  //以对应的位置的值表示被选中
+    public static String[] b = { "水洗","化学洗","除纸","除钉" };
+    private int choose = 0;  //以对应的位置的值表示被选中
     private Paint paint = new Paint();
 
     private TextView mTextDialog;
@@ -60,7 +58,7 @@ public class SideBar extends View {
             paint.setAntiAlias(true);  //设置抗锯齿
             paint.setTextSize(30);
             if (i == choose) {// 选中的状态,再点击时改变choose的值
-                paint.setColor(Color.parseColor("#3399ff"));
+                paint.setColor(Color.parseColor("#00F5FF"));
                 paint.setFakeBoldText(true);
             }
             // x坐标等于中间-字符串宽度的一半,最后对应画的起点

@@ -19,15 +19,15 @@
         android:layout_height="wrap_content">
         <com.oocl.johngao.smartcr.MyView.SideBar
             android:id="@+id/sideBar"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
+            android:layout_width="33dp"
+            android:layout_height="130dp"
             android:layout_alignParentRight="true"/>
         <TextView
             android:id="@+id/dialog"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:background="#ecf0ea"
+            android:background="#00FFFFFF"
             android:gravity="center"
             android:textColor="#1c1b1b"
             android:textSize="30dp"
@@ -71,15 +71,17 @@
                 android:src="@drawable/offs"
                 android:background="#00FFFFFF"
                 android:scaleType="centerInside"/>
-            <ImageView
-                android:id="@+id/title_btn_black"
+            <ImageButton
+                android:id="@+id/next_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@drawable/next"
+                android:background="#00FFFFFF"
+                android:scaleType="centerInside"/>
         </RelativeLayout>
         <LinearLayout
             android:id="@+id/photo_area"
