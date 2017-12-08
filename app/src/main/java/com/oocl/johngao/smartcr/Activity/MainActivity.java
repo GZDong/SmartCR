@@ -1,59 +1,78 @@
 package com.oocl.johngao.smartcr.Activity;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.FrameLayout;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
+import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.R;
-import com.oocl.johngao.smartcr.ToolsClass.CameraPreview;
+import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
-import org.litepal.tablemanager.Connector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextView;
+    public static final String TAG = "MainActivity";
+    private RecyclerView mRecyclerView;
+    private ConListAdapter mAdapter;
+    private FloatingActionButton mFAB;
+    private List<Container> mConList;
+    private DataLab mDataLab;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //创建数据库
-        Connector.getDatabase();
+        initList();
+        initView();
+    }
 
-        //判断和请求权限
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+    public void initView(){
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.container_list);
+        mAdapter = new ConListAdapter(mConList,this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mFAB = (FloatingActionButton) findViewById(R.id.capture_flt_btn);
+    }
+    public void initList(){
+        mDataLab = DataLab.get(this);
+        mConList = mDataLab.getContainerList();
+        if (mConList.size() == 0){
+            Log.e(TAG, "initList: *****");
         }
+    }
 
-        mTextView = (TextView) findViewById(R.id.hello);
-        mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
-                startActivity(intent);
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+
+                    return true;
+                case R.id.navigation_notifications:
+
+                    return true;
             }
-        });
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    Toast.makeText(this, "no permission!", Toast.LENGTH_SHORT).show();
-                }
+            return false;
         }
-    }
+    };
+
 }

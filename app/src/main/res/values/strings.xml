@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="finish_text">完成</string>
+    <string name="title_activity_main">主界面</string>
+    <string name="title_home">列表</string>
+    <string name="title_notifications">设置</string>
 </resources>

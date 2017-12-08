@@ -17,20 +17,45 @@
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.oocl.johngao.smartcr.MyView.SideBar
             android:id="@+id/sideBar"
             android:layout_width="33dp"
             android:layout_height="130dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_above="@+id/photo_area"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/finish_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/picture_name"
+            android:layout_alignBottom="@+id/picture_name"
+            android:layout_alignStart="@+id/sideBar"
+            android:background="@color/alpha"
+            android:text="@string/finish_text"
+            android:textColor="@color/theme_blue" />
+        <ImageView
+            android:id="@+id/dialog_bg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="#1c1b1b"
+            android:textSize="30dp"
+            android:visibility="invisible"
+            android:background="@drawable/bgofdialog"
+            />
         <TextView
             android:id="@+id/dialog"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:background="#00FFFFFF"
+            android:background="@color/alpha"
             android:gravity="center"
             android:textColor="#1c1b1b"
-            android:textSize="30dp"
+            android:textSize="25dp"
             android:visibility="invisible"
             />
         <TextView
@@ -40,10 +65,9 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"
-            android:text="test"
             android:background="#00FFFFFF"
             android:textStyle="bold"
-            android:textColor="#3399ff"
+            android:textColor="@color/theme_blue"
             android:visibility="invisible"/>
         <RelativeLayout
             android:id="@+id/panel_take_photo"

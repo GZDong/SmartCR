@@ -5,18 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +60,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private BroadcastReceiver mBroadcastReceiver;
 
     private ImageButton mImageButton;
+    private ImageView mDialogBG;
+    private TextView mFinishText;
 
     private int flag = 0;
     private boolean swtch = false;
@@ -184,8 +194,11 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         });
 
         mDialog = (TextView) findViewById(R.id.dialog);
+        mDialogBG = (ImageView) findViewById(R.id.dialog_bg);
+        applyBlur();
+        mDialogBG.getBackground().setAlpha(230);
         mSideBar = (SideBar) findViewById(R.id.sideBar);
-        mSideBar.setTextView(mDialog);
+        mSideBar.setTextView(mDialog,mDialogBG);
 
         mNameText = (TextView) findViewById(R.id.picture_name);
 
@@ -208,6 +221,14 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                     swtch = true;
                     mImageButton.setImageResource(R.drawable.ons);
                 }
+            }
+        });
+
+        mFinishText = (TextView) findViewById(R.id.finish_text);
+        mFinishText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -265,6 +286,46 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         super.onDestroy();
         Log.e(TAG, "onDestroy: ");
         unregisterReceiver(mBroadcastReceiver);
+    }
+
+    private void applyBlur(){
+        mDialogBG.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                mDialogBG.getViewTreeObserver().removeOnPreDrawListener(this);
+                mDialogBG.buildDrawingCache();
+                Bitmap bmp = mDialogBG.getDrawingCache();
+                blur(bmp, mDialog);
+                return true;
+            }
+        });
+    }
+    /**
+     * 一个高斯模糊的算法
+     *
+     * @param bkg
+     * @param view
+     */
+    private void blur(Bitmap bkg, View view) {
+        float radius = 25;
+        Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth()),
+                (int) (view.getMeasuredHeight()), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(overlay);
+        canvas.translate(-view.getLeft(), -view.getTop());
+        canvas.drawBitmap(bkg, 0, 0, null);
+
+        RenderScript rs = RenderScript.create(TakePhotoActivity.this);
+
+        Allocation overlayAlloc = Allocation.createFromBitmap(rs, overlay);
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());
+        blur.setInput(overlayAlloc);
+        blur.setRadius(radius);
+        blur.forEach(overlayAlloc);
+        overlayAlloc.copyTo(overlay);
+        view.setBackground(new BitmapDrawable(getResources(), overlay));
+        rs.destroy();
+
     }
 
 }

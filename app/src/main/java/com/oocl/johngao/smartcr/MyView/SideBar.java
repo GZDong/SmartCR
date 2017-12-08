@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oocl.johngao.smartcr.R;
@@ -24,13 +25,15 @@ public class SideBar extends View {
     private Paint paint = new Paint();
 
     private TextView mTextDialog;
+    private ImageView mImageView;
 
     /**
      * 为SideBar设置显示字母的TextView
      * @param textDialog
      */
-    public void setTextView(TextView textDialog) {
+    public void setTextView(TextView textDialog,ImageView imageView) {
         this.mTextDialog = textDialog;
+        this.mImageView = imageView;
     }
 
 
@@ -87,6 +90,7 @@ public class SideBar extends View {
                 invalidate();
                 if (mTextDialog != null) {
                     mTextDialog.setVisibility(View.INVISIBLE);
+                    mImageView.setVisibility(INVISIBLE);
                 }
                 break;
             //DOWN、MOVE事件产生：1.设置背景颜色 2.列表滚动 3.显示字母
@@ -102,6 +106,7 @@ public class SideBar extends View {
                             //设置显示字母
                             mTextDialog.setText(b[c]);
                             mTextDialog.setVisibility(View.VISIBLE);
+                            mImageView.setVisibility(VISIBLE);
                         }
                         choose = c;
                         invalidate(); //重新绘画，保证点击字母颜色改变
