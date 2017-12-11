@@ -2,19 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:id="@+id/navigation_list"
+        android:icon="@drawable/tab_btn_left"
         android:title="@string/title_home"
         />
 
     <item
-        android:id="@+id/null_btn"
-        android:title=" "
+        android:id="@+id/navigation_take"
+        android:icon="@drawable/tab_btn_mid"
+        android:title="拍照"
         />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/tab_btn"
         android:title="@string/title_notifications" />
 
 </menu>

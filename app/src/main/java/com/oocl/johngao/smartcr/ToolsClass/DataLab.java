@@ -136,6 +136,25 @@ public class DataLab {
                 container.save();
                 mContainerList.add(container);
             }
+            for (int i=25;i<30;i++){
+                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
+                container.setW_Progress(true);
+                container.save();
+                mContainerList.add(container);
+            }
+            for (int i=30;i<35;i++){
+                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
+                container.setR_Progress(true);
+                container.save();
+                mContainerList.add(container);
+            }
+            for (int i=35;i<40;i++){
+                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
+                container.setW_Progress(true);
+                container.setR_Progress(true);
+                container.save();
+                mContainerList.add(container);
+            }
             Log.e(TAG, "initContainerList: 模拟数据初始化完毕");
             for (Container container : mContainerList){
                 Log.e(TAG, "initContainerList: 货柜号：" + container.getConNo() + "，是否需要洗：" + container.isW_Choose() + "，是否需要修：" + container.isR_Choose() +

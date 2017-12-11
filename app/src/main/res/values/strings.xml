@@ -9,4 +9,6 @@
     <string name="title_notifications">设置</string>
     <string name="search_hint">  搜索货柜</string>
     <string name="filter_hint">筛选</string>
+    <string name="wash_hint">洗</string>
+    <string name="reqair_hint">修</string>
 </resources>

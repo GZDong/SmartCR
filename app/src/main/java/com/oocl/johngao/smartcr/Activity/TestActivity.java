@@ -48,7 +48,7 @@ public class TestActivity extends AppCompatActivity {
         mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TestActivity.this,TakePhotoActivity.class);
+                Intent intent = new Intent(TestActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });

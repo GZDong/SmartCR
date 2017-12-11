@@ -1,26 +1,27 @@
 package com.oocl.johngao.smartcr.Activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
+import com.oocl.johngao.smartcr.MyView.MyscrollView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,10 +29,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
     private RecyclerView mRecyclerView;
     private ConListAdapter mAdapter;
-    private FloatingActionButton mFAB;
+
     private List<Container> mConList;
     private DataLab mDataLab;
-
+    private boolean fixedFlag = false, resetFlag = false;
+    private int selectPos = 0;
+    private LinearLayout headBarLayout;
 
 
     @Override
@@ -59,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.container_list);
         mAdapter = new ConListAdapter(mConList,this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(mAdapter);
 
-        mFAB = (FloatingActionButton) findViewById(R.id.capture_flt_btn);
+
     }
     public void initList(){
         mDataLab = DataLab.get(this);
@@ -79,11 +83,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_list:
 
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_settings:
 
+                    return true;
+                case R.id.navigation_take:
+                    Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

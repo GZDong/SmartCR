@@ -16,7 +16,7 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/navigation">
 
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/capture_flt_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:clickable="true"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/phoneicon"
-             />
+             />-->
     </android.support.design.widget.BottomNavigationView>
 
     <LinearLayout
@@ -38,10 +38,12 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             >
             <com.oocl.johngao.smartcr.MyView.MySearchView
                 android:id="@+id/search_view"
@@ -72,15 +74,26 @@
                 android:layout_gravity="center"
                 android:textSize="13sp"/>
         </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@color/alpha"
+            android:text="2017-12-11"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/container_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="15"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:fitsSystemWindows="true"
-            android:clipToPadding="true"/>
+            android:layout_weight="15"
+            android:background="@color/search_gray"
+            android:clipToPadding="true"
+             />
     </LinearLayout>
 
 
