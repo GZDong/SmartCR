@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -38,11 +39,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS |
-                    localLayoutParams.flags);
+        //透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            Window window = getWindow();
+            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
         initList();
         initView();
     }

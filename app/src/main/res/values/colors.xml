@@ -12,4 +12,5 @@
     <color name="line">#5c606b</color>
     <color name="bound">#e34e70</color>
     <color name="alpha">#00FFFFFF</color>
+    <color name="search_gray">#f5f4f9</color>
 </resources>
