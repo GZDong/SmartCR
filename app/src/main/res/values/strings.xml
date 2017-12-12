@@ -11,4 +11,10 @@
     <string name="filter_hint">筛选</string>
     <string name="wash_hint">洗</string>
     <string name="reqair_hint">修</string>
+    <string name="title_activity_filter">FilterActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

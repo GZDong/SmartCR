@@ -7,10 +7,11 @@
         android:title="@string/title_home"
         />
 
+
     <item
         android:id="@+id/navigation_take"
-        android:icon="@drawable/tab_btn_mid"
-        android:title="拍照"
+
+        android:title=""
         />
 
     <item

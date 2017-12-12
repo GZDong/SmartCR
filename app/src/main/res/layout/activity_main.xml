@@ -1,43 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.oocl.johngao.smartcr.Activity.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.oocl.johngao.smartcr.Activity.MainActivity"
+    android:background="@color/white">
 
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/navigation">
-
-        <!--<android.support.design.widget.FloatingActionButton
-            android:id="@+id/capture_flt_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/phoneicon"
-             />-->
-    </android.support.design.widget.BottomNavigationView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@id/navigation">
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="8dp"
             android:paddingLeft="8dp"
@@ -66,13 +48,15 @@
                 android:layout_gravity="center_vertical"
                 />
             <TextView
+                android:id="@+id/filter_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/filter_hint"
-
+                android:clickable="true"
                 android:layout_marginTop="6dp"
                 android:layout_gravity="center"
-                android:textSize="13sp"/>
+                android:textSize="13sp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
 
@@ -82,19 +66,159 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:background="@color/alpha"
-            android:text="2017-12-11"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/container_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="15"
             android:background="@color/search_gray"
-            android:clipToPadding="true"
-             />
+            android:textColor="@color/black"
+            android:text="2017-12-11"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/container_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:clipToPadding="true"
+                android:background="@color/search_gray"
+                />
+
+
+       <!-- <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/navigation">
+
+            &lt;!&ndash;<android.support.design.widget.FloatingActionButton
+                android:id="@+id/capture_flt_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/phoneicon"
+                 />&ndash;&gt;
+
+
+            <TextView
+                android:id="@+id/tv_1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center|bottom"
+                android:background="@mipmap/ic_wash1"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center|bottom"
+                android:background="@mipmap/ic_repair1"
+                />
+            <ImageView
+                android:id="@+id/img_take"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:src="@drawable/takinga"
+                android:scaleType="centerInside"
+                android:background="?android:attr/windowBackground"/>
+        </android.support.design.widget.BottomNavigationView>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:background="?android:attr/windowBackground"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:id="@+id/left_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/left_btn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/listbtnafter"
+                    android:layout_gravity="start"
+                    android:clickable="true"/>
+                <TextView
+                    android:id="@+id/l_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/title_home"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom">
+                <TextView
+                    android:id="@+id/tv_1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/ic_wash1"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@mipmap/ic_repair1"
+                    />
+                <ImageView
+                    android:id="@+id/img_take"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/takinga"
+                    android:scaleType="centerInside"
+                    android:background="?android:attr/windowBackground"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/right_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="15dp"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/right_btn"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/setbefore"
+                    android:layout_gravity="end"
+                    android:clickable="true"/>
+                <TextView
+                    android:id="@+id/r_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/title_notifications"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
