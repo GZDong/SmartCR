@@ -32,7 +32,7 @@ public class DataLab {
 
     private DataLab(Context context){
         mContext = context.getApplicationContext();
-        initPicList();
+
         initContainerList();
     }
     public static DataLab get(Context context){
@@ -102,8 +102,18 @@ public class DataLab {
 
     public List<Container> getContainerList() { return mContainerList; }
 
-    public void initPicList(){
+    public void initPicList(String ConNO,String sign){
         mPicturesList = new ArrayList<>();
+        if (sign.equals("WashBefore")){
+
+        }else if (sign.equals("WashAfter")){
+
+        }else if (sign.equals("RepairBefore")){
+
+        }else if (sign.equals("RepairAfter")){
+
+        }
+
         mPicturesList = DataSupport.where("TCode = ?", "W").find(Pictures.class);
         if (mPicturesList.size() <= 4){
             initIcon(mPicturesList.size());

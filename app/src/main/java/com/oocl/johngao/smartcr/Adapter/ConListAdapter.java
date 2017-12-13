@@ -88,11 +88,13 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                 public void onClick(View v) {
                     if (container.isW_Choose() == true && container.isW_Progress() == false){ //洗前拍照
                         Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("ConNo",container.getConNo());
                         intent.putExtra("Message","WashBefore");
                         mContext.startActivity(intent);
                     }
                     if (container.isW_Choose() == true && container.isW_Progress() == true){  //洗后拍照
                         Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("ConNo",container.getConNo());
                         intent.putExtra("Message","WashAfter");
                         mContext.startActivity(intent);
                     }
@@ -102,19 +104,26 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             holder.mRepairImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (container.isR_Progress() == true && container.isR_Progress() == false){ //修前拍照
+                    if (container.isR_Choose() == true && container.isR_Progress() == false){ //修前拍照
                         Intent intent = new Intent(mContext, TakePhotoActivity.class);
                         intent.putExtra("Message","RepairBefore");
+                        intent.putExtra("ConNo",container.getConNo());
                         mContext.startActivity(intent);
                     }
-                    if (container.isR_Progress() == true && container.isR_Progress() == true){  //修后拍照
+                    if (container.isR_Choose() == true && container.isR_Progress() == true){  //修后拍照
                         Intent intent = new Intent(mContext, TakePhotoActivity.class);
                         intent.putExtra("Message","RepairAfter");
+                        intent.putExtra("ConNo",container.getConNo());
                         mContext.startActivity(intent);
                     }
                 }
             });
         }
+    }
+
+    public void updateList(List<Container> list){
+        this.mInsideList = list;
+        notifyDataSetChanged();
     }
 
     @Override

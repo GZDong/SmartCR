@@ -66,6 +66,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private int flag = 0;
     private boolean swtch = false;
 
+    private String sign;
+    private String ConNo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +86,10 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             //初始化相机
             initCamera();
         }
+        sign = getIntent().getStringExtra("Message");
+        ConNo = getIntent().getStringExtra("ConNo");
 
-        initList();
+        initList(ConNo);
         initView();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.oocl.john.fresh");
@@ -113,12 +118,12 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             }
         };
         registerReceiver(mBroadcastReceiver,intentFilter);
-
     }
 
 
-    private void initList() {
+    private void initList(String conno) {
         mPicList = new ArrayList<>();
+        mDataLab.initPicList(ConNo,sign);
         mPicList = mDataLab.getPicturesList();
 
         /*for (int i = 1; i <= 10; i++) {
@@ -271,7 +276,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                 initCamera();
             }
 
-            initList();
+            initList(ConNo);
             initView();
             flag = 0;
             if (swtch == true) {

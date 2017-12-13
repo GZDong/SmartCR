@@ -18,7 +18,7 @@ public class Const {
     public static final boolean WaitRepair = false;
     public static final boolean FinishRepair = true;
 
-    public static final String WaterWash_Code = "W";
+    public static final String WaterWash = "W";
     public static final String ChemicalWash_Code = "C";
     public static final String PaperClean_Code = "P";
     public static final String NailClean_Code = "NIL";

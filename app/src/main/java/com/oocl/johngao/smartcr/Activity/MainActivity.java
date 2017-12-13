@@ -3,6 +3,7 @@ package com.oocl.johngao.smartcr.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,12 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +33,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
+import com.oocl.johngao.smartcr.MyView.MySearchView;
 import com.oocl.johngao.smartcr.MyView.MyscrollView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
@@ -62,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mlt;
     private TextView mrt;
 
+    private MySearchView mSearchView;
+    private LinearLayout mReplaceLY;
+    private ImageView mFilterIcon;
+
+    private boolean flag = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,16 +107,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setAdapter(mAdapter);
 
         mFilterText = (TextView) findViewById(R.id.filter_text);
-        mFilterText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,FilterActivity.class);
-                startActivity(intent);
-            }
-        });
+        mFilterText.setOnClickListener(this);
 
         tv1 = (TextView) findViewById(R.id.tv_1);
         tv2 = (TextView) findViewById(R.id.tv_2);
+
+        mFilterIcon = (ImageView) findViewById(R.id.filter_icon);
 
         tvViews.add(tv1);
         tvViews.add(tv2);
@@ -112,25 +121,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if (!isMenuOpen){
+                    mListBtn.setImageResource(R.drawable.listbtnbefore);
+                    mSetBtn.setImageResource(R.drawable.setbefore);
                     showOpenAnim(80);
                     imgTake.setImageResource(R.drawable.takingb);
                     tv1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
+                            Intent intent = new Intent(MainActivity.this, TakePhotoActivity.class);
+                            intent.putExtra("ConNo",mConList.get(0).getConNo());
+                            intent.putExtra("Message","Wash");
                             startActivity(intent);
                         }
                     });
                     tv2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
+                            Intent intent = new Intent(MainActivity.this, TakePhotoActivity.class);
+                            intent.putExtra("ConNo",mConList.get(0).getConNo());
+                            intent.putExtra("Message","Repair");
                             startActivity(intent);
                         }
                     });
                 }else {
                     showCloseAnim(80);
                     imgTake.setImageResource(R.drawable.takinga);
+                    if (flag == true){
+                        mListBtn.setImageResource(R.drawable.listbtnafter);
+                        mSetBtn.setImageResource(R.drawable.setbefore);
+                    }else {
+                        mListBtn.setImageResource(R.drawable.listbtnbefore);
+                        mSetBtn.setImageResource(R.drawable.setafter2);
+                    }
                 }
             }
         });
@@ -148,6 +170,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSetBtn.setOnClickListener(this);
         mlt.setOnClickListener(this);
         mrt.setOnClickListener(this);
+
+        mSearchView = (MySearchView) findViewById(R.id.search_view);
+        mSearchView.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        mSearchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterData(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mReplaceLY = (LinearLayout) findViewById(R.id.replace_layout);
+        mReplaceLY.setOnClickListener(this);
     }
     public void initList(){
         mDataLab = DataLab.get(this);
@@ -162,9 +206,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.left_btn || v.getId() == R.id.l_t){
             mListBtn.setImageResource(R.drawable.listbtnafter);
             mSetBtn.setImageResource(R.drawable.setbefore);
+            flag = true;
         }else if (v.getId() == R.id.right_btn || v.getId() == R.id.r_t){
             mListBtn.setImageResource(R.drawable.listbtnbefore);
             mSetBtn.setImageResource(R.drawable.setafter2);
+            flag = false;
+        }
+        if (v.getId() == R.id.replace_layout){
+            mSearchView.setVisibility(View.VISIBLE);
+            //手动获得聚焦，如果只有这个，因为没有touch，软键盘不会弹出来，需要再点击一下
+            mSearchView.requestFocus();
+
+            //这个强制弹出软键盘是在获得聚焦的前提下
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.showSoftInput(mSearchView,0);
+            mReplaceLY.setVisibility(View.GONE);
+            mFilterText.setText(R.string.cancel);
+            mFilterText.setTextColor(getResources().getColor(R.color.theme_blue));
+            mFilterIcon.setVisibility(View.GONE);
+        }
+
+        if (v.getId() == R.id.filter_text){
+            if (mFilterIcon.getVisibility() == View.GONE){
+                mReplaceLY.setVisibility(View.VISIBLE);
+                mSearchView.setText("");
+                mSearchView.setVisibility(View.GONE);
+                mFilterText.setText(R.string.filter_hint);
+                mFilterText.setTextColor(getResources().getColor(R.color.black));
+                mFilterIcon.setVisibility(View.VISIBLE);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+            }else {
+                Intent intent = new Intent(MainActivity.this,FilterActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -311,6 +387,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         float density = getResources()
                 .getDisplayMetrics().density;
         return (int) (density * value + 0.5f);
+    }
+
+    private void filterData(String index){
+        List<Container> filterList = new ArrayList<>();
+        if (TextUtils.isEmpty(index)){
+            filterList = mConList;
+        }else{
+            filterList.clear();
+            for(Container container : mConList){
+                int l = container.getConNo().length();
+                if (container.getConNo().substring(l-4,l).indexOf(index)!=-1){
+                    filterList.add(container);
+                }
+            }
+        }
+        mAdapter.updateList(filterList);
     }
 
 }
