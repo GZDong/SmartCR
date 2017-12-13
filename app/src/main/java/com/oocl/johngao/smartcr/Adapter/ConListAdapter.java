@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.oocl.johngao.smartcr.Activity.TakePhotoActivity;
 import com.oocl.johngao.smartcr.Activity.TestActivity;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.R;
@@ -38,9 +39,9 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         if (mInsideList != null){
-            holder.mTextView.setText(mInsideList.get(position).getConNo());
+            holder.mTextView.setText("货柜编号：" + mInsideList.get(position).getConNo());
             holder.mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +50,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                 }
             });
 
-            Container container = mInsideList.get(position);
+            final Container container = mInsideList.get(position);
             if (container.isW_Choose()==false){
                 holder.mWashImg.setVisibility(View.GONE);
             }else {
@@ -70,6 +71,49 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             }else {
                 holder.mRepairImg.setImageResource(R.drawable.reqairbefore);
             }
+
+            if (container.getCompany()== null){
+                container.setCompany("未知");
+            }
+            holder.mCompaTV.setText("公司：" + container.getCompany());
+
+            //设置那个布局来显示时间
+            if (container.getConNo().equals("OOLU01199000")){
+                holder.mDateTV.setVisibility(View.VISIBLE);
+            }else {
+                holder.mDateTV.setVisibility(View.GONE);
+            }
+            holder.mWashImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (container.isW_Choose() == true && container.isW_Progress() == false){ //洗前拍照
+                        Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("Message","WashBefore");
+                        mContext.startActivity(intent);
+                    }
+                    if (container.isW_Choose() == true && container.isW_Progress() == true){  //洗后拍照
+                        Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("Message","WashAfter");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
+            holder.mRepairImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (container.isR_Progress() == true && container.isR_Progress() == false){ //修前拍照
+                        Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("Message","RepairBefore");
+                        mContext.startActivity(intent);
+                    }
+                    if (container.isR_Progress() == true && container.isR_Progress() == true){  //修后拍照
+                        Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                        intent.putExtra("Message","RepairAfter");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 
@@ -83,12 +127,18 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
         private TextView mTextView;
         private ImageView mWashImg;
         private ImageView mRepairImg;
+        private TextView mCompaTV;
+        private ImageView mPicsIV;
+        private TextView mDateTV;
 
         public MyViewHolder(View view){
             super(view);
             mTextView =(TextView) view.findViewById(R.id.container_name);
             mWashImg = (ImageView) view.findViewById(R.id.wash_icon);
             mRepairImg = (ImageView) view.findViewById(R.id.repair_icon);
+            mCompaTV = (TextView) view.findViewById(R.id.company_text);
+            mPicsIV = (ImageView) view.findViewById(R.id.pics_iv);
+            mDateTV = (TextView) view.findViewById(R.id.date_text);
         }
     }
 }

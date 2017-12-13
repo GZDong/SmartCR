@@ -11,6 +11,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mRecyclerView = (RecyclerView) findViewById(R.id.container_list);
         mAdapter = new ConListAdapter(mConList,this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setAdapter(mAdapter);
@@ -113,6 +114,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!isMenuOpen){
                     showOpenAnim(80);
                     imgTake.setImageResource(R.drawable.takingb);
+                    tv1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    tv2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(MainActivity.this,TakePhotoActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }else {
                     showCloseAnim(80);
                     imgTake.setImageResource(R.drawable.takinga);

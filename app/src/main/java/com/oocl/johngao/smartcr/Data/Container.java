@@ -14,6 +14,7 @@ import org.litepal.crud.DataSupport;
 public class Container  extends DataSupport{
     public static final String TAG = "Container";
     private String ConNo;
+    private String Company;
 
     /**
      * 假如是需要洗/修，那么需要置true，后面的必须是洗/修前，不可能是洗/修后
@@ -99,5 +100,13 @@ public class Container  extends DataSupport{
 
     public boolean isW_Progress() {
         return W_Progress;
+    }
+
+    public String getCompany() {
+        return Company;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
     }
 }

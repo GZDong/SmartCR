@@ -60,15 +60,7 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:background="@color/search_gray"
-            android:textColor="@color/black"
-            android:text="2017-12-11"/>
+
 
 
             <android.support.v7.widget.RecyclerView
