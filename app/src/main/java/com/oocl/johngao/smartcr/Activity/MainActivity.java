@@ -3,6 +3,7 @@ package com.oocl.johngao.smartcr.Activity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +39,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
+import com.oocl.johngao.smartcr.Adapter.ConListViewPageAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.MyView.MySearchView;
 import com.oocl.johngao.smartcr.MyView.MyscrollView;
@@ -48,14 +52,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String TAG = "MainActivity";
-    private RecyclerView mRecyclerView;
-    private ConListAdapter mAdapter;
+    /*private RecyclerView mRecyclerView;
+    private ConListAdapter mAdapter;*/
 
     private List<Container> mConList;
     private DataLab mDataLab;
-    private boolean fixedFlag = false, resetFlag = false;
-    private int selectPos = 0;
-    private LinearLayout headBarLayout;
+
     private TextView mFilterText;
 
     private TextView tv1;
@@ -99,6 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button mSureBtn;
 
+    private ConListViewPageAdapter mPageAdapter;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+
+    private OnSearchListener mOnSearchListener1;
+    private OnSearchListener mOnSearchListener2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,12 +132,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 */
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.container_list);
+        /*mRecyclerView = (RecyclerView) findViewById(R.id.container_list);
         mAdapter = new ConListAdapter(mConList,this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
+
+        mPageAdapter = new ConListViewPageAdapter(getSupportFragmentManager(),this);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mViewPager.setAdapter(mPageAdapter);
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+
 
         mFilterText = (TextView) findViewById(R.id.filter_text);
         mFilterText.setOnClickListener(this);
@@ -149,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mListBtn.setImageResource(R.drawable.listbtnbefore);
                     mSetBtn.setImageResource(R.drawable.setbefore);
                     showOpenAnim(80);
-                    imgTake.setImageResource(R.drawable.takingb);
+                    imgTake.setImageResource(R.drawable.takingaa);
                     tv1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -206,7 +222,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterData(s.toString());
+               // filterData(s.toString());
+                mOnSearchListener1.onSearch(s.toString());
+                mOnSearchListener2.onSearch(s.toString());
             }
 
             @Override
@@ -481,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return (int) (density * value + 0.5f);
     }
 
-    private void filterData(String index){
+    /*private void filterData(String index){
         List<Container> filterList = new ArrayList<>();
         if (TextUtils.isEmpty(index)){
             filterList = mConList;
@@ -495,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         mAdapter.updateList(filterList);
-    }
+    }*/
 
     private void UIChangeAndAction(TextView textView){
         if (textView.getCurrentTextColor()==getResources().getColor(R.color.black)){
@@ -566,5 +584,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CStri = null;
             }
         }
+    }
+
+    public interface OnSearchListener{
+        void onSearch(String s);
+    }
+
+    public void setOnSearchListener1(OnSearchListener onSearchListener){
+        mOnSearchListener1 = onSearchListener;
+    }
+
+    public void setOnSearchListener2(OnSearchListener onSearchListener){
+        mOnSearchListener2 = onSearchListener;
     }
 }

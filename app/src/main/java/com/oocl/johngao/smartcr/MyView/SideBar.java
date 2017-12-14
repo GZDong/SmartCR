@@ -61,7 +61,7 @@ public class SideBar extends View {
             paint.setAntiAlias(true);  //设置抗锯齿
             paint.setTextSize(30);
             if (i == choose) {// 选中的状态,再点击时改变choose的值
-                paint.setColor(Color.parseColor("#00F5FF"));
+                paint.setColor(Color.parseColor("#00f5ff"));
                 paint.setFakeBoldText(true);
             }
             // x坐标等于中间-字符串宽度的一半,最后对应画的起点

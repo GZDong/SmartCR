@@ -7,10 +7,14 @@
     <color name="white">#ffffff</color>
     <color name="blue">#63B8FF</color>
     <color name="black">#000000</color>
-    <color name="theme_blue">#00f5ff</color>
+    <color name="theme_blue">#47a3aa</color>
+    <color name="theme_light_blue">#00f5ff</color>
     <color name="gray">#363942</color>
     <color name="line">#5c606b</color>
     <color name="bound">#e34e70</color>
     <color name="alpha">#00FFFFFF</color>
     <color name="search_gray">#f5f4f9</color>
+    <color name="before">#cdcdcd</color>
+    <color name="progress">#FFA500</color>
+    <color name="finish">#9fda2f</color>
 </resources>

@@ -102,15 +102,27 @@
 
 
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/container_list"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                style="@style/MyCustomTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+            </android.support.design.widget.TabLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="15"
                 android:clipToPadding="true"
+                android:background="@color/search_gray"></android.support.v4.view.ViewPager>
+
+            <!--<android.support.v7.widget.RecyclerView
+                android:id="@+id/container_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
                 android:background="@color/search_gray"
-                />
+                />-->
 
 
             <!-- <android.support.design.widget.BottomNavigationView

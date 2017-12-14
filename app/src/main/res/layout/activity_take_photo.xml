@@ -35,7 +35,7 @@
             android:layout_alignStart="@+id/sideBar"
             android:background="@color/alpha"
             android:text="@string/finish_text"
-            android:textColor="@color/theme_blue" />
+            android:textColor="@color/theme_light_blue" />
         <ImageView
             android:id="@+id/dialog_bg"
             android:layout_width="80dp"
