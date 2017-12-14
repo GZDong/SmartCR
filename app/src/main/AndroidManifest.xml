@@ -31,10 +31,6 @@
         <activity android:name=".Activity.TakePhotoActivity" />
         <activity android:name=".Activity.PicShowActivity" />
         <activity android:name=".Activity.MainActivity"></activity>
-        <activity
-            android:name=".Activity.FilterActivity"
-            android:label="@string/title_activity_filter"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
