@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +28,7 @@ import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,6 +79,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean flag = true;
 
+    private DrawerLayout mDrawerLayout;
+
+    private TextView mWB;
+    private TextView mWA;
+    private TextView mRB;
+    private TextView mRA;
+    private TextView mWC;
+    private TextView mCC;
+    private TextView mNC;
+    private TextView mPC;
+
+    private TextView mC1;
+    private TextView mC2;
+    private TextView mC3;
+
+    private List<String> mStrList = new ArrayList<>();
+    private String CStri;
+
+    private Button mSureBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initList();
         initView();
+        initViewInDrawer();
     }
 
     public void initView(){
@@ -192,6 +217,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mReplaceLY = (LinearLayout) findViewById(R.id.replace_layout);
         mReplaceLY.setOnClickListener(this);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,null,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
     }
     public void initList(){
         mDataLab = DataLab.get(this);
@@ -199,6 +229,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mConList.size() == 0){
             Log.e(TAG, "initList: *****");
         }
+    }
+
+    public void initViewInDrawer(){
+        mWB = (TextView) findViewById(R.id.w_b);
+        mWA = (TextView) findViewById(R.id.w_a);
+        mRB = (TextView) findViewById(R.id.r_b);
+        mRA = (TextView) findViewById(R.id.r_a);
+        mWC = (TextView) findViewById(R.id.w_c);
+        mCC = (TextView) findViewById(R.id.c_c);
+        mNC = (TextView) findViewById(R.id.n_c);
+        mPC = (TextView) findViewById(R.id.p_c);
+
+        mC1 = (TextView) findViewById(R.id.c_1);
+        mC2 = (TextView) findViewById(R.id.c_2);
+        mC3 = (TextView) findViewById(R.id.c_3);
+
+        mSureBtn = (Button) findViewById(R.id.sure_btn);
+
+        mWB.setOnClickListener(this);
+        mWA.setOnClickListener(this);
+        mRB.setOnClickListener(this);
+        mRA.setOnClickListener(this);
+        mWC.setOnClickListener(this);
+        mCC.setOnClickListener(this);
+        mNC.setOnClickListener(this);
+        mPC.setOnClickListener(this);
+
+        mC1.setOnClickListener(this);
+        mC2.setOnClickListener(this);
+        mC3.setOnClickListener(this);
+
+        mSureBtn.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)){
+            mDrawerLayout.closeDrawer(GravityCompat.END);
+        }else {
+            super.onBackPressed();
+        }
+
     }
 
     @Override
@@ -238,9 +312,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
             }else {
-                Intent intent = new Intent(MainActivity.this,FilterActivity.class);
-                startActivity(intent);
+                mDrawerLayout.openDrawer(GravityCompat.END);
             }
+        }
+
+
+        if (v.getId() == R.id.w_b ||v.getId() == R.id.w_a || v.getId() == R.id. r_b||v.getId() == R.id.r_a ||v.getId() == R.id. w_c||
+                v.getId() == R.id.c_c ||v.getId() == R.id.n_c ||v.getId() == R.id.p_c){
+            UIChangeAndAction((TextView) v);
+        }
+
+        if (v.getId() == R.id.c_1||v.getId() == R.id.c_2 || v.getId() == R.id.c_3){
+            UIChangeAndAction2((TextView) v);
+        }
+
+
+        if (v.getId() == R.id.sure_btn){
+            for (String s : mStrList){
+                Log.e(TAG, "onClick: " + s);
+            }
+            Log.e(TAG, "onClick: " + CStri );
+            mDrawerLayout.closeDrawer(GravityCompat.END);
         }
     }
 
@@ -405,4 +497,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter.updateList(filterList);
     }
 
+    private void UIChangeAndAction(TextView textView){
+        if (textView.getCurrentTextColor()==getResources().getColor(R.color.black)){
+            textView.setTextColor(getResources().getColor(R.color.theme_blue));
+            textView.setBackgroundColor(getResources().getColor(R.color.gray));
+            mStrList.add(textView.getText().toString());
+        }else {
+            textView.setTextColor(getResources().getColor(R.color.black));
+            textView.setBackgroundColor(getResources().getColor(R.color.search_gray));
+            for (int i = 0; i < mStrList.size(); i++){
+                if (textView.getText().toString().equals(mStrList.get(i))){
+                    mStrList.remove(i);
+                }
+            }
+        }
+    }
+
+    private void UIChangeAndAction2(TextView textView){
+        if (textView.getId() == R.id.c_1){
+            if (textView.getCurrentTextColor()==getResources().getColor(R.color.black)){
+                textView.setTextColor(getResources().getColor(R.color.theme_blue));
+                textView.setBackgroundColor(getResources().getColor(R.color.gray));
+
+                mC2.setTextColor(getResources().getColor(R.color.black));
+                mC2.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                mC3.setTextColor(getResources().getColor(R.color.black));
+                mC3.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                CStri = textView.getText().toString();
+            }else {
+                textView.setTextColor(getResources().getColor(R.color.black));
+                textView.setBackgroundColor(getResources().getColor(R.color.search_gray));
+                CStri = null;
+            }
+        }else if (textView.getId() == R.id.c_2){
+            if (textView.getCurrentTextColor()==getResources().getColor(R.color.black)){
+                textView.setTextColor(getResources().getColor(R.color.theme_blue));
+                textView.setBackgroundColor(getResources().getColor(R.color.gray));
+
+                mC1.setTextColor(getResources().getColor(R.color.black));
+                mC1.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                mC3.setTextColor(getResources().getColor(R.color.black));
+                mC3.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                CStri = textView.getText().toString();
+            }else {
+                textView.setTextColor(getResources().getColor(R.color.black));
+                textView.setBackgroundColor(getResources().getColor(R.color.search_gray));
+                CStri = null;
+            }
+        }else if (textView.getId() == R.id.c_3){
+            if (textView.getCurrentTextColor()==getResources().getColor(R.color.black)){
+                textView.setTextColor(getResources().getColor(R.color.theme_blue));
+                textView.setBackgroundColor(getResources().getColor(R.color.gray));
+
+                mC2.setTextColor(getResources().getColor(R.color.black));
+                mC2.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                mC1.setTextColor(getResources().getColor(R.color.black));
+                mC1.setBackgroundColor(getResources().getColor(R.color.search_gray));
+
+                CStri = textView.getText().toString();
+            }else {
+                textView.setTextColor(getResources().getColor(R.color.black));
+                textView.setBackgroundColor(getResources().getColor(R.color.search_gray));
+                CStri = null;
+            }
+        }
+    }
 }

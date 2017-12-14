@@ -19,4 +19,19 @@
     <string name="action_settings">Settings</string>
     <string name="hint_for_num">输入货柜编号的后四位</string>
     <string name="cancel">取消</string>
+    <string name="kind">流程</string>
+    <string name="com_hint">公司</string>
+    <string name="a1">未洗</string>
+    <string name="a2">已洗</string>
+    <string name="a3">未修</string>
+    <string name="a4">已修</string>
+    <string name="a5">水洗</string>
+    <string name="a6">化学洗</string>
+    <string name="a7">除钉</string>
+    <string name="a8">除纸</string>
+    <string name="a9">公司</string>
+    <string name="a10">oocl</string>
+    <string name="a11">魅族</string>
+    <string name="a12">金山</string>
+    <string name="sure">确定</string>
 </resources>

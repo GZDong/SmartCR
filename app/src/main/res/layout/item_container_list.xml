@@ -88,8 +88,8 @@
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/takebefore"
-            android:background="@color/gray"/>
+            android:src="@drawable/takinga"
+            android:background="@color/search_gray"/>
     </LinearLayout>
 </LinearLayout>
 
