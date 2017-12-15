@@ -50,7 +50,7 @@ public class PageFragment extends Fragment implements MainActivity.OnSearchListe
         mPage = getArguments().getInt(ARG_PAGE);
 
         mDataLab = DataLab.get(getActivity());
-        mConList = mDataLab.getContainerList();
+        mConList = mDataLab.getContainerList(mPage);
         MainActivity mainActivity =(MainActivity) getActivity();
         if (mPage == 1){
             mainActivity.setOnSearchListener1(this);

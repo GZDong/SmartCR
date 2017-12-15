@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void initList(){
         mDataLab = DataLab.get(this);
-        mConList = mDataLab.getContainerList();
+        mConList = mDataLab.getContainerList(1);
         if (mConList.size() == 0){
             Log.e(TAG, "initList: *****");
         }

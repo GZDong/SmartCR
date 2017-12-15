@@ -24,9 +24,14 @@ public class Container  extends DataSupport{
      * 也就是说，2种操作各自有3种情况
      */
     private boolean W_Choose = Const.IgnoreWash;
-    private boolean W_Progress = Const.WaitWash;
+
     private boolean R_Choose = Const.IgnoreRepair;
-    private boolean R_Progress = Const.WaitRepair;
+
+    private int WB_Count = 0;
+    private int WA_Count = 0;
+    private int RB_Count = 0;
+    private int RA_Count = 0;
+
     private String WashDate = null;
     private String RepairDate = null;
 
@@ -78,29 +83,16 @@ public class Container  extends DataSupport{
         R_Choose = r_Choose;
     }
 
-    public void setR_Progress(boolean r_Progress) {
-        R_Progress = r_Progress;
-    }
-
-    public void setW_Progress(boolean w_Progress) {
-        W_Progress = w_Progress;
-    }
 
     public boolean isR_Choose() {
         return R_Choose;
     }
 
-    public boolean isR_Progress() {
-        return R_Progress;
-    }
 
     public boolean isW_Choose() {
         return W_Choose;
     }
 
-    public boolean isW_Progress() {
-        return W_Progress;
-    }
 
     public String getCompany() {
         return Company;
@@ -108,5 +100,37 @@ public class Container  extends DataSupport{
 
     public void setCompany(String company) {
         Company = company;
+    }
+
+    public int getWB_Count() {
+        return WB_Count;
+    }
+
+    public void setWB_Count(int WB_Count) {
+        this.WB_Count = WB_Count;
+    }
+
+    public int getWA_Count() {
+        return WA_Count;
+    }
+
+    public void setWA_Count(int WA_Count) {
+        this.WA_Count = WA_Count;
+    }
+
+    public int getRB_Count() {
+        return RB_Count;
+    }
+
+    public void setRB_Count(int RB_Count) {
+        this.RB_Count = RB_Count;
+    }
+
+    public int getRA_Count() {
+        return RA_Count;
+    }
+
+    public void setRA_Count(int RA_Count) {
+        this.RA_Count = RA_Count;
     }
 }

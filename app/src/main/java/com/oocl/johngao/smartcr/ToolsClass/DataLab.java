@@ -100,11 +100,43 @@ public class DataLab {
         return mPicturesList;
     }
 
-    public List<Container> getContainerList() { return mContainerList; }
+    public List<Container> getContainerList(int page) {
+        List<Container> list1 = new ArrayList<>();
+        List<Container> list2 = new ArrayList<>();
+
+        for (Container container : mContainerList){
+            if (container.isW_Choose() == true && container.isR_Choose() == false){
+                if (container.getWA_Count() >= 3){
+                    list2.add(container);
+                }else {
+                    list1.add(container);
+                }
+            }
+            if (container.isW_Choose() == false && container.isR_Choose() == true){
+                if (container.getRA_Count() >= 3){
+                    list2.add(container);
+                }else {
+                    list1.add(container);
+                }
+            }
+            if (container.isW_Choose() == true && container.isR_Choose() == true){
+                if (container.getWA_Count() >= 3 && container.getRA_Count() >= 3){
+                    list2.add(container);
+                }else {
+                    list1.add(container);
+                }
+            }
+        }
+        if (page == 1) {
+            return list1;
+        }else{
+            return list2;
+        }
+    }
 
     public void initPicList(String ConNO,String sign){
         mPicturesList = new ArrayList<>();
-        if (sign.equals("WashBefore")){
+        /*if (sign.equals("WashBefore")){
 
         }else if (sign.equals("WashAfter")){
 
@@ -112,7 +144,7 @@ public class DataLab {
 
         }else if (sign.equals("RepairAfter")){
 
-        }
+        }*/
 
         mPicturesList = DataSupport.where("TCode = ?", "W").find(Pictures.class);
         if (mPicturesList.size() <= 4){
@@ -131,50 +163,100 @@ public class DataLab {
         mContainerList = new ArrayList<>();
         mContainerList = DataSupport.findAll(Container.class);
         if (mContainerList.size() == 0){
-            for (int i = 0; i<10; i++){
-                Container container = new Container("OOLU0119900" + i,Const.NeedWash,Const.IgnoreRepair);
-                container.save();
-                mContainerList.add(container);
-            }
-            for (int i=10;i<20;i++){
-                Container container = new Container("OOLU011990" + i,Const.IgnoreWash,Const.NeedRepair);
-                container.save();
-                mContainerList.add(container);
-            }
-            for (int i=20;i<25;i++){
-                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
-                container.save();
-                mContainerList.add(container);
-            }
-            for (int i=25;i<30;i++){
-                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
-                container.setW_Progress(true);
-                container.save();
-                mContainerList.add(container);
-            }
-            for (int i=30;i<35;i++){
-                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
-                container.setR_Progress(true);
-                container.save();
-                mContainerList.add(container);
-            }
-            for (int i=35;i<40;i++){
-                Container container = new Container("OOLU011990" + i, Const.NeedWash,Const.NeedRepair);
-                container.setW_Progress(true);
-                container.setR_Progress(true);
-                container.save();
-                mContainerList.add(container);
-            }
+
+            Container container1 = new Container("OOLU0119900" + 1,Const.NeedWash,Const.IgnoreRepair);
+            container1.save();
+            mContainerList.add(container1);
+
+            Container container2 = new Container("OOLU0119900" + 2,Const.IgnoreWash,Const.NeedRepair);
+            container2.save();
+            mContainerList.add(container2);
+
+            Container container3 = new Container("OOLU0119900" + 3,Const.NeedWash,Const.NeedRepair);
+            container3.save();
+            mContainerList.add(container3);
+
+            Container container4 = new Container("OOLU0119900" + 4,Const.NeedWash,Const.NeedRepair);
+            container4.setWB_Count(2);
+            container4.save();
+            mContainerList.add(container4);
+
+            Container container5 = new Container("OOLU0119900" + 5,Const.NeedWash,Const.NeedRepair);
+            container5.setWB_Count(3);
+            container5.save();
+            mContainerList.add(container5);
+
+            Container container6 = new Container("OOLU0119900" + 6,Const.NeedWash,Const.NeedRepair);
+            container6.setWB_Count(3);
+            container6.setWA_Count(1);
+            container6.save();
+            mContainerList.add(container6);
+
+            Container container7 = new Container("OOLU0119900" + 7,Const.NeedWash,Const.NeedRepair);
+            container7.setWB_Count(3);
+            container7.setWA_Count(3);
+            container7.save();
+            mContainerList.add(container7);
+
+            Container container8 = new Container("OOLU0119900" + 8,Const.NeedWash,Const.NeedRepair);
+            container8.setWB_Count(2);
+            container8.setRB_Count(2);
+            container8.save();
+            mContainerList.add(container8);
+
+            Container container9 = new Container("OOLU0119900" + 9,Const.NeedWash,Const.NeedRepair);
+            container9.setWB_Count(2);
+            container9.setRB_Count(3);
+            container9.save();
+            mContainerList.add(container9);
+
+            Container container10 = new Container("OOLU011990" + 10,Const.NeedWash,Const.NeedRepair);
+            container10.setWB_Count(2);
+            container10.setRB_Count(3);
+            container10.setRA_Count(2);
+            container10.save();
+            mContainerList.add(container10);
+
+            Container container11 = new Container("OOLU011990" + 11,Const.NeedWash,Const.NeedRepair);
+            container11.setWB_Count(2);
+            container11.setRB_Count(3);
+            container11.setRA_Count(3);
+            container11.save();
+            mContainerList.add(container11);
+
+            Container container12 = new Container("OOLU011990" + 12,Const.NeedWash,Const.NeedRepair);
+            container12.setWB_Count(3);
+            container12.setRB_Count(3);
+            container12.setRA_Count(3);
+            container12.save();
+            mContainerList.add(container12);
+            Container container13 = new Container("OOLU011990" + 13,Const.NeedWash,Const.NeedRepair);
+            container13.setWB_Count(3);
+            container13.setWA_Count(3);
+            container13.setRB_Count(3);
+            container13.setRA_Count(3);
+            container13.save();
+            mContainerList.add(container13);
+
+            Container container14 = new Container("OOLU011990" + 14,Const.NeedWash,Const.IgnoreRepair);
+            container14.setWB_Count(3);
+            container14.setWA_Count(3);
+            container14.save();
+            mContainerList.add(container14);
+            Container container15 = new Container("OOLU011990" + 15,Const.IgnoreWash,Const.NeedRepair);
+            container15.setRB_Count(3);
+            container15.setRA_Count(3);
+            container15.save();
+            mContainerList.add(container15);
+
             Log.e(TAG, "initContainerList: 模拟数据初始化完毕");
             for (Container container : mContainerList){
-                Log.e(TAG, "initContainerList: 货柜号：" + container.getConNo() + "，是否需要洗：" + container.isW_Choose() + "，是否需要修：" + container.isR_Choose() +
-                        " 是否洗完：" + container.isW_Progress() + " 是否修完：" + container.isR_Progress());
+                Log.e(TAG, "initContainerList: 货柜号：" + container.getConNo() + "，是否需要洗：" + container.isW_Choose() + "，是否需要修：" + container.isR_Choose());
             }
         }else {
             Log.e(TAG,"initContainerList: 从数据库获取到的货柜：");
             for (Container container : mContainerList){
-                Log.e(TAG, "initContainerList: 货柜号：" + container.getConNo() + "，是否需要洗：" + container.isW_Choose() + "，是否需要修：" + container.isR_Choose() +
-                " 是否洗完：" + container.isW_Progress() + " 是否修完：" + container.isR_Progress());
+                Log.e(TAG, "initContainerList: 货柜号：" + container.getConNo() + "，是否需要洗：" + container.isW_Choose() + "，是否需要修：" + container.isR_Choose());
             }
         }
     }

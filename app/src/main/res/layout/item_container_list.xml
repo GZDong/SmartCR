@@ -93,8 +93,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/takinga"
-            android:background="@color/search_gray"/>
+            android:padding="10dp"
+            android:src="@drawable/nullpic"
+            android:background="@color/theme_blue"/>
     </LinearLayout>
 </LinearLayout>
 
@@ -109,11 +110,13 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp">
             <TextView
+                android:id="@+id/wash_b_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/before"
                 android:text="@string/wash_before"/>
             <ImageView
+                android:id="@+id/wash_arrow"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
@@ -121,11 +124,13 @@
                 android:src="@drawable/dont"
                 android:scaleType="centerInside"/>
             <TextView
+                android:id="@+id/wash_a_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/before"
                 android:text="@string/wash_after"/>
             <ImageView
+                android:id="@+id/wash_goon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:scaleType="centerInside"
@@ -139,11 +144,13 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="15dp">
             <TextView
+                android:id="@+id/repair_b_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/before"
                 android:text="@string/repair_before"/>
             <ImageView
+                android:id="@+id/repair_arrow"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
@@ -151,11 +158,13 @@
                 android:src="@drawable/dont"
                 android:scaleType="centerInside"/>
             <TextView
+                android:id="@+id/repair_a_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/before"
                 android:text="@string/repair_after"/>
             <ImageView
+                android:id="@+id/repire_goon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:scaleType="centerInside"
