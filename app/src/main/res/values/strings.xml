@@ -34,4 +34,8 @@
     <string name="a11">魅族</string>
     <string name="a12">金山</string>
     <string name="sure">确定</string>
+    <string name="wash_before">洗前</string>
+    <string name="wash_after">洗后</string>
+    <string name="repair_before">修前</string>
+    <string name="repair_after">修后</string>
 </resources>

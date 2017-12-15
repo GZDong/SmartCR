@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private OnSearchListener mOnSearchListener1;
     private OnSearchListener mOnSearchListener2;
+
+    private LinearLayout mWholeLY;
+    private LinearLayout mSetLY;
+    private LinearLayout mSetContentLY;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,9 +241,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mReplaceLY.setOnClickListener(this);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,null,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
+
+        mWholeLY = (LinearLayout)findViewById(R.id.whole_layout);
+        mSetLY = (LinearLayout) findViewById(R.id.set_layout);
+        mSetContentLY = (LinearLayout) findViewById(R.id.set_content_layout);
     }
     public void initList(){
         mDataLab = DataLab.get(this);
@@ -299,10 +308,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mListBtn.setImageResource(R.drawable.listbtnafter);
             mSetBtn.setImageResource(R.drawable.setbefore);
             flag = true;
+            if (isMenuOpen){
+                showCloseAnim(80);
+                imgTake.setImageResource(R.drawable.takinga);
+            }
+
+            if (mSetLY.getVisibility()== View.VISIBLE){
+                mWholeLY.setVisibility(View.VISIBLE);
+                mSetLY.setVisibility(View.GONE);
+                mTabLayout.setVisibility(View.VISIBLE);
+                mSetContentLY.setVisibility(View.GONE);
+                mViewPager.setVisibility(View.VISIBLE);
+            }
         }else if (v.getId() == R.id.right_btn || v.getId() == R.id.r_t){
             mListBtn.setImageResource(R.drawable.listbtnbefore);
             mSetBtn.setImageResource(R.drawable.setafter2);
             flag = false;
+            if (isMenuOpen){
+                showCloseAnim(80);
+                imgTake.setImageResource(R.drawable.takinga);
+            }
+            if (mWholeLY.getVisibility() == View.VISIBLE){
+                mSetLY.setVisibility(View.VISIBLE);
+                mWholeLY.setVisibility(View.GONE);
+                mTabLayout.setVisibility(View.GONE);
+                mViewPager.setVisibility(View.GONE);
+                mSetContentLY.setVisibility(View.VISIBLE);
+            }
         }
         if (v.getId() == R.id.replace_layout){
             mSearchView.setVisibility(View.VISIBLE);
