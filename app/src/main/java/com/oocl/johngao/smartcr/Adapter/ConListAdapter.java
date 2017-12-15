@@ -73,25 +73,25 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                     holder.mV12.setImageResource(R.drawable.dont);
                     holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
                     holder.mV14.setImageResource(R.drawable.goon);
-                    holder.mV14.setTag("No");
+                    holder.mV14.setTag("WashBeforeWithZero");
                 }else if (container.getWB_Count() < 3){
                     holder.mV11.setTextColor(mContext.getResources().getColor( R.color.progress));
                     holder.mV12.setImageResource(R.drawable.dont);
                     holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
                     holder.mV14.setImageResource(R.drawable.goon);
-                    holder.mV14.setTag("No");
+                    holder.mV14.setTag("WahBeforeProgress");
                 }else {
                     holder.mV11.setTextColor(mContext.getResources().getColor(R.color.finish));
                     if (container.getWA_Count() == 0){
                         holder.mV12.setImageResource(R.drawable.doing);
                         holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
                         holder.mV14.setImageResource(R.drawable.goon);
-                        holder.mV14.setTag("No");
+                        holder.mV14.setTag("WashBeforeFinishWashAfterWithZero");
                     }else if (container.getWA_Count() < 3){
                         holder.mV12.setImageResource(R.drawable.finish);
                         holder.mV13.setTextColor(mContext.getResources().getColor( R.color.progress));
                         holder.mV14.setImageResource(R.drawable.goon);
-                        holder.mV14.setTag("No");
+                        holder.mV14.setTag("WashBeforeFinishWashAfterProgress");
                     }else {
                         holder.mV12.setImageResource(R.drawable.finish);
                         holder.mV13.setTextColor(mContext.getResources().getColor( R.color.finish));
@@ -101,14 +101,14 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                     }
                 }
 
-                if (holder.mV14.getTag().equals("No")){
+                if (!holder.mV14.getTag().equals("Finish")){
                     holder.mV14.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                Intent intent = new Intent(mContext, TakePhotoActivity.class);
-                                intent.putExtra("Meassge","WashBefore");
-                                intent.putExtra("ConNO",container.getConNo());
-                                mContext.startActivity(intent);
+                            Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                            intent.putExtra("ConNo",container.getConNo());
+                            intent.putExtra("Message",holder.mV14.getTag().toString());
+                            mContext.startActivity(intent);
                         }
                     });
                 }
@@ -117,7 +117,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                 holder.mV11.setTextColor(mContext.getResources().getColor(R.color.before));
                 holder.mV12.setImageResource(R.drawable.dont);
                 holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV14.setImageResource(R.drawable.dontneed);
+                holder.mV14.setImageResource(R.drawable.noneed);
                 holder.mV14.setOnClickListener(null);
             }
             if (container.isR_Choose() == Const.NeedRepair){
@@ -127,25 +127,25 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                     holder.mV22.setImageResource(R.drawable.dont);
                     holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
                     holder.mV24.setImageResource(R.drawable.goon);
-                    holder.mV24.setTag("No");
+                    holder.mV24.setTag("RepairBeforeWithZero");
                 }else if (container.getRB_Count() < 3){
                     holder.mV21.setTextColor(mContext.getResources().getColor( R.color.progress));
                     holder.mV22.setImageResource(R.drawable.dont);
                     holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
                     holder.mV24.setImageResource(R.drawable.goon);
-                    holder.mV24.setTag("No");
+                    holder.mV24.setTag("RepairBeforeProgress");
                 }else {
                     holder.mV21.setTextColor(mContext.getResources().getColor(R.color.finish));
                     if (container.getRA_Count() == 0){
                         holder.mV22.setImageResource(R.drawable.doing);
                         holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
                         holder.mV24.setImageResource(R.drawable.goon);
-                        holder.mV24.setTag("No");
+                        holder.mV24.setTag("RepairBeforeFinishRepairAfterWithZero");
                     }else if (container.getRA_Count() < 3){
                         holder.mV22.setImageResource(R.drawable.finish);
                         holder.mV23.setTextColor(mContext.getResources().getColor( R.color.progress));
                         holder.mV24.setImageResource(R.drawable.goon);
-                        holder.mV24.setTag("No");
+                        holder.mV24.setTag("RepairBeforeFinishRepairAfterProgress");
                     }else {
                         holder.mV22.setImageResource(R.drawable.finish);
                         holder.mV23.setTextColor(mContext.getResources().getColor( R.color.finish));
@@ -155,13 +155,14 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                     }
                 }
 
-                if (holder.mV24.getTag().equals("No")){
+                if (!holder.mV24.getTag().equals("Finish")){
                     holder.mV24.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, TakePhotoActivity.class);
-                            intent.putExtra("Meassge","WashBefore");
-                            intent.putExtra("ConNO",container.getConNo());
+                            Log.e(TAG, "onClick: "+ container.getConNo() + holder.mV24.getTag().toString() );
+                            intent.putExtra("ConNo",container.getConNo());
+                            intent.putExtra("Message",holder.mV24.getTag().toString());
                             mContext.startActivity(intent);
                         }
                     });
@@ -170,7 +171,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                 holder.mV21.setTextColor(mContext.getResources().getColor(R.color.before));
                 holder.mV22.setImageResource(R.drawable.dont);
                 holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV24.setImageResource(R.drawable.dontneed);
+                holder.mV24.setImageResource(R.drawable.noneed);
                 holder.mV24.setOnClickListener(null);
             }
         }
