@@ -242,7 +242,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             }
         });
 
-        if (mTag.equals("RepairBeforeWithZero")||mTag.equals("RepairBeforeProgress")||mTag.equals("WashBeforeWithZero")||mTag.equals("WahBeforeProgress")){
+        if (mTag.equals("RepairBeforeWithZero")||mTag.equals("RepairBeforeProgress")||mTag.equals("WashBeforeWithZero")||mTag.equals("WashBeforeProgress")){
             mSideBar.setVisibility(View.GONE);
         }
     }
@@ -347,7 +347,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         String TCode;
         switch (tag){
             case "WashBeforeWithZero":
-            case "WahBeforeProgress":
+            case "WashBeforeProgress":
                 //布局：根据sign标志选择如何显示；图片：TCode定义为空或者W
                 TCode = "W";
                 break;
@@ -366,8 +366,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
 
             case "RepairBeforeFinishRepairAfterWithZero":
             case "RepairBeforeFinishRepairAfterProgress":
-                //布局：根据sign标志显示；图片：TCode默认为IICL，后面会根据具体的码进行改变
-                TCode = "IICL";
+                //布局：根据sign标志显示；图片：TCode默认为RY，后面会根据具体的码进行改变
+                TCode = "RY";
                 break;
             default:
                 TCode = null;

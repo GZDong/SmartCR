@@ -76,6 +76,14 @@ public class PageFragment extends Fragment implements MainActivity.OnSearchListe
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (mAdapter!=null){
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onSearch(String s) {
         Log.e(TAG, "onSearch:" + mPage );
         filterData(s);

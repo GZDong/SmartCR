@@ -14,7 +14,7 @@ import com.oocl.johngao.smartcr.Fragment.PageFragment;
 public class ConListViewPageAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[]{"清洗区","维修区"};
+    private String tabTitles[] = new String[]{"待完成","已完成"};
     private Context mContext;
 
     public ConListViewPageAdapter(FragmentManager fm,Context context) {

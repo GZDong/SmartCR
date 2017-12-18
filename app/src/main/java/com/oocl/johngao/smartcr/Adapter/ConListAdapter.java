@@ -2,11 +2,13 @@ package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,125 +62,105 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             holder.mCompaTV.setText("公司：" + container.getCompany());
 
             //设置那个布局来显示时间
-            if (container.getConNo().equals("OOLU01199000")){
+            if (container.getConNo().equals("OOLU01199001")){
                 holder.mDateTV.setVisibility(View.VISIBLE);
             }else {
                 holder.mDateTV.setVisibility(View.GONE);
             }
 
             if (container.isW_Choose() == Const.NeedWash){
+                holder.mWashLayout.setVisibility(View.VISIBLE);
                 if (container.getWB_Count() == 0 ){
                     //do noting
-                    holder.mV11.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV12.setImageResource(R.drawable.dont);
-                    holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV14.setImageResource(R.drawable.goon);
-                    holder.mV14.setTag("WashBeforeWithZero");
+                    holder.mWashStateTX.setText("洗前");
+                    holder.mWashStateIMG.setImageResource(R.drawable.tagbegin);
+                    holder.mWashStateIMG.setTag("WashBeforeWithZero");
                 }else if (container.getWB_Count() < 3){
-                    holder.mV11.setTextColor(mContext.getResources().getColor( R.color.progress));
-                    holder.mV12.setImageResource(R.drawable.dont);
-                    holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV14.setImageResource(R.drawable.goon);
-                    holder.mV14.setTag("WahBeforeProgress");
+                    holder.mWashStateTX.setText("洗前");
+                    holder.mWashStateIMG.setImageResource(R.drawable.tagprogress);
+                    holder.mWashStateIMG.setTag("WashBeforeProgress");
                 }else {
-                    holder.mV11.setTextColor(mContext.getResources().getColor(R.color.finish));
+                    holder.mWashStateTX.setText("洗后");
                     if (container.getWA_Count() == 0){
-                        holder.mV12.setImageResource(R.drawable.doing);
-                        holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
-                        holder.mV14.setImageResource(R.drawable.goon);
-                        holder.mV14.setTag("WashBeforeFinishWashAfterWithZero");
+                        holder.mWashStateIMG.setImageResource(R.drawable.tagbegin);
+                        holder.mWashStateIMG.setTag("WashBeforeFinishWashAfterWithZero");
                     }else if (container.getWA_Count() < 3){
-                        holder.mV12.setImageResource(R.drawable.finish);
-                        holder.mV13.setTextColor(mContext.getResources().getColor( R.color.progress));
-                        holder.mV14.setImageResource(R.drawable.goon);
-                        holder.mV14.setTag("WashBeforeFinishWashAfterProgress");
+                        holder.mWashStateIMG.setImageResource(R.drawable.tagprogress);
+                        holder.mWashStateIMG.setTag("WashBeforeFinishWashAfterProgress");
                     }else {
-                        holder.mV12.setImageResource(R.drawable.finish);
-                        holder.mV13.setTextColor(mContext.getResources().getColor( R.color.finish));
-                        holder.mV14.setImageResource(R.drawable.goonfinish);
-                        holder.mV14.setTag("Finish");
-                        holder.mV14.setOnClickListener(null);
+                        holder.mWashStateTX.setText("清洗");
+                        holder.mWashStateIMG.setImageResource(R.drawable.tagfinish);
+                        holder.mWashStateIMG.setTag("Finish");
+                        holder.mWashLayout.setOnClickListener(null);
                     }
                 }
 
-                if (!holder.mV14.getTag().equals("Finish")){
-                    holder.mV14.setOnClickListener(new View.OnClickListener() {
+                if (!holder.mWashStateIMG.getTag().equals("Finish")){
+                    holder.mWashLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, TakePhotoActivity.class);
                             intent.putExtra("ConNo",container.getConNo());
-                            intent.putExtra("Message",holder.mV14.getTag().toString());
+                            intent.putExtra("Message",holder.mWashStateIMG.getTag().toString());
                             mContext.startActivity(intent);
                         }
                     });
                 }
 
             }else {
-                holder.mV11.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV12.setImageResource(R.drawable.dont);
-                holder.mV13.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV14.setImageResource(R.drawable.noneed);
-                holder.mV14.setOnClickListener(null);
+               holder.mWashLayout.setVisibility(View.GONE);
+                Log.e(TAG, "onBindViewHolder: 判断是否需要洗" + container.getConNo() + "的" + container.isW_Choose());
             }
             if (container.isR_Choose() == Const.NeedRepair){
+                holder.mRepairLayout.setVisibility(View.VISIBLE);
                 if (container.getRB_Count() == 0 ){
                     //do noting
-                    holder.mV21.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV22.setImageResource(R.drawable.dont);
-                    holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV24.setImageResource(R.drawable.goon);
-                    holder.mV24.setTag("RepairBeforeWithZero");
+                    holder.mRepairTX.setText("修前");
+                    holder.mRepairIMG.setImageResource(R.drawable.tagbegin);
+                    holder.mRepairIMG.setTag("RepairBeforeWithZero");
                 }else if (container.getRB_Count() < 3){
-                    holder.mV21.setTextColor(mContext.getResources().getColor( R.color.progress));
-                    holder.mV22.setImageResource(R.drawable.dont);
-                    holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
-                    holder.mV24.setImageResource(R.drawable.goon);
-                    holder.mV24.setTag("RepairBeforeProgress");
+                    holder.mRepairTX.setText("修前");
+                    holder.mRepairIMG.setImageResource(R.drawable.tagprogress);
+                    holder.mRepairIMG.setTag("RepairBeforeProgress");
                 }else {
-                    holder.mV21.setTextColor(mContext.getResources().getColor(R.color.finish));
+                    holder.mRepairTX.setText("修后");
                     if (container.getRA_Count() == 0){
-                        holder.mV22.setImageResource(R.drawable.doing);
-                        holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
-                        holder.mV24.setImageResource(R.drawable.goon);
-                        holder.mV24.setTag("RepairBeforeFinishRepairAfterWithZero");
+                        holder.mRepairIMG.setImageResource(R.drawable.tagbegin);
+                        holder.mRepairIMG.setTag("RepairBeforeFinishRepairAfterWithZero");
                     }else if (container.getRA_Count() < 3){
-                        holder.mV22.setImageResource(R.drawable.finish);
-                        holder.mV23.setTextColor(mContext.getResources().getColor( R.color.progress));
-                        holder.mV24.setImageResource(R.drawable.goon);
-                        holder.mV24.setTag("RepairBeforeFinishRepairAfterProgress");
+                        holder.mRepairIMG.setImageResource(R.drawable.tagprogress);
+                        holder.mRepairIMG.setTag("RepairBeforeFinishRepairAfterProgress");
                     }else {
-                        holder.mV22.setImageResource(R.drawable.finish);
-                        holder.mV23.setTextColor(mContext.getResources().getColor( R.color.finish));
-                        holder.mV24.setImageResource(R.drawable.goonfinish);
-                        holder.mV24.setTag("Finish");
-                        holder.mV24.setOnClickListener(null);
+                        holder.mRepairTX.setText("维修");
+                        holder.mRepairIMG.setImageResource(R.drawable.tagfinish);
+                        holder.mRepairIMG.setTag("Finish");
+                        holder.mRepairLayout.setOnClickListener(null);
                     }
                 }
 
-                if (!holder.mV24.getTag().equals("Finish")){
-                    holder.mV24.setOnClickListener(new View.OnClickListener() {
+                if (!holder.mRepairIMG.getTag().equals("Finish")){
+                    holder.mRepairLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(mContext, TakePhotoActivity.class);
-                            Log.e(TAG, "onClick: "+ container.getConNo() + holder.mV24.getTag().toString() );
                             intent.putExtra("ConNo",container.getConNo());
-                            intent.putExtra("Message",holder.mV24.getTag().toString());
+                            intent.putExtra("Message",holder.mRepairIMG.getTag().toString());
                             mContext.startActivity(intent);
                         }
                     });
                 }
             }else {
-                holder.mV21.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV22.setImageResource(R.drawable.dont);
-                holder.mV23.setTextColor(mContext.getResources().getColor(R.color.before));
-                holder.mV24.setImageResource(R.drawable.noneed);
-                holder.mV24.setOnClickListener(null);
+                holder.mRepairLayout.setVisibility(View.GONE);
+                Log.e(TAG, "onBindViewHolder: 判断是否需要修" + container.getConNo() + "的" + container.isR_Choose());
             }
         }
     }
 
     public void updateList(List<Container> list){
         this.mInsideList = list;
+        for (Container container : mInsideList){
+            Log.e(TAG, "updateList: " + container.getConNo() + container.isW_Choose() + container.isR_Choose());
+        }
         notifyDataSetChanged();
     }
 
@@ -195,15 +177,12 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
         private ImageView mPicsIV;
         private TextView mDateTV;
 
-        private TextView mV11;
-        private ImageView mV12;
-        private TextView mV13;
-        private ImageView mV14;
-
-        private TextView mV21;
-        private ImageView mV22;
-        private TextView mV23;
-        private ImageView mV24;
+        private FrameLayout mWashLayout;
+        private FrameLayout mRepairLayout;
+        private TextView mWashStateTX;
+        private ImageView mWashStateIMG;
+        private TextView mRepairTX;
+        private ImageView mRepairIMG;
 
         public MyViewHolder(View view){
             super(view);
@@ -213,15 +192,12 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             mPicsIV = (ImageView) view.findViewById(R.id.pics_iv);
             mDateTV = (TextView) view.findViewById(R.id.date_text);
 
-            mV11 = (TextView) view.findViewById(R.id.wash_b_text);
-            mV12 = (ImageView) view.findViewById(R.id.wash_arrow);
-            mV13 = (TextView) view.findViewById(R.id.wash_a_text);
-            mV14 = (ImageView) view.findViewById(R.id.wash_goon);
-
-            mV21 = (TextView) view.findViewById(R.id.repair_b_text);
-            mV22 = (ImageView) view.findViewById(R.id.repair_arrow);
-            mV23 = (TextView) view.findViewById(R.id.repair_a_text);
-            mV24 = (ImageView) view.findViewById(R.id.repire_goon);
+            mWashLayout = (FrameLayout) view.findViewById(R.id.wash_layout);
+            mRepairLayout = (FrameLayout) view.findViewById(R.id.repair_layout);
+            mWashStateTX = (TextView) view.findViewById(R.id.wash_state_text);
+            mWashStateIMG = (ImageView) view.findViewById(R.id.wash_state_img);
+            mRepairTX = (TextView) view.findViewById(R.id.repair_state_text);
+            mRepairIMG = (ImageView) view.findViewById(R.id.repair_state_img);
         }
     }
 }

@@ -140,7 +140,7 @@ public class DataLab {
         //在下面决定是要如何调整布局，以及如何定义图片的储存位置和图片
         switch (sign){
             case "WashBeforeWithZero":
-            case "WahBeforeProgress":
+            case "WashBeforeProgress":
                 //布局：根据sign标志选择如何显示；图片：TCode定义为空或者W
                 TCode = "W";
                 break;
@@ -160,7 +160,7 @@ public class DataLab {
             case "RepairBeforeFinishRepairAfterWithZero":
             case "RepairBeforeFinishRepairAfterProgress":
                 //布局：根据sign标志显示；图片：TCode默认为IICL，后面会根据具体的码进行改变
-                TCode = "IICL";
+                TCode = "RY";
                 break;
             default:
                 TCode = null;
@@ -322,5 +322,38 @@ public class DataLab {
     public void resetPicturesListNull(){
         mPicturesList.clear();
         nullNum = 4;
+    }
+    public void ConsAddOne(String conNo,String tCode){
+        for (Container container : mContainerList){
+            if (container.getConNo().equals(conNo)){
+                switch (tCode){
+                    case "W":
+                    case "P":
+                    case "C":
+                   case "NIL":
+                        container.addWB_Count();
+                        container.save();
+                        break;
+
+                    case "WY":
+                    case "CY":
+                    case "PY":
+                    case "NILY":
+                        container.addWA_Count();
+                        container.save();
+                        break;
+
+
+                    case "D":
+                        container.addRB_Count();
+                        container.save();
+                        break;
+                    case "RY":
+                        container.addRA_Count();
+                        container.save();
+                        break;
+                }
+            }
+        }
     }
 }

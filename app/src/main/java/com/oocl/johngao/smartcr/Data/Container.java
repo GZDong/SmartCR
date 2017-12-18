@@ -126,4 +126,17 @@ public class Container  extends DataSupport{
     public void setRA_Count(int RA_Count) {
         this.RA_Count = RA_Count;
     }
+
+    public void addWB_Count(){
+        WB_Count ++;
+    }
+    public void addWA_Count(){
+        WA_Count ++;
+    }
+    public void addRB_Count(){
+        RB_Count ++;
+    }
+    public void addRA_Count(){
+        RA_Count ++;
+    }
 }
