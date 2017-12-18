@@ -136,17 +136,38 @@ public class DataLab {
 
     public void initPicList(String ConNO,String sign){
         mPicturesList = new ArrayList<>();
-        /*if (sign.equals("WashBefore")){
+        String TCode;
+        //在下面决定是要如何调整布局，以及如何定义图片的储存位置和图片
+        switch (sign){
+            case "WashBeforeWithZero":
+            case "WahBeforeProgress":
+                //布局：根据sign标志选择如何显示；图片：TCode定义为空或者W
+                TCode = "W";
+                break;
 
-        }else if (sign.equals("WashAfter")){
+            case "WashBeforeFinishWashAfterWithZero":
+                //布局：根据sign标志选择如何显示；图片：TCode默认定义为WY，可以根据选择变成C、P、NIL
+            case "WashBeforeFinishWashAfterProgress":
+                TCode = "WY";
+                break;
 
-        }else if (sign.equals("RepairBefore")){
+            case "RepairBeforeWithZero":
+            case "RepairBeforeProgress":
+                //布局：根据sign标志选择如何显示；图片：TCode默认为D
+                TCode = "D";
+                break;
 
-        }else if (sign.equals("RepairAfter")){
+            case "RepairBeforeFinishRepairAfterWithZero":
+            case "RepairBeforeFinishRepairAfterProgress":
+                //布局：根据sign标志显示；图片：TCode默认为IICL，后面会根据具体的码进行改变
+                TCode = "IICL";
+                break;
+            default:
+                TCode = null;
+                break;
+        }
 
-        }*/
-
-        mPicturesList = DataSupport.where("TCode = ?", "W").find(Pictures.class);
+        mPicturesList = DataSupport.where("TCode = ? and ConNo = ?", TCode,ConNO).find(Pictures.class);
         if (mPicturesList.size() <= 4){
             initIcon(mPicturesList.size());
         }else {
@@ -176,7 +197,7 @@ public class DataLab {
             container3.save();
             mContainerList.add(container3);
 
-            Container container4 = new Container("OOLU0119900" + 4,Const.NeedWash,Const.NeedRepair);
+            /*Container container4 = new Container("OOLU0119900" + 4,Const.NeedWash,Const.NeedRepair);
             container4.setWB_Count(2);
             container4.save();
             mContainerList.add(container4);
@@ -247,7 +268,7 @@ public class DataLab {
             container15.setRB_Count(3);
             container15.setRA_Count(3);
             container15.save();
-            mContainerList.add(container15);
+            mContainerList.add(container15);*/
 
             Log.e(TAG, "initContainerList: 模拟数据初始化完毕");
             for (Container container : mContainerList){
@@ -261,6 +282,7 @@ public class DataLab {
         }
     }
 
+    //这个方法用于计算在初始化照片列表时，需要加载哪些导航图片
     private void initIcon(int size){
         if (size == 3){
             Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,4,".png");
@@ -295,5 +317,10 @@ public class DataLab {
     public void addNull(){
         Pictures pictures2 = new Pictures(Const.NullConNo,Const.NullTCode,mPicturesList.size()+1,".png");
         mPicturesList.add(pictures2);
+    }
+
+    public void resetPicturesListNull(){
+        mPicturesList.clear();
+        nullNum = 4;
     }
 }

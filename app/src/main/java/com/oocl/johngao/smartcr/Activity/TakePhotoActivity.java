@@ -47,7 +47,6 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private CameraPreview mPreview;
     private Button mTakePictureBtn;
     private FrameLayout mCameraLayout;
-    private CameraPreview mCameraPreview;
 
     private RecyclerView mRecyclerView;
     private PicListAdapter mPicListAdapter;
@@ -78,6 +77,11 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         Log.e(TAG, "onCreate: ");
         mDataLab = DataLab.get(this);
 
+        Intent intent = getIntent();
+        ConNo = intent.getStringExtra("ConNo");
+        mTag = intent.getStringExtra("Message");
+        Log.e(TAG, "onCreate: ....." + ConNo + mTag);
+
         //检查相机是否可用
         if (!checkCameraHardware(this)) {
             Toast.makeText(this, "相机不支持", Toast.LENGTH_SHORT).show();
@@ -86,10 +90,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             //初始化相机
             initCamera();
         }
-        Intent intent = getIntent();
-        ConNo = intent.getStringExtra("ConNo");
-        mTag = intent.getStringExtra("Message");
-        Log.e(TAG, "onCreate: ....." + ConNo + mTag);
+
 
         initList();
         initView();
@@ -168,6 +169,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     //初始化相机
     public void initCamera(){
         mPreview = new CameraPreview(TakePhotoActivity.this);
+        mPreview.setConNo(ConNo);
+        mPreview.setTCode(transTagToTCode(mTag));
         mPreview.setOnCaptureListener(this);
         /*mPreview.setOnTouchListener(new View.OnTouchListener() {   //设置聚焦
             @Override
@@ -238,6 +241,10 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                 finish();
             }
         });
+
+        if (mTag.equals("RepairBeforeWithZero")||mTag.equals("RepairBeforeProgress")||mTag.equals("WashBeforeWithZero")||mTag.equals("WahBeforeProgress")){
+            mSideBar.setVisibility(View.GONE);
+        }
     }
     //聚焦回调
     /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {
@@ -293,6 +300,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         super.onDestroy();
         Log.e(TAG, "onDestroy: ");
         unregisterReceiver(mBroadcastReceiver);
+        mDataLab.resetPicturesListNull();
     }
 
     private void applyBlur(){
@@ -333,6 +341,40 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         view.setBackground(new BitmapDrawable(getResources(), overlay));
         rs.destroy();
 
+    }
+
+    private String transTagToTCode(String tag){
+        String TCode;
+        switch (tag){
+            case "WashBeforeWithZero":
+            case "WahBeforeProgress":
+                //布局：根据sign标志选择如何显示；图片：TCode定义为空或者W
+                TCode = "W";
+                break;
+
+            case "WashBeforeFinishWashAfterWithZero":
+                //布局：根据sign标志选择如何显示；图片：TCode默认定义为WY，可以根据选择变成C、P、NIL
+            case "WashBeforeFinishWashAfterProgress":
+                TCode = "WY";
+                break;
+
+            case "RepairBeforeWithZero":
+            case "RepairBeforeProgress":
+                //布局：根据sign标志选择如何显示；图片：TCode默认为D
+                TCode = "D";
+                break;
+
+            case "RepairBeforeFinishRepairAfterWithZero":
+            case "RepairBeforeFinishRepairAfterProgress":
+                //布局：根据sign标志显示；图片：TCode默认为IICL，后面会根据具体的码进行改变
+                TCode = "IICL";
+                break;
+            default:
+                TCode = null;
+                break;
+        }
+
+        return TCode;
     }
 
 }

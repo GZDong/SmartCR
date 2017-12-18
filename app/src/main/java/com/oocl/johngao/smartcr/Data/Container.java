@@ -16,13 +16,6 @@ public class Container  extends DataSupport{
     private String ConNo;
     private String Company;
 
-    /**
-     * 假如是需要洗/修，那么需要置true，后面的必须是洗/修前，不可能是洗/修后
-     * 假如是不需要洗/修，那么默认就是置false，或者手动置false，后面可以是洗/修前，也可以是洗/修后，代表不同情况
-     * 也就是，w : 0,1 或者 0，0 前者代表操作完了，后者代表不需要
-     *        w : 1,0 代表需要操作，必定是操作前
-     * 也就是说，2种操作各自有3种情况
-     */
     private boolean W_Choose = Const.IgnoreWash;
 
     private boolean R_Choose = Const.IgnoreRepair;

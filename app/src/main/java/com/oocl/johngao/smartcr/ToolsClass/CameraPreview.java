@@ -54,6 +54,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private BroadcastReceiver mBroadcastReceiver;
 
     private boolean mSwitch = false;
+    private String ConNo;
+    private String TCode;
 
     public CameraPreview(Context context) {
         super(context);
@@ -317,7 +319,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
             Log.e(TAG, "onPictureTaken: 点击了拍照按钮，触发回调接口");
-            final Pictures pictures = mDataLab.addPicsToDB("CAIU3438311","W",".png");
+            final Pictures pictures = mDataLab.addPicsToDB(ConNo,TCode,".JPG");
             String pictureName = pictures.getName();
 
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
@@ -396,4 +398,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mOnCaptureListener = onCaptureListener;
     }
 
+    public void setTCode(String TCode) {
+        this.TCode = TCode;
+    }
+
+    public void setConNo(String conNo) {
+        ConNo = conNo;
+    }
 }
