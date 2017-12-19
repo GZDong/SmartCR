@@ -126,14 +126,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
 
     private void initList() {
         mPicList = new ArrayList<>();
+        //*第一处：ConNo，TCode用于决定加载的数据列表
         mDataLab.initPicList(ConNo,mTag);
         mPicList = mDataLab.getPicturesList();
-
-        /*for (int i = 1; i <= 10; i++) {
-            String test = "test";
-            mPicList.add(test);
-        }*/
-
     }
 
     //判断相机是否支持
@@ -145,32 +140,12 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         }
     }
 
-    // 打开相机设备
-    /*public static android.hardware.Camera getCameraInstance() {
-        android.hardware.Camera camera = null;
-        try {
-            camera = android.hardware.Camera.open();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "getCameraInstance: 相机打不开");
-        }
-        return camera;
-    }*/
-
-    /*//释放相机设备
-    public void releaseCamera() {
-        if (mCamera != null) {
-            mCamera.setPreviewCallback(null);
-            mCamera.stopPreview();
-            mCamera.release();
-            mCamera = null;
-        }
-    }*/
     //初始化相机
     public void initCamera(){
         mPreview = new CameraPreview(TakePhotoActivity.this);
+        //**第二处：ConNo，TCode用于决定储存的位置和图片的命名
         mPreview.setConNo(ConNo);
-        mPreview.setTCode(transTagToTCode(mTag));
+        mPreview.setTCode(transTagToTCode(mTag));   //发送给PreView
         mPreview.setOnCaptureListener(this);
         /*mPreview.setOnTouchListener(new View.OnTouchListener() {   //设置聚焦
             @Override
@@ -184,7 +159,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     }
 
     public void initView(){
-        mPicListAdapter = new PicListAdapter(this, mPicList);
+        mPicListAdapter = new PicListAdapter(this, mPicList,transTagToTCode(mTag));
         mRecyclerView = (RecyclerView) findViewById(R.id.picture_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -288,6 +263,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             initList();
             initView();
             flag = 0;
+            //充值手电筒开关
             if (swtch == true) {
                 swtch = false;
                 mImageButton.setImageResource(R.drawable.offs);
@@ -300,6 +276,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         super.onDestroy();
         Log.e(TAG, "onDestroy: ");
         unregisterReceiver(mBroadcastReceiver);
+        //单例模式，必须要重置列表
         mDataLab.resetPicturesListNull();
     }
 

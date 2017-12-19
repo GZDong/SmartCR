@@ -2,11 +2,7 @@ package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +17,7 @@ import com.oocl.johngao.smartcr.Data.Pictures;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -40,11 +33,13 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
 
     private DataLab mDataLab;
     private boolean flag = false;
+    public String mTag;
 
-    public PicListAdapter(Context context, List<Pictures> list) {
+    public PicListAdapter(Context context, List<Pictures> list,String tag) {
         mContext = context;
         mInsideList = list;
         calSum();
+        mTag = tag;
     }
 
     @Override
@@ -58,13 +53,11 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
         if(mInsideList.size() > 0){
             Pictures pic = mInsideList.get(position);
             Log.e(TAG, "onBindViewHolder: position is " + position );
-            if (!pic.getConNo().equals(Const.NullConNo)){
+            if (!pic.getConNo().equals(Const.NullConNo)){   //如果不是空图片，那么根据货柜的ConNo、TCode去文件里加载图片到指定位置
                 File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                 String path = file + File.separator+ pic.getTCode()+ File.separator + pic.getName();
                 Log.e(TAG, "onBindViewHolder: to show pic from : " +path );
 
-                /*BufferedInputStream in = new BufferedInputStream(new FileInputStream(path));
-                Bitmap bitmap = BitmapFactory.decodeStream(in);*/
                 Glide.with(mContext).load(path).asBitmap().centerCrop().into(holder.imageView);
                 holder.imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -76,9 +69,12 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
                 });
                 holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.img_bg));
                 Log.e(TAG, "onBindViewHolder: 清除原本被加框的布局" );
-            }else{
+            }else{                                          //如果是空图片，那么根据空图片所在位置进行加框处理
+                //这句很关键，用于清除之前可能被加载到框的子选项的状态
                 holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.img_bg));
+
                 if (pic.getSeqNo() == 1){
+                    holder.imageView.setVisibility(View.VISIBLE);
                     Glide.with(mContext).load(R.drawable.noicon).centerCrop().into(holder.imageView);
                     if (s ==1){
                         holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bound_bg));
@@ -86,28 +82,51 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
                     }
                 }
                 if (pic.getSeqNo() == 2){
-                    Glide.with(mContext).load(R.drawable.flooricon).centerCrop().into(holder.imageView);
+                    if (mTag.equals("W")||mTag.equals("WY")){
+                        holder.imageView.setVisibility(View.VISIBLE);
+                        Glide.with(mContext).load(R.drawable.flooricon).centerCrop().into(holder.imageView);
+                    }else if (mTag.equals("D")||mTag.equals("RY")){
+                        holder.imageView.setVisibility(View.VISIBLE);
+                        Glide.with(mContext).load(R.drawable.iconbig).centerCrop().into(holder.imageView);
+                    }
+
                     if (s==2){
                         holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bound_bg));
                         Log.e(TAG, "onBindViewHolder: 附上框，s = " + s);
                     }
                 }
                 if (pic.getSeqNo() == 3){
-                    Glide.with(mContext).load(R.drawable.sideicon).centerCrop().into(holder.imageView);
+                    if (mTag.equals("W")||mTag.equals("WY")){
+                        holder.imageView.setVisibility(View.VISIBLE);
+                        Glide.with(mContext).load(R.drawable.sideicon).centerCrop().into(holder.imageView);
+                    }else if (mTag.equals("D")||mTag.equals("RY")){
+                        holder.imageView.setVisibility(View.VISIBLE);
+                        Glide.with(mContext).load(R.drawable.iconsmall).centerCrop().into(holder.imageView);
+                    }
+
                     if (s==3){
                         holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bound_bg));
                         Log.e(TAG, "onBindViewHolder: 附上框，s = " + s);
                     }
                 }
                 if (pic.getSeqNo() == 4){
-                    Glide.with(mContext).load(R.drawable.plus).centerCrop().into(holder.imageView);
+                    if (mTag.equals("W")||mTag.equals("RY")){
+                        Glide.with(mContext).load(R.drawable.plus).centerCrop().into(holder.imageView);
+                    }else if (mTag.equals("D")||mTag.equals("WY")){
+                        holder.imageView.setBackgroundColor(mContext.getResources().getColor(R.color.alpha));
+                        holder.imageView.setImageResource(0);
+                    }
+
                     if (s==4){
                         holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bound_bg));
                         Log.e(TAG, "onBindViewHolder: 附上框，s = " + s);
                         flag = true;
                     }
+
                 }
+                //这里的flag用于判断临界值
                 if (pic.getSeqNo() > 4 && flag == false){
+                    holder.imageView.setVisibility(View.VISIBLE);
                     Glide.with(mContext).load(R.drawable.plus).centerCrop().into(holder.imageView);
                     holder.imageView.setBackground(mContext.getResources().getDrawable(R.drawable.bound_bg));
                 }
@@ -133,6 +152,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
         }
     }
 
+    //这个方法用于根据空白图片的数量，计算出此时应该要加载边框的序号、位置
     private void calSum(){
         int i = 0;
         for (Pictures pictures : mInsideList){
@@ -141,5 +161,9 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
             }
         }
         s = 5 - i;
+    }
+
+    public void setTag(String tag) {
+        this.mTag = tag;
     }
 }

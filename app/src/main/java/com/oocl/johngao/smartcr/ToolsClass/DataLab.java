@@ -46,7 +46,7 @@ public class DataLab {
         return sDataLab;
     }
 
-    //向数据库添加照片
+    //向数据库添加照片，同时根据所剩的空白图片位置数量nullNum，决定在哪里加载照片
     public Pictures addPicsToDB(String ConNo,String TCode,String EndCode){
         try {
             Log.e(TAG, "addPicsToDB: ..... 前四个还剩 " + nullNum );
@@ -55,14 +55,14 @@ public class DataLab {
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
                 pictures.save();
                 mPicturesList.set(SeqNo-1,pictures);
-                addNull();
+                addNull();   //此时空白数量为0，需要添加一个空白图片以用于添加加号标志
                 return pictures;
             }else if (nullNum ==1){
                 int SeqNo = 4;
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
                 pictures.save();
                 mPicturesList.set(3,pictures);
-                addNull();
+                addNull();  //此时空白数量为1，替换掉第四号位置后，需要在后面添加一个空白位置，以便于后面的加号显示
                 nullNum --;
                 return pictures;
             }else if (nullNum ==2){
@@ -100,6 +100,7 @@ public class DataLab {
         return mPicturesList;
     }
 
+    //初始化Container列表，根据完成状态进行分类初始化
     public List<Container> getContainerList(int page) {
         List<Container> list1 = new ArrayList<>();
         List<Container> list2 = new ArrayList<>();
@@ -137,7 +138,7 @@ public class DataLab {
     public void initPicList(String ConNO,String sign){
         mPicturesList = new ArrayList<>();
         String TCode;
-        //在下面决定是要如何调整布局，以及如何定义图片的储存位置和图片
+        //根据在初始化时点击的container的ConNo和拍摄状态，决定如何读取数据库
         switch (sign){
             case "WashBeforeWithZero":
             case "WashBeforeProgress":
@@ -314,6 +315,7 @@ public class DataLab {
         }
     }
 
+    //这个函数的作用是，当需要拍摄的照片无上限时，用于在尾部添加一个加号空白图片的
     public void addNull(){
         Pictures pictures2 = new Pictures(Const.NullConNo,Const.NullTCode,mPicturesList.size()+1,".png");
         mPicturesList.add(pictures2);
