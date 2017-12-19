@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,9 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.Adapter.PicListAdapter;
+import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.Data.Pictures;
 import com.oocl.johngao.smartcr.MyView.SideBar;
 import com.oocl.johngao.smartcr.R;
+import com.oocl.johngao.smartcr.ToolsClass.CalUtils;
 import com.oocl.johngao.smartcr.ToolsClass.CameraPreview;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
@@ -41,7 +44,7 @@ import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener{
+public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener,SideBar.OnTouchingLetterChangedListener{
 
     public static final String TAG = "TakePhotoActivity";
     private CameraPreview mPreview;
@@ -68,6 +71,10 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private String mTag;
     private String ConNo;
 
+    private List<Container> mContainerList;
+
+    private ImageButton mNextBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +83,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         setContentView(R.layout.activity_take_photo);
         Log.e(TAG, "onCreate: ");
         mDataLab = DataLab.get(this);
+        mContainerList = new ArrayList<>();
+        mContainerList = mDataLab.getContainerList(1);
 
         Intent intent = getIntent();
         ConNo = intent.getStringExtra("ConNo");
@@ -220,6 +229,34 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         if (mTag.equals("RepairBeforeWithZero")||mTag.equals("RepairBeforeProgress")||mTag.equals("WashBeforeWithZero")||mTag.equals("WashBeforeProgress")){
             mSideBar.setVisibility(View.GONE);
         }
+
+        mSideBar.setOnTouchingLetterChangedListener(this);
+
+        mNextBtn = (ImageButton) findViewById(R.id.next_btn);
+        mNextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i;
+                for (i = 0; i < mContainerList.size()-1;i++){
+                    Container container = mContainerList.get(i);
+                    if (container.getConNo().equals(ConNo)&&i!=mContainerList.size()-1){
+                        String s1 = CalUtils.calConsWTCode(mContainerList.get(i+1));
+                        String s2 = CalUtils.calConsRTCode(mContainerList.get(i+1));
+                        if (s1.equals(transTagToTCode(mTag))||s2.equals(transTagToTCode(mTag))){
+                            Intent intent = new Intent(TakePhotoActivity.this,TakePhotoActivity.class);
+                            intent.putExtra("ConNo",ConNo);
+                            intent.putExtra("Message",mTag);
+
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
+                }
+                if (i>=mContainerList.size()){
+                    Toast.makeText(TakePhotoActivity.this,"没有下一个货柜了！",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
     //聚焦回调
     /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {
@@ -231,12 +268,39 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         }
     };*/
 
+    //拍照时触发的回调接口方法
     @Override
     public void onCapture(String name, int seq) {
         mNameText.setText(name);
         mNameText.setVisibility(View.VISIBLE);
         /*mPicListAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(mPicList.size()-1);*/
+    }
+    //siderbar的回调接口方法
+    @Override
+    public void onTouchingLetterChanged(String s) {
+        Log.e(TAG, "onTouchingLetterChanged: 触发回调接口后s="+s );
+        String tCode = transTagToTCode(mTag);
+
+        if (tCode.equals("WY")){
+            switch (s){
+                case "水洗":
+                    mPreview.setTCode("WY");
+                    break;
+                case "化学洗":
+                    mPreview.setTCode("C");
+                    break;
+                case "除钉":
+                    mPreview.setTCode("NIL");
+                    break;
+                case "除纸":
+                    mPreview.setTCode("P");
+                    break;
+                default:
+                    break;
+            }
+        }
+        Log.e(TAG, "onTouchingLetterChanged: TCode转化后为" + tCode );
     }
 
     @Override

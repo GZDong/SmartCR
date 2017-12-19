@@ -19,7 +19,9 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.oocl.johngao.smartcr.Activity.TakePhotoActivity;
 import com.oocl.johngao.smartcr.Data.Pictures;
 
 import java.io.BufferedOutputStream;
@@ -56,6 +58,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private boolean mSwitch = false;
     private String ConNo;
     private String TCode;
+    private int count = 30;
 
     public CameraPreview(Context context) {
         super(context);
@@ -304,9 +307,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private android.hardware.Camera.PictureCallback mPictureCallback = new android.hardware.Camera.PictureCallback() {
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
+            count--;
             Log.e(TAG, "onPictureTaken: 点击了拍照按钮，触发回调接口");
             //数据库操作
             final Pictures pictures = mDataLab.addPicsToDB(ConNo,TCode,".JPG");
+            Log.e(TAG, "onPictureTaken: 选择后的TCode ：" + TCode );
             mDataLab.ConsAddOne(ConNo,TCode);
             //文件操作
             String pictureName = pictures.getName();
@@ -347,6 +352,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.e(TAG, "onPictureTaken: 拍照回调接口执行完之后。。。");
 
             mOnCaptureListener.onCapture(pictureName,pictures.getSeqNo());
+            if (count == 0){
+                Toast.makeText(mContext,"完成拍照！",Toast.LENGTH_SHORT).show();
+                TakePhotoActivity takePhotoActivity = (TakePhotoActivity) mContext;
+                takePhotoActivity.finish();
+            }
         }
     };
     //旋转图片进行储存
@@ -377,6 +387,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void setTCode(String TCode) {
         this.TCode = TCode;
+        if (TCode.equals("WY")||TCode.equals("D")){
+            count = 3;
+        }
     }
 
     public void setConNo(String conNo) {

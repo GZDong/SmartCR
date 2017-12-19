@@ -79,6 +79,9 @@ public class PageFragment extends Fragment implements MainActivity.OnSearchListe
     public void onStart() {
         super.onStart();
         if (mAdapter!=null){
+            mConList.clear();
+            mConList = mDataLab.getContainerList(mPage);
+            mAdapter.updateList(mConList);
             mAdapter.notifyDataSetChanged();
         }
     }

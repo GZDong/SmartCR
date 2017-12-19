@@ -167,8 +167,18 @@ public class DataLab {
                 TCode = null;
                 break;
         }
-
-        mPicturesList = DataSupport.where("TCode = ? and ConNo = ?", TCode,ConNO).find(Pictures.class);
+        if (!TCode.equals("WY")){
+            mPicturesList = DataSupport.where("TCode = ? and ConNo = ?", TCode,ConNO).find(Pictures.class);
+        }else if (TCode.equals("WY")){
+            List<Pictures>  l1 = DataSupport.where("TCode = ? and ConNo = ?", "WY",ConNO).find(Pictures.class);
+            List<Pictures>  l2 = DataSupport.where("TCode = ? and ConNo = ?", "C",ConNO).find(Pictures.class);
+            List<Pictures>  l3 = DataSupport.where("TCode = ? and ConNo = ?", "P",ConNO).find(Pictures.class);
+            List<Pictures>  l4 = DataSupport.where("TCode = ? and ConNo = ?", "NIL",ConNO).find(Pictures.class);
+            mPicturesList.addAll(l1);
+            mPicturesList.addAll(l2);
+            mPicturesList.addAll(l3);
+            mPicturesList.addAll(l4);
+        }
         if (mPicturesList.size() <= 4){
             initIcon(mPicturesList.size());
         }else {
@@ -330,17 +340,14 @@ public class DataLab {
             if (container.getConNo().equals(conNo)){
                 switch (tCode){
                     case "W":
-                    case "P":
-                    case "C":
-                   case "NIL":
                         container.addWB_Count();
                         container.save();
                         break;
 
                     case "WY":
-                    case "CY":
-                    case "PY":
-                    case "NILY":
+                    case "C":
+                    case "P":
+                    case "NIL":
                         container.addWA_Count();
                         container.save();
                         break;
@@ -357,5 +364,6 @@ public class DataLab {
                 }
             }
         }
+
     }
 }
