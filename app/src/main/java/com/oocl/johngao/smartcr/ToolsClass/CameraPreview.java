@@ -389,6 +389,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void setTCode(String TCode) {
         this.TCode = TCode;
+        Log.e(TAG, "setTCode: " + TCode );
         if (TCode.equals("WY")||TCode.equals("D")){
             count = 3;
         }
