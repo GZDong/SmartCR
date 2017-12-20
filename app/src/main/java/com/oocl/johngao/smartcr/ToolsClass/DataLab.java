@@ -3,6 +3,7 @@ package com.oocl.johngao.smartcr.ToolsClass;
 import android.content.Context;
 import android.util.Log;
 
+import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.Data.Pictures;
@@ -30,6 +31,10 @@ public class DataLab {
     //货柜
     private List<Container> mContainerList;
 
+    private ConListAdapter mConListAdapter;
+
+    public boolean nextbt = false;
+
     private DataLab(Context context){
         mContext = context.getApplicationContext();
 
@@ -49,7 +54,7 @@ public class DataLab {
     //向数据库添加照片，同时根据所剩的空白图片位置数量nullNum，决定在哪里加载照片
     public Pictures addPicsToDB(String ConNo,String TCode,String EndCode){
         try {
-            Log.e(TAG, "addPicsToDB: ..... 前四个还剩 " + nullNum );
+            Log.e("Next", "addPicsToDB: ..... 前四个还剩 " + nullNum );
             if (nullNum == 0){
                 int SeqNo = mPicturesList.size();
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
@@ -81,16 +86,28 @@ public class DataLab {
                 return pictures;
             }else if (nullNum == 4){
                 int SeqNo = 1;
+                Log.e("Next", "addPicsToDB: " + ConNo+TCode+SeqNo+EndCode );
                 Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Log.e("Next", "addPicsToDB: 1111" );
                 pictures.save();
+                Log.e("Next", "addPicsToDB: 2222" );
+                if (mPicturesList != null){
+                    for (Pictures pictures1 : mPicturesList){
+                        Log.e("Next", "addPicsToDB: " + pictures1.getName() );
+                    }
+                }
+                Log.e("Next", "addPicsToDB: " + pictures.getName() );
                 mPicturesList.set(0,pictures);
+                Log.e("Next", "addPicsToDB: 3333" );
                 nullNum --;
                 return pictures;
             }else {
+                Log.e("Next", "addPicsToDB: 在这里，nullNum不为前四");
                 return null;
             }
 
         }catch (Exception e){
+            Log.e("Next", "addPicsToDB: 在这里发生异常");
             e.printStackTrace();
             return new Pictures(null,null,00,null);
         }
@@ -365,5 +382,21 @@ public class DataLab {
             }
         }
 
+    }
+
+    public void setConListAdapter(ConListAdapter conListAdapter) {
+        mConListAdapter = conListAdapter;
+    }
+
+    public ConListAdapter getConListAdapter() {
+        return mConListAdapter;
+    }
+
+    public void setNextbt(boolean nextbt) {
+        this.nextbt = nextbt;
+    }
+
+    public boolean isNextbt() {
+        return nextbt;
     }
 }

@@ -11,28 +11,35 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.Activity.TakePhotoActivity;
 import com.oocl.johngao.smartcr.Activity.TestActivity;
 import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.R;
+import com.oocl.johngao.smartcr.ToolsClass.CalUtils;
+import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by johngao on 17/12/8.
  */
 
-public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHolder> {
+public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHolder>implements TakePhotoActivity.OnNextBtnListener{
 
     public static final String TAG = "ConListAdapter";
     private List<Container> mInsideList;
     private Context mContext;
+    private int mPage;
+    private String mTag;
 
-    public ConListAdapter(List<Container> list, Context context){
+    public ConListAdapter(List<Container> list, Context context,int page){
         mInsideList = list;
         mContext = context;
+        mPage = page;
     }
 
     @Override
@@ -102,6 +109,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                             Intent intent = new Intent(mContext, TakePhotoActivity.class);
                             intent.putExtra("ConNo",container.getConNo());
                             intent.putExtra("Message",holder.mWashStateIMG.getTag().toString());
+                            mTag = holder.mWashStateIMG.getTag().toString();
                             mContext.startActivity(intent);
                         }
                     });
@@ -145,7 +153,9 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                             Intent intent = new Intent(mContext, TakePhotoActivity.class);
                             intent.putExtra("ConNo",container.getConNo());
                             intent.putExtra("Message",holder.mRepairIMG.getTag().toString());
+                            mTag = holder.mRepairIMG.getTag().toString();
                             mContext.startActivity(intent);
+
                         }
                     });
                 }
@@ -200,4 +210,62 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             mRepairIMG = (ImageView) view.findViewById(R.id.repair_state_img);
         }
     }
+
+
+        @Override
+        public void onNextBtn(String ConNo, String tag) {
+            if (mPage == 1){
+                Log.e(TAG, "onNextBtn: 在ConListAdapter里发生了响应" );
+                int i;
+                boolean flag = false;
+                for (i = 0; i < mInsideList.size();i++){
+                    Container container = mInsideList.get(i);
+                    if (container.getConNo().equals(ConNo) && i != mInsideList.size()-1){
+                        Log.e("Next", "onNextBtn: OK,在list1中找到当前的container，它的位置是："+i);
+                        for (int j = i+1;j<mInsideList.size();j++){
+                            String s1 = CalUtils.calWTagFromCons(mInsideList.get(j));
+                            String s2 = CalUtils.calRTagFromCons(mInsideList.get(j));
+                            String[] wholeTag = CalUtils.calTagSort(tag);
+
+                            if (s1.equals(wholeTag[0]) || s1.equals(wholeTag[1]) ){
+                                Intent intent = new Intent(mContext,TakePhotoActivity.class);
+                                intent.putExtra("ConNo",mInsideList.get(j).getConNo());
+                                Log.e("Next", "onNextBtn: s1匹配到了，mTag是" + tag + " i:" + j);
+                                intent.putExtra("Message",s1);
+                                mContext.startActivity(intent);
+                                flag = true;
+                                return;
+                            }else if (s2.equals(wholeTag[0]) || s2.equals(wholeTag[1])){
+                                Intent intent = new Intent(mContext,TakePhotoActivity.class);
+                                intent.putExtra("ConNo",mInsideList.get(j).getConNo());
+                                Log.e("Next", "onNextBtn: s2匹配到了，mTag是" + tag+ " i:" + j);
+                                intent.putExtra("Message",s2);
+                                mContext.startActivity(intent);
+                                flag = true;
+                                return;
+                            }
+                        }
+
+
+                            Toast.makeText(mContext,"这种模式下没有下一个货柜了！", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                            intent.putExtra("ConNo",ConNo);
+                            intent.putExtra("Message",tag);
+                            flag = true;
+                            mContext.startActivity(intent);
+
+
+                    }
+                }
+                if (flag == false){
+                    Toast.makeText(mContext,"这是列表里的最后一个货柜了！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(mContext, TakePhotoActivity.class);
+                    intent.putExtra("ConNo",ConNo);
+                    intent.putExtra("Message",tag);
+                    mContext.startActivity(intent);
+                }
+            }
+        }
+
 }

@@ -66,7 +66,10 @@ public class PageFragment extends Fragment implements MainActivity.OnSearchListe
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.container_list);
-        mAdapter = new ConListAdapter(mConList,getActivity());
+        mAdapter = new ConListAdapter(mConList,getActivity(),mPage);
+        if (mPage ==1){
+            mDataLab.setConListAdapter(mAdapter);
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setNestedScrollingEnabled(false);

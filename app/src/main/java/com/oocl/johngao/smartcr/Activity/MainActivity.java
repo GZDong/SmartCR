@@ -46,6 +46,7 @@ import com.oocl.johngao.smartcr.MyView.MyscrollView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Adapter.PicListAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.Data.Pictures;
@@ -40,6 +41,7 @@ import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +76,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private List<Container> mContainerList;
 
     private ImageButton mNextBtn;
+    private OnNextBtnListener mOnNextBtnListener;
 
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,6 +92,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         Intent intent = getIntent();
         ConNo = intent.getStringExtra("ConNo");
         mTag = intent.getStringExtra("Message");
+        setOnNextBtnListener(mDataLab.getConListAdapter());
         Log.e(TAG, "onCreate: ....." + ConNo + mTag);
 
         //检查相机是否可用
@@ -154,7 +158,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         mPreview = new CameraPreview(TakePhotoActivity.this);
         //**第二处：ConNo，TCode用于决定储存的位置和图片的命名
         mPreview.setConNo(ConNo);
-        mPreview.setTCode(transTagToTCode(mTag));   //发送给PreView
+        mPreview.setTCode(CalUtils.calConsTCodeFromTag(mTag));   //发送给PreView
         mPreview.setOnCaptureListener(this);
         /*mPreview.setOnTouchListener(new View.OnTouchListener() {   //设置聚焦
             @Override
@@ -168,7 +172,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     }
 
     public void initView(){
-        mPicListAdapter = new PicListAdapter(this, mPicList,transTagToTCode(mTag));
+        mPicListAdapter = new PicListAdapter(this, mPicList,CalUtils.calConsTCodeFromTag(mTag));
         mRecyclerView = (RecyclerView) findViewById(R.id.picture_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -236,7 +240,11 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         mNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i;
+                mDataLab.setNextbt(true);
+                finish();
+
+
+                /*int i;
                 for (i = 0; i < mContainerList.size()-1;i++){
                     Container container = mContainerList.get(i);
                     if (container.getConNo().equals(ConNo)&&i!=mContainerList.size()-1){
@@ -254,7 +262,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                 }
                 if (i>=mContainerList.size()){
                     Toast.makeText(TakePhotoActivity.this,"没有下一个货柜了！",Toast.LENGTH_LONG).show();
-                }
+                }*/
             }
         });
     }
@@ -280,7 +288,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     @Override
     public void onTouchingLetterChanged(String s) {
         Log.e(TAG, "onTouchingLetterChanged: 触发回调接口后s="+s );
-        String tCode = transTagToTCode(mTag);
+        String tCode = CalUtils.calConsTCodeFromTag(mTag);
 
         if (tCode.equals("WY")){
             switch (s){
@@ -342,6 +350,13 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         unregisterReceiver(mBroadcastReceiver);
         //单例模式，必须要重置列表
         mDataLab.resetPicturesListNull();
+
+        if (mDataLab.nextbt == true){
+            mOnNextBtnListener.onNextBtn(ConNo,mTag);
+            mDataLab.setNextbt(false);
+        }
+
+
     }
 
     private void applyBlur(){
@@ -384,38 +399,13 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
 
     }
 
-    private String transTagToTCode(String tag){
-        String TCode;
-        switch (tag){
-            case "WashBeforeWithZero":
-            case "WashBeforeProgress":
-                //布局：根据sign标志选择如何显示；图片：TCode定义为空或者W
-                TCode = "W";
-                break;
 
-            case "WashBeforeFinishWashAfterWithZero":
-                //布局：根据sign标志选择如何显示；图片：TCode默认定义为WY，可以根据选择变成C、P、NIL
-            case "WashBeforeFinishWashAfterProgress":
-                TCode = "WY";
-                break;
+    public interface OnNextBtnListener{
+        void onNextBtn(String ConNo,String TCode);
+    }
 
-            case "RepairBeforeWithZero":
-            case "RepairBeforeProgress":
-                //布局：根据sign标志选择如何显示；图片：TCode默认为D
-                TCode = "D";
-                break;
-
-            case "RepairBeforeFinishRepairAfterWithZero":
-            case "RepairBeforeFinishRepairAfterProgress":
-                //布局：根据sign标志显示；图片：TCode默认为RY，后面会根据具体的码进行改变
-                TCode = "RY";
-                break;
-            default:
-                TCode = null;
-                break;
-        }
-
-        return TCode;
+    public void setOnNextBtnListener(OnNextBtnListener nextBtnListener){
+        mOnNextBtnListener = nextBtnListener;
     }
 
 }

@@ -308,18 +308,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         @Override
         public void onPictureTaken(final byte[] data, android.hardware.Camera camera) {
             count--;
-            Log.e(TAG, "onPictureTaken: 点击了拍照按钮，触发回调接口");
+            Log.e("Next", "onPictureTaken: 点击了拍照按钮，触发回调接口");
             //数据库操作
             final Pictures pictures = mDataLab.addPicsToDB(ConNo,TCode,".JPG");
-            Log.e(TAG, "onPictureTaken: 选择后的TCode ：" + TCode );
+            Log.e("Next", "onPictureTaken: 打开拍照界面后，此时界面存储的ConNo和TCode ："+ ConNo + TCode );
             mDataLab.ConsAddOne(ConNo,TCode);
             //文件操作
             String pictureName = pictures.getName();
+            Log.e("Next", "onPictureTaken: 用于存储的picture的图片名picturesname:" + pictures.getName());
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            Log.e("Next", "onPictureTaken: 此时pictures的tcode："+ pictures.getTCode() );
             File inDir = new File(pictureDir,pictures.getTCode());
             inDir.mkdirs();
             final String picturePath = inDir + File.separator + pictureName;
-            Log.e(TAG, "onPictureTaken: 点击拍照后，图片储存在 :" + picturePath );
+            Log.e("Next", "onPictureTaken: 点击拍照后，图片储存在 :" + picturePath );
             //开线程进行图片的文件储存，当完成时发送广播，通知图片列表进行更新操作
             new Thread(new Runnable() {
                 @Override
