@@ -19,11 +19,19 @@ public class MyFragmentStateAdapter extends FragmentStatePagerAdapter {
 
     List<Pictures> mList;
     private Context mContext;
+    private DataLab mDataLab;
 
     public MyFragmentStateAdapter(FragmentManager fm,Context context){
         super(fm);
         mContext = context;
         this.mList = DataLab.get(mContext).getPicturesList();
+    }
+
+    public MyFragmentStateAdapter(FragmentManager fm,Context context,String ConNo){
+        super(fm);
+        mContext = context;
+        mDataLab = DataLab.get(mContext);
+        this.mList = mDataLab.getPics(ConNo);
     }
 
     //返回需要展示的fragment

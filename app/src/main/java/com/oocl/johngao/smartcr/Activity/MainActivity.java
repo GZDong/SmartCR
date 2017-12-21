@@ -40,9 +40,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Adapter.ConListViewPageAdapter;
+import com.oocl.johngao.smartcr.Adapter.NineGridImageViewAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.MyView.MySearchView;
 import com.oocl.johngao.smartcr.MyView.MyscrollView;
+import com.oocl.johngao.smartcr.MyView.NineGridImageView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 

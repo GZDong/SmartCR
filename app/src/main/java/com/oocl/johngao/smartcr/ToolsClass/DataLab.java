@@ -1,6 +1,7 @@
 package com.oocl.johngao.smartcr.ToolsClass;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
@@ -10,6 +11,7 @@ import com.oocl.johngao.smartcr.Data.Pictures;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -398,5 +400,31 @@ public class DataLab {
 
     public boolean isNextbt() {
         return nextbt;
+    }
+
+    public List<String> getPathList(String ConNo){
+        if (ConNo.equals(Const.NullConNo)){
+            return null;
+        }
+        List<String> pathList = new ArrayList<>();
+        List<Pictures> pictures = getPics(ConNo);
+        if (pictures==null){
+            return null;
+        }
+        for (Pictures p: pictures){
+            File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            String path = file + File.separator+ p.getTCode()+ File.separator + p.getName();
+            Log.e(TAG, "getPathList: " + path);
+            pathList.add(path);
+        }
+        return pathList;
+    }
+
+    public List<Pictures> getPics(String conNo){
+        List<Pictures> pictures = DataSupport.where("ConNo = ?",conNo).find(Pictures.class);
+        if (pictures.size() ==0){
+            return null;
+        }
+        return pictures;
     }
 }

@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Adapter.PicListAdapter;
+import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.Data.Pictures;
 import com.oocl.johngao.smartcr.MyView.SideBar;
@@ -142,6 +143,14 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
         //*第一处：ConNo，TCode用于决定加载的数据列表
         mDataLab.initPicList(ConNo,mTag);
         mPicList = mDataLab.getPicturesList();
+        int count = 0;
+        for (Pictures pictures: mPicList){
+            if (!pictures.getConNo().equals(Const.NullConNo)){
+                count ++;
+            }
+        }
+        mPreview.setCount(count);
+        mPreview.setTCode(CalUtils.calConsTCodeFromTag(mTag));   //发送给PreView
     }
 
     //判断相机是否支持
@@ -157,8 +166,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     public void initCamera(){
         mPreview = new CameraPreview(TakePhotoActivity.this);
         //**第二处：ConNo，TCode用于决定储存的位置和图片的命名
+
         mPreview.setConNo(ConNo);
-        mPreview.setTCode(CalUtils.calConsTCodeFromTag(mTag));   //发送给PreView
+
         mPreview.setOnCaptureListener(this);
         /*mPreview.setOnTouchListener(new View.OnTouchListener() {   //设置聚焦
             @Override

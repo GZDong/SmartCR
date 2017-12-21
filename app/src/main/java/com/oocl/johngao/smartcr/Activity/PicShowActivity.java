@@ -32,7 +32,12 @@ public class PicShowActivity extends AppCompatActivity {
 
     private void initViews(){
         mPager = (ViewPager) findViewById(R.id.ivew_pager);
-        mAdapter = new MyFragmentStateAdapter(getSupportFragmentManager(),this);
+        String ConNo = getIntent().getStringExtra("ConNo");
+        if (ConNo == null){
+            mAdapter = new MyFragmentStateAdapter(getSupportFragmentManager(),this);
+        }else {
+            mAdapter = new MyFragmentStateAdapter(getSupportFragmentManager(),this,ConNo);
+        }
         mPager.setAdapter(mAdapter);
         int position = getIntent().getIntExtra("position",1);
         mPager.setCurrentItem(position);

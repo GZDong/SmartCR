@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private String ConNo;
     private String TCode;
     private int count = 30;
+    private int size;
 
     public CameraPreview(Context context) {
         super(context);
@@ -354,8 +356,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.e(TAG, "onPictureTaken: 拍照回调接口执行完之后。。。");
 
             mOnCaptureListener.onCapture(pictureName,pictures.getSeqNo());
-            if (count == 0){
+            if (count == 0 ){
                 Toast.makeText(mContext,"完成拍照！",Toast.LENGTH_SHORT).show();
+                SystemClock.sleep(500);
                 TakePhotoActivity takePhotoActivity = (TakePhotoActivity) mContext;
                 takePhotoActivity.finish();
             }
@@ -389,12 +392,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void setTCode(String TCode) {
         this.TCode = TCode;
-        Log.e(TAG, "setTCode: " + TCode );
+        Log.e(TAG, "setTCode: " + TCode + "size:" + size);
         if (TCode.equals("WY")||TCode.equals("D")){
-            count = 3;
+            if (size <3){
+                count = 3 - size;
+            }
         }
     }
 
+    public void setCount(int size){
+        this.size = size;
+    }
     public void setConNo(String conNo) {
         ConNo = conNo;
     }

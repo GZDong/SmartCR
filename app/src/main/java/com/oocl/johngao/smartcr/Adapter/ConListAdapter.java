@@ -13,10 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.oocl.johngao.smartcr.Activity.PicShowActivity;
 import com.oocl.johngao.smartcr.Activity.TakePhotoActivity;
 import com.oocl.johngao.smartcr.Activity.TestActivity;
 import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
+import com.oocl.johngao.smartcr.MyView.NineGridImageView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.CalUtils;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
@@ -35,11 +38,13 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
     private Context mContext;
     private int mPage;
     private String mTag;
+    private DataLab mDataLab;
 
     public ConListAdapter(List<Container> list, Context context,int page){
         mInsideList = list;
         mContext = context;
         mPage = page;
+        mDataLab = DataLab.get(mContext);
     }
 
     @Override
@@ -49,7 +54,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         if (mInsideList != null){
             holder.mTextView.setText("货柜编号：" + mInsideList.get(position).getConNo());
             holder.mTextView.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +79,23 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             }else {
                 holder.mDateTV.setVisibility(View.GONE);
             }
+
+            //设置九宫格图片
+            List<String> mPathList = mDataLab.getPathList(mInsideList.get(position).getConNo());
+
+            NineGridImageViewAdapter<String> adapter  = new NineGridImageViewAdapter<String>() {
+                @Override
+                public void onDisplayImage(Context context, ImageView imageView, String s) {
+                    Glide.with(mContext).load(s).asBitmap().centerCrop().into(imageView);
+                }
+                @Override
+                public ImageView generateImageView(Context context) {
+                    return super.generateImageView(context);
+                }
+            };
+
+            holder.mPicsIV.setAdapter(adapter);
+            holder.mPicsIV.setImagesData(mPathList);
 
             if (container.isW_Choose() == Const.NeedWash){
                 holder.mWashLayout.setVisibility(View.VISIBLE);
@@ -163,6 +185,16 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                 holder.mRepairLayout.setVisibility(View.GONE);
                 Log.e(TAG, "onBindViewHolder: 判断是否需要修" + container.getConNo() + "的" + container.isR_Choose());
             }
+
+            holder.mPicsIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PicShowActivity.class);
+                    intent.putExtra("position",0);
+                    intent.putExtra("ConNo",mInsideList.get(position).getConNo());
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -184,7 +216,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
         private TextView mTextView;
 
         private TextView mCompaTV;
-        private ImageView mPicsIV;
+        private NineGridImageView mPicsIV;
         private TextView mDateTV;
 
         private FrameLayout mWashLayout;
@@ -194,13 +226,15 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
         private TextView mRepairTX;
         private ImageView mRepairIMG;
 
+
         public MyViewHolder(View view){
             super(view);
             mTextView =(TextView) view.findViewById(R.id.container_name);
 
             mCompaTV = (TextView) view.findViewById(R.id.company_text);
-            mPicsIV = (ImageView) view.findViewById(R.id.pics_iv);
+            mPicsIV = (NineGridImageView) view.findViewById(R.id.pics_iv);
             mDateTV = (TextView) view.findViewById(R.id.date_text);
+
 
             mWashLayout = (FrameLayout) view.findViewById(R.id.wash_layout);
             mRepairLayout = (FrameLayout) view.findViewById(R.id.repair_layout);
@@ -224,10 +258,13 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                         Log.e("Next", "onNextBtn: OK,在list1中找到当前的container，它的位置是："+i);
                         for (int j = i+1;j<mInsideList.size();j++){
                             String s1 = CalUtils.calWTagFromCons(mInsideList.get(j));
+                            Log.e("Next", "onNextBtn: " + mInsideList.get(j) + s1 );
                             String s2 = CalUtils.calRTagFromCons(mInsideList.get(j));
+                            Log.e("Next", "onNextBtn: " + mInsideList.get(j) + s2 );
                             String[] wholeTag = CalUtils.calTagSort(tag);
 
-                            if (s1.equals(wholeTag[0]) || s1.equals(wholeTag[1]) ){
+
+                            if (s1 != null && (s1.equals(wholeTag[0]) || s1.equals(wholeTag[1]))){
                                 Intent intent = new Intent(mContext,TakePhotoActivity.class);
                                 intent.putExtra("ConNo",mInsideList.get(j).getConNo());
                                 Log.e("Next", "onNextBtn: s1匹配到了，mTag是" + tag + " i:" + j);
@@ -235,7 +272,7 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
                                 mContext.startActivity(intent);
                                 flag = true;
                                 return;
-                            }else if (s2.equals(wholeTag[0]) || s2.equals(wholeTag[1])){
+                            }else if (s2 != null &&(s2.equals(wholeTag[0]) || s2.equals(wholeTag[1]))){
                                 Intent intent = new Intent(mContext,TakePhotoActivity.class);
                                 intent.putExtra("ConNo",mInsideList.get(j).getConNo());
                                 Log.e("Next", "onNextBtn: s2匹配到了，mTag是" + tag+ " i:" + j);
