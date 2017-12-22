@@ -38,6 +38,18 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center|bottom"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:text="@string/settings"/>
+
+
+
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/whole_layout"
@@ -133,7 +145,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="gone"></LinearLayout>
+                    android:visibility="gone">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bottom_line"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/settings_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
                 <android.support.v4.view.ViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
@@ -235,18 +259,18 @@
                     android:layout_gravity="center|bottom">
                     <TextView
                         android:id="@+id/tv_1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
-                        android:background="@mipmap/ic_wash1"
+                        android:background="@drawable/iconclean"
                         />
 
                     <TextView
                         android:id="@+id/tv_2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_gravity="center"
-                        android:background="@mipmap/ic_repair1"
+                        android:background="@drawable/iconrepair"
                         />
                     <ImageView
                         android:id="@+id/img_take"

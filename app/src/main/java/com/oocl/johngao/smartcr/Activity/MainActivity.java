@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.oocl.johngao.smartcr.Adapter.ConListAdapter;
 import com.oocl.johngao.smartcr.Adapter.ConListViewPageAdapter;
 import com.oocl.johngao.smartcr.Adapter.NineGridImageViewAdapter;
+import com.oocl.johngao.smartcr.Adapter.SettingsListAdapter;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.MyView.MySearchView;
 import com.oocl.johngao.smartcr.MyView.MyscrollView;
@@ -114,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mWholeLY;
     private LinearLayout mSetLY;
     private LinearLayout mSetContentLY;
+
+    private SettingsListAdapter mSettingsListAdapter;
+    private RecyclerView mSettingsRL;
+    private List<String> mSettingsDataList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,13 +258,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mWholeLY = (LinearLayout)findViewById(R.id.whole_layout);
         mSetLY = (LinearLayout) findViewById(R.id.set_layout);
         mSetContentLY = (LinearLayout) findViewById(R.id.set_content_layout);
+
+        mSettingsRL = (RecyclerView) findViewById(R.id.settings_list);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        mSettingsListAdapter = new SettingsListAdapter(this,mSettingsDataList);
+        mSettingsRL.setLayoutManager(lm);
+        mSettingsRL.setAdapter(mSettingsListAdapter);
     }
     public void initList(){
         mDataLab = DataLab.get(this);
         mConList = mDataLab.getContainerList(1);
+        mSettingsDataList = mDataLab.getSettingsList();
         if (mConList.size() == 0){
             Log.e(TAG, "initList: *****");
         }
+
     }
 
     public void initViewInDrawer(){

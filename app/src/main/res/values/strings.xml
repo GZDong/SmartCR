@@ -38,4 +38,6 @@
     <string name="wash_after">洗后</string>
     <string name="repair_before">修前</string>
     <string name="repair_after">修后</string>
+    <string name="eixt_btn">退出登录</string>
+    <string name="settings">设  置</string>
 </resources>

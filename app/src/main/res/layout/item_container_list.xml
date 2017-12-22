@@ -2,139 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/item_container"
-    android:layout_marginTop="1dp"
     android:layout_marginBottom="1dp"
+    android:layout_marginTop="1dp"
     android:background="@color/white"
-    >
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/date_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"
         android:background="@color/search_gray"
-        android:textColor="@color/black"
+        android:gravity="center"
         android:text="2017-12-11"
-        android:visibility="gone"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@color/white">
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginLeft="15dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical"
-        >
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
             android:background="@color/white"
-            >
-            <TextView
-                android:id="@+id/container_name"
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="01010122"
-                android:layout_margin="5dp"
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/company_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="oocl"
-                android:layout_margin="5dp"
-                android:textColor="@color/black"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/container_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="01010122"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/company_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="oocl"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
+            <com.oocl.johngao.smartcr.MyView.NineGridImageView
+                android:id="@+id/pics_iv"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
 
-
+                android:background="#eeeeee" />
+        </LinearLayout>
     </LinearLayout>
-    <!--<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp">
-        <ImageView
-            android:id="@+id/wash_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/washbefore"
-            android:scaleType="centerInside"/>
-        <ImageView
-            android:id="@+id/repair_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/reqairbefore"
-            android:scaleType="centerInside"/>
-    </LinearLayout>-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-        <com.oocl.johngao.smartcr.MyView.NineGridImageView
-            android:id="@+id/pics_iv"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-
-            android:background="#eeeeee"/>
-    </LinearLayout>
-</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-       <!-- <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp">
-            <TextView
-                android:id="@+id/wash_b_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/before"
-                android:text="@string/wash_before"/>
-            <ImageView
-                android:id="@+id/wash_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/dont"
-                android:scaleType="centerInside"/>
-            <TextView
-                android:id="@+id/wash_a_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/before"
-                android:text="@string/wash_after"/>
-            <ImageView
-                android:id="@+id/wash_goon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/goon"/>
-        </LinearLayout>-->
+        android:layout_height="50dp">
+
         <FrameLayout
             android:id="@+id/wash_layout"
             android:layout_width="wrap_content"
@@ -142,69 +90,39 @@
 
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp">
+
             <ImageView
                 android:layout_width="90dp"
                 android:layout_height="45dp"
-                android:src="@drawable/tagbg"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/tagbg" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                >
+                android:layout_gravity="center">
+
                 <TextView
                     android:id="@+id/wash_state_text"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/white"
-                    android:text="洗前"/>
+                    android:text="洗前"
+                    android:textColor="@color/white" />
+
                 <ImageView
                     android:id="@+id/wash_state_img"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tagbegin"/>
+                    android:src="@drawable/tagbegin" />
             </LinearLayout>
 
         </FrameLayout>
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="15dp">
-            <TextView
-                android:id="@+id/repair_b_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/before"
-                android:text="@string/repair_before"/>
-            <ImageView
-                android:id="@+id/repair_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/dont"
-                android:scaleType="centerInside"/>
-            <TextView
-                android:id="@+id/repair_a_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/before"
-                android:text="@string/repair_after"/>
-            <ImageView
-                android:id="@+id/repire_goon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="30dp"
-                android:src="@drawable/goon"/>
-        </LinearLayout>-->
+
         <FrameLayout
             android:id="@+id/repair_layout"
             android:layout_width="wrap_content"
@@ -213,32 +131,35 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp">
+
             <ImageView
                 android:layout_width="90dp"
                 android:layout_height="45dp"
-                android:src="@drawable/tagbg"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/tagbg" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                >
+                android:layout_gravity="center">
+
                 <TextView
                     android:id="@+id/repair_state_text"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_marginRight="10dp"
-                    android:textColor="@color/white"
-                    android:text="修前"/>
+                    android:text="修前"
+                    android:textColor="@color/white" />
+
                 <ImageView
                     android:id="@+id/repair_state_img"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tagbegin"/>
+                    android:src="@drawable/tagbegin" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

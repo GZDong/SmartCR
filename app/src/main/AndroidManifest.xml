@@ -30,7 +30,8 @@
         </activity>
         <activity android:name=".Activity.TakePhotoActivity" />
         <activity android:name=".Activity.PicShowActivity" />
-        <activity android:name=".Activity.MainActivity"></activity>
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.SettingContainerActivity"></activity>
     </application>
 
 </manifest>

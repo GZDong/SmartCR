@@ -36,11 +36,13 @@ public class DataLab {
     private ConListAdapter mConListAdapter;
 
     public boolean nextbt = false;
+    private List<String> mSettingsList;
 
     private DataLab(Context context){
         mContext = context.getApplicationContext();
 
         initContainerList();
+        initSettingsList();
     }
     public static DataLab get(Context context){
         if (sDataLab == null){
@@ -426,5 +428,24 @@ public class DataLab {
             return null;
         }
         return pictures;
+    }
+
+    public List<String> getSettingsList() {
+        return mSettingsList;
+    }
+
+    private void initSettingsList(){
+        List<String> s = new ArrayList<>();
+        s.add("账户与安全");
+        s.add("消息通知");
+        s.add("设置规则");
+        s.add("图片管理");
+        s.add("地址管理");
+        s.add("意见反馈");
+        s.add("清理缓存");
+        s.add("关于");
+        s.add("检查更新");
+        s.add("退出登录");
+        mSettingsList = s;
     }
 }
