@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">SmartCR</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="finish_text">完成</string>
     <string name="title_activity_main">主界面</string>
     <string name="title_home">列表</string>
@@ -40,4 +38,6 @@
     <string name="repair_after">修后</string>
     <string name="eixt_btn">退出登录</string>
     <string name="settings">设  置</string>
+    <string name="rule_title">设置规则</string>
+    <string name="add_btn">添加</string>
 </resources>

@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import com.oocl.johngao.smartcr.Const.Const;
+import com.oocl.johngao.smartcr.Data.RuleSort;
+
 /**
  * Created by johngao on 17/12/4.
  */
@@ -38,11 +40,18 @@ public class DataLab {
     public boolean nextbt = false;
     private List<String> mSettingsList;
 
+    private List<String> mHintList;
+    private List<String> mMetaList;
+
+    private List<RuleSort>  mRuleSortList;
+    private RuleSort mRuleSort;
+
     private DataLab(Context context){
         mContext = context.getApplicationContext();
 
         initContainerList();
         initSettingsList();
+        initRuleSort();
     }
     public static DataLab get(Context context){
         if (sDataLab == null){
@@ -447,5 +456,107 @@ public class DataLab {
         s.add("检查更新");
         s.add("退出登录");
         mSettingsList = s;
+    }
+
+    public void initHintList(int sum){
+        Log.e(TAG, "initHintList: sum 为：" + sum );
+        if (mHintList != null){
+            mHintList.clear();
+        }
+        mHintList = new ArrayList<>();
+        for (int i= 1 ; i <= sum; i++){
+            String hint = "Part " + i;
+            mHintList.add(hint);
+        }
+    }
+
+    public List<String> getHintList() {
+        return mHintList;
+    }
+
+    public void initMetaList(){
+        if (mMetaList!= null){
+            mMetaList.clear();
+        }
+        mMetaList = new ArrayList<>();
+
+        if (exchangData(mRuleSort.getP1()) != null){
+            mMetaList.add(exchangData(mRuleSort.getP1()));
+        }
+        if (exchangData(mRuleSort.getP2()) != null){
+            mMetaList.add(exchangData(mRuleSort.getP2()));
+        }
+        if (exchangData(mRuleSort.getP3()) != null){
+            mMetaList.add(exchangData(mRuleSort.getP3()));
+        }
+        if (exchangData(mRuleSort.getP4()) != null){
+            mMetaList.add(exchangData(mRuleSort.getP4()));
+        }
+        if (exchangData(mRuleSort.getP5()) != null){
+            mMetaList.add(exchangData(mRuleSort.getP5()));
+        }
+
+        if (mMetaList.size()!=0){
+            for (String s : mMetaList){
+                Log.e(TAG, "initMetaList: " + s);
+            }
+        }else {
+            Log.e(TAG, "initMetaList: 错误" );
+        }
+    }
+
+    public List<String> getMetaList(){
+        return mMetaList;
+    }
+
+    private void initRuleSort(){
+        mRuleSortList = new ArrayList<>();
+        mRuleSortList = DataSupport.where("id = ?", "1").find(RuleSort.class);
+        Log.e(TAG, "initRuleSort: 读取出来的大小：" + mRuleSortList.size() );
+        if (mRuleSortList.size() == 0){
+            mRuleSort = new RuleSort();
+            mRuleSort.setId(1);
+            mRuleSort.setP1("C");
+            mRuleSort.setP2("T");
+            mRuleSort.setP3("S");
+            mRuleSort.setP4("n");
+            mRuleSort.setP5("n");
+            mRuleSort.setFlag(true);
+            mRuleSort.save();
+            mRuleSortList.add(mRuleSort);
+        }else {
+            mRuleSort = mRuleSortList.get(0);
+
+            Log.e(TAG, "initRuleSort: " + mRuleSort.getId() + mRuleSort.getP1() + mRuleSort.getP2() + mRuleSort.isFlag() );
+
+        }
+    }
+
+    public RuleSort getRuleSort() {
+        return mRuleSort;
+    }
+
+    public int getMetaSum(){
+
+        return mMetaList.size();
+    }
+
+    private String exchangData(String p){
+        switch (p){
+            case "C":
+                return "柜 号";
+            case "T":
+                return "操 作 码";
+            case "S":
+                return "序 号";
+            case "n":
+                return null;
+            case "t":
+                return "时 间";
+            case "x":
+                return "未 知";
+
+        }
+        return null;
     }
 }

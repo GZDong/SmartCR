@@ -1,6 +1,7 @@
 package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.oocl.johngao.smartcr.Activity.SettingContainerActivity;
 import com.oocl.johngao.smartcr.R;
 
 import java.util.List;
@@ -50,6 +52,17 @@ public class SettingsListAdapter extends RecyclerView.Adapter<SettingsListAdapte
             holder.mOptionsTV.setGravity(Gravity.CENTER);
         }
         holder.mOptionsTV.setText(mInsideList.get(position));
+
+        if (position == 2){
+            holder.mOptionsTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, SettingContainerActivity.class);
+                    intent.putExtra("postion",2);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

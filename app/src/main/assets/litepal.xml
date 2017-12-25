@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <litepal>
     <dbname value = "systemDB"></dbname>
-    <version value = "8"></version>
+    <version value = "11"></version>
     <list>
         <mapping class = "com.oocl.johngao.smartcr.Data.Pictures"></mapping>
         <mapping class="com.oocl.johngao.smartcr.Data.Container"></mapping>
+        <mapping class="com.oocl.johngao.smartcr.Data.RuleSort"></mapping>
     </list>
 </litepal>
