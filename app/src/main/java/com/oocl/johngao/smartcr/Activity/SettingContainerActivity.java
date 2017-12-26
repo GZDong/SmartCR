@@ -36,6 +36,7 @@ public class SettingContainerActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
         }
+        actionBar.setTitle("设置规则");
     }
 
     private void onLoadFragment(int postion){

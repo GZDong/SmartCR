@@ -46,12 +46,15 @@ public class DataLab {
     private List<RuleSort>  mRuleSortList;
     private RuleSort mRuleSort;
 
+    private List<String> mMoreList;
+
     private DataLab(Context context){
         mContext = context.getApplicationContext();
 
         initContainerList();
         initSettingsList();
         initRuleSort();
+        initMorelist();
     }
     public static DataLab get(Context context){
         if (sDataLab == null){
@@ -558,5 +561,63 @@ public class DataLab {
 
         }
         return null;
+    }
+
+    public void initMorelist(){
+        mMoreList = new ArrayList<>();
+
+        mMoreList.add("C");
+        mMoreList.add("T");
+        mMoreList.add("S");
+        mMoreList.add("t");
+        mMoreList.add("x");
+
+        for (int i = 0; i<5 ;i ++){
+            mMoreList.get(i);
+            if (mMoreList.get(i).equals(mRuleSort.getP1()) || mMoreList.get(i).equals(mRuleSort.getP2()) || mMoreList.get(i).equals(mRuleSort.getP3())|| mMoreList.get(i).equals(mRuleSort.getP4())|| mMoreList.get(i).equals(mRuleSort.getP5())){
+                mMoreList.set(i,"n");
+            }
+        }
+    }
+    public List<String> getMoreList(){
+        return mMoreList;
+    }
+
+    public void addMore(String T){
+        mMoreList.add(T);
+    }
+    public void deleteMore(String T){
+        for (int i = 0; i < 5; i++){
+            if (mMoreList.get(i).equals(T)){
+                mMoreList.set(i,"n");
+            }
+        }
+    }
+    public void addMeta(String T){
+        switch (T){
+            case "C":
+                 mMetaList.add("柜 号") ;
+                 break;
+            case "T":
+                mMetaList.add("操 作 码") ;
+                break;
+            case "S":
+                mMetaList.add("序 号") ;
+                break;
+            case "n":
+                break;
+            case "t":
+                mMetaList.add("时 间") ;
+                break;
+            case "x":
+                mMetaList.add("未 知") ;
+                break;
+        }
+    }
+
+    public void addHint(){
+        int i = mHintList.size() + 1;
+        String part = "Part" + i;
+        mHintList.add(part);
     }
 }

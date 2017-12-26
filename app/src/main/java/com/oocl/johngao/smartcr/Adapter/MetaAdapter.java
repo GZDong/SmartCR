@@ -8,7 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.oocl.johngao.smartcr.Interface.onAddItemListener;
+import com.oocl.johngao.smartcr.Interface.onDeleteItemListener;
+import com.oocl.johngao.smartcr.Interface.onMoveItem;
 import com.oocl.johngao.smartcr.R;
+import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 
 import java.util.List;
 
@@ -16,14 +20,19 @@ import java.util.List;
  * Created by johngao on 17/12/25.
  */
 
-public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> {
+public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> implements onAddItemListener {
 
     private Context mContext;
     private List<String> mInsideList;
-
-    public MetaAdapter(Context context, List<String> list){
+    private onMoveItem mOnMoveItem;
+    private onDeleteItemListener mOnDeleteItemListener;
+    private DataLab mDataLab;
+    public MetaAdapter(Context context, List<String> list,onMoveItem onmoveItem,onDeleteItemListener onDeleteItemListener){
         mContext = context;
         mInsideList = list;
+        mOnMoveItem = onmoveItem;
+        this.mOnDeleteItemListener = onDeleteItemListener;
+        mDataLab = DataLab.get(mContext);
     }
 
     @Override
@@ -56,5 +65,23 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> 
             super(view);
             mMetaTV = (TextView) view.findViewById(R.id.text_mata_name);
         }
+    }
+
+    public List<String> getInsideList(){
+        return mInsideList;
+    }
+
+    public onMoveItem getOnMoveItem(){
+        return mOnMoveItem;
+    }
+
+    @Override
+    public void onAddItem(String item) {
+        mDataLab.addMeta(item);
+        updateList(mDataLab.getMetaList());
+    }
+
+    public onDeleteItemListener getOnDeleteItemListener() {
+        return mOnDeleteItemListener;
     }
 }
