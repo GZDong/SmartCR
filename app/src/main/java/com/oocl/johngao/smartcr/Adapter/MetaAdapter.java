@@ -77,6 +77,8 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> 
 
     @Override
     public void onAddItem(String item) {
+        Log.e("efefd", "onAddItem: 触发右边的接口" + item);
+        mDataLab.addItem(item);
         mDataLab.addMeta(item);
         updateList(mDataLab.getMetaList());
     }

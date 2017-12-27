@@ -2,6 +2,7 @@ package com.oocl.johngao.smartcr.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.MyView
             @Override
             public void onClick(View v) {
                 mOnAddItemListener.onAddItem(mInsideList.get(position));
+                Log.e("dscvsd", "onClick: " + mInsideList.get(position) );
                 mOnAddItemListener2.onAddItem(mInsideList.get(position));
                 holder.mLinearLayout.setVisibility(View.GONE);
                 mDataLab.deleteMore(mInsideList.get(position));

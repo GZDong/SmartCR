@@ -515,7 +515,6 @@ public class DataLab {
     private void initRuleSort(){
         mRuleSortList = new ArrayList<>();
         mRuleSortList = DataSupport.where("id = ?", "1").find(RuleSort.class);
-        Log.e(TAG, "initRuleSort: 读取出来的大小：" + mRuleSortList.size() );
         if (mRuleSortList.size() == 0){
             mRuleSort = new RuleSort();
             mRuleSort.setId(1);
@@ -530,7 +529,7 @@ public class DataLab {
         }else {
             mRuleSort = mRuleSortList.get(0);
 
-            Log.e(TAG, "initRuleSort: " + mRuleSort.getId() + mRuleSort.getP1() + mRuleSort.getP2() + mRuleSort.isFlag() );
+            Log.e(TAG, "initRuleSort: 数据库数据 " + mRuleSort.getId() + mRuleSort.getP1() + mRuleSort.getP2()+ mRuleSort.getP3()+ mRuleSort.getP4()+ mRuleSort.getP5() + mRuleSort.isFlag() );
 
         }
     }
@@ -585,9 +584,6 @@ public class DataLab {
 
     public void addMore(String T){
         String s;
-        for (String r : mMoreList){
-            Log.e(TAG, "addMore: " + r );
-        }
         for (int i = 0; i< mMoreList.size();i++){
             s = mMoreList.get(i);
             if (s.equals("n")){
@@ -604,7 +600,7 @@ public class DataLab {
         }
     }
     public void addMeta(String T){
-        switch (T){
+        /*switch (T){
             case "C":
                  mMetaList.add("柜 号") ;
                  break;
@@ -622,12 +618,221 @@ public class DataLab {
             case "x":
                 mMetaList.add("未 知") ;
                 break;
-        }
+        }*/
+        mMetaList.clear();
+        initMetaList();
     }
 
     public void addHint(){
         int i = mHintList.size() + 1;
         String part = "Part" + i;
         mHintList.add(part);
+    }
+    public void resort(String s1,String s2){
+        int index1 = 0,index2 = 0;
+        if (mRuleSort.getP1().equals(exchangeToP(s1)) ){
+            index1 = 1;
+        }
+        if (mRuleSort.getP2().equals(exchangeToP(s1)) ){
+            index1 = 2;
+        }
+        if (mRuleSort.getP3().equals(exchangeToP(s1)) ){
+            index1 = 3;
+        }
+        if (mRuleSort.getP4().equals(exchangeToP(s1)) ){
+            index1 = 4;
+        }
+        if (mRuleSort.getP5().equals(exchangeToP(s1)) ){
+            index1 = 5;
+        }
+
+        if (mRuleSort.getP1().equals(exchangeToP(s2)) ){
+            index2 = 1;
+        }
+        if (mRuleSort.getP2().equals(exchangeToP(s2)) ){
+            index2 = 2;
+        }
+        if (mRuleSort.getP3().equals(exchangeToP(s2)) ){
+            index2 = 3;
+        }
+        if (mRuleSort.getP4().equals(exchangeToP(s2)) ){
+            index2 = 4;
+        }
+        if (mRuleSort.getP5().equals(exchangeToP(s2)) ){
+            index2 = 5;
+        }
+
+        if ((index1 == 1 && index2 == 2) || (index1 == 2 && index2 == 1)){
+            String t = mRuleSort.getP2();
+            mRuleSort.setP2(mRuleSort.getP1());
+            mRuleSort.setP1(t);
+        }if ((index1 == 1 && index2 ==3) || (index1 == 3 && index2 ==1) ){
+            String t = mRuleSort.getP3();
+            mRuleSort.setP3(mRuleSort.getP1());
+            mRuleSort.setP1(t);
+        }if ((index1 == 1 && index2 == 4)||(index1 == 4 && index2 == 1)) {
+            String t = mRuleSort.getP4();
+            mRuleSort.setP4(mRuleSort.getP1());
+            mRuleSort.setP1(t);
+        }if ((index1 == 1 && index2 ==5) || (index1 == 5 && index2 ==1)){
+            String t = mRuleSort.getP5();
+            mRuleSort.setP5(mRuleSort.getP1());
+            mRuleSort.setP1(t);
+        }
+
+        if ((index1 == 2 && index2 == 3) || (index1 == 3 && index2 == 2) ){
+            String t = mRuleSort.getP3();
+            mRuleSort.setP3(mRuleSort.getP2());
+            mRuleSort.setP2(t);
+        }if ((index1 == 2 && index2 ==4) || (index1 == 4 && index2 ==2)){
+            String t = mRuleSort.getP4();
+            mRuleSort.setP4(mRuleSort.getP2());
+            mRuleSort.setP2(t);
+        }if ((index1 == 2 && index2 == 5) ||(index1 == 5 && index2 == 2) ) {
+            String t = mRuleSort.getP5();
+            mRuleSort.setP5(mRuleSort.getP2());
+            mRuleSort.setP2(t);
+        }
+
+        if ( (index1 == 3 && index2 == 4) || (index1 == 4 && index2 == 3)) {
+            String t = mRuleSort.getP4();
+            mRuleSort.setP4(mRuleSort.getP3());
+            mRuleSort.setP3(t);
+        }if ((index1 == 3 && index2 ==5)|| (index1 == 5 && index2 == 3) ){
+            String t = mRuleSort.getP5();
+            mRuleSort.setP5(mRuleSort.getP3());
+            mRuleSort.setP3(t);
+        }
+
+        if ((index1 == 4 && index2 == 5)|| (index1 == 5 && index2 == 4) ){
+            String t = mRuleSort.getP5();
+            mRuleSort.setP5(mRuleSort.getP4());
+            mRuleSort.setP4(t);
+        }
+
+        mRuleSort.save();
+        Log.e(TAG, "resort: " + mRuleSort.getP1() + mRuleSort.getP2() +mRuleSort.getP3() + mRuleSort.getP4() + mRuleSort.getP5() );
+    }
+
+    public String exchangeToP(String s){
+        switch (s){
+            case "柜 号":
+                return "C";
+
+            case "操 作 码":
+                return "T";
+
+            case "序 号":
+                return "S";
+
+            case "时 间":
+                return "t";
+
+            case "未 知":
+                return "x";
+
+            default:
+                return "n";
+        }
+    }
+
+    public void deleteItem(String s){
+        int index = 0;
+
+        Log.e(TAG, "deleteItem: 在接受端接收到的中文为" + s );
+        if (mRuleSort.getP1().equals(exchangeToP(s))){
+            index = 1;
+        }if (mRuleSort.getP2().equals(exchangeToP(s))){
+            index = 2;
+        }if (mRuleSort.getP3().equals(exchangeToP(s))){
+            Log.e(TAG, "deleteItem:   happen" + mRuleSort.getP3());
+            index = 3;
+        }if (mRuleSort.getP4().equals(exchangeToP(s))){
+            index = 4;
+        }if (mRuleSort.getP5().equals(exchangeToP(s))){
+            index = 5;
+        }
+        Log.e(TAG, "deleteItem: 在mRuleSort中对应的下标为 ： " + index );
+
+        if (index == 1){
+            mRuleSort.setP1("n");
+        }if (index == 2){
+            mRuleSort.setP2("n");
+        }if (index == 3){
+            mRuleSort.setP3("n");
+        }if (index == 4){
+            mRuleSort.setP4("n");
+        }if (index == 5){
+            mRuleSort.setP5("n");
+        }
+        Log.e(TAG, "deleteItem: 替换里面的元素为空后，mRuleSort的5个参数为：" + mRuleSort.getP1() + mRuleSort.getP2() + mRuleSort.getP3() + mRuleSort.getP4() + mRuleSort.getP5()  );
+        //排除空白
+        List<String> list = new ArrayList<>();
+
+        if (!mRuleSort.getP1().equals("n")){
+            Log.e(TAG, "deleteItem: 添加进容器的值为：" +mRuleSort.getP1()  );
+            list.add(mRuleSort.getP1());
+        }
+        if (!mRuleSort.getP2().equals("n")){
+            Log.e(TAG, "deleteItem: 添加进容器的值为：" +mRuleSort.getP2()  );
+            list.add(mRuleSort.getP2());
+        }
+        if (!mRuleSort.getP3().equals("n")){
+            Log.e(TAG, "deleteItem: 添加进容器的值为：" +mRuleSort.getP3()  );
+            list.add(mRuleSort.getP3());
+        }
+        if (!mRuleSort.getP4().equals("n")){
+            Log.e(TAG, "deleteItem: 添加进容器的值为：" +mRuleSort.getP4()  );
+            list.add(mRuleSort.getP4());
+        }
+        if (!mRuleSort.getP5().equals("n")){
+            Log.e(TAG, "deleteItem: 添加进容器的值为：" +mRuleSort.getP5()  );
+            list.add(mRuleSort.getP5());
+        }
+        Log.e(TAG, "deleteItem: 筛选有值的位置后容器的大小为：" + list.size() );
+        if (list.size()<5){
+            int e= 5-list.size();
+            Log.e(TAG, "deleteItem: " + e);
+            for (int i = 1; i <=e ;i++){
+                list.add("n");
+                Log.e(TAG, "deleteItem: " + "循环了" + i + "次" );
+            }
+            Log.e(TAG, "deleteItem: 补充空白后容器的大小为"+ list.size() );
+            mRuleSort.setP1(list.get(0));
+            mRuleSort.setP2(list.get(1));
+            mRuleSort.setP3(list.get(2));
+            mRuleSort.setP4(list.get(3));
+            mRuleSort.setP5(list.get(4));
+            mRuleSort.save();
+            Log.e(TAG, "deleteItem: 排空后，list为：" + mRuleSort.getP1() + mRuleSort.getP2() + mRuleSort.getP3() + mRuleSort.getP4() + mRuleSort.getP5() );
+        }
+    }
+
+    public void addItem(String s){
+        if (mRuleSort.getP1().equals("n")){
+            mRuleSort.setP1(s);
+            mRuleSort.save();
+            return;
+        }
+        if (mRuleSort.getP2().equals("n")){
+            mRuleSort.setP2(s);
+            mRuleSort.save();
+            return;
+        }
+        if (mRuleSort.getP3().equals("n")){
+            mRuleSort.setP3(s);
+            mRuleSort.save();
+            return;
+        }
+        if (mRuleSort.getP4().equals("n")){
+            mRuleSort.setP4(s);
+            mRuleSort.save();
+            return;
+        }
+        if (mRuleSort.getP5().equals("n")){
+            mRuleSort.setP5(s);
+            mRuleSort.save();
+            return;
+        }
     }
 }

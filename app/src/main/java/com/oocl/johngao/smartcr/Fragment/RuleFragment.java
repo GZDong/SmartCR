@@ -96,7 +96,7 @@ public class RuleFragment extends Fragment {
         mMetaRY.setAdapter(mMetaAdapter);
         mMetaRY.setLayoutManager(lm1);
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(mMetaAdapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(mMetaAdapter,getActivity()));
         itemTouchHelper.attachToRecyclerView(mMetaRY);
 
         mMoreListAdapter.setOnAddItemListener(mMetaAdapter);
