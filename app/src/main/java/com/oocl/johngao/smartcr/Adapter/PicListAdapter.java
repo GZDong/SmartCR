@@ -55,7 +55,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
             Log.e(TAG, "onBindViewHolder: position is " + position );
             if (!pic.getConNo().equals(Const.NullConNo)){   //如果不是空图片，那么根据货柜的ConNo、TCode去文件里加载图片到指定位置
                 File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                String path = file + File.separator+ pic.getTCode()+ File.separator + pic.getName();
+                String path = file + File.separator+ pic.getConNo()+ File.separator + pic.getName();
                 Log.e(TAG, "onBindViewHolder: to show pic from : " +path );
 
                 Glide.with(mContext).load(path).asBitmap().centerCrop().into(holder.imageView);

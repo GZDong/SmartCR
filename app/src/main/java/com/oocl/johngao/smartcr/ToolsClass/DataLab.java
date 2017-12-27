@@ -68,19 +68,21 @@ public class DataLab {
     }
 
     //向数据库添加照片，同时根据所剩的空白图片位置数量nullNum，决定在哪里加载照片
-    public Pictures addPicsToDB(String ConNo,String TCode,String EndCode){
+    public Pictures addPicsToDB(String ConNo,String TCode,String EndCode,String company){
         try {
             Log.e("Next", "addPicsToDB: ..... 前四个还剩 " + nullNum );
             if (nullNum == 0){
                 int SeqNo = mPicturesList.size();
-                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode,company);
+                CreatePicName(pictures);
                 pictures.save();
                 mPicturesList.set(SeqNo-1,pictures);
                 addNull();   //此时空白数量为0，需要添加一个空白图片以用于添加加号标志
                 return pictures;
             }else if (nullNum ==1){
                 int SeqNo = 4;
-                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode,company);
+                CreatePicName(pictures);
                 pictures.save();
                 mPicturesList.set(3,pictures);
                 addNull();  //此时空白数量为1，替换掉第四号位置后，需要在后面添加一个空白位置，以便于后面的加号显示
@@ -88,14 +90,16 @@ public class DataLab {
                 return pictures;
             }else if (nullNum ==2){
                 int SeqNo = 3;
-                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode,company);
+                CreatePicName(pictures);
                 pictures.save();
                 mPicturesList.set(2,pictures);
                 nullNum --;
                 return pictures;
             }else if (nullNum == 3){
                 int SeqNo = 2;
-                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode,company);
+                CreatePicName(pictures);
                 pictures.save();
                 mPicturesList.set(1,pictures);
                 nullNum --;
@@ -103,7 +107,8 @@ public class DataLab {
             }else if (nullNum == 4){
                 int SeqNo = 1;
                 Log.e("Next", "addPicsToDB: " + ConNo+TCode+SeqNo+EndCode );
-                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode);
+                Pictures pictures = new Pictures(ConNo,TCode,SeqNo,EndCode,company);
+                CreatePicName(pictures);
                 Log.e("Next", "addPicsToDB: 1111" );
                 pictures.save();
                 Log.e("Next", "addPicsToDB: 2222" );
@@ -125,7 +130,7 @@ public class DataLab {
         }catch (Exception e){
             Log.e("Next", "addPicsToDB: 在这里发生异常");
             e.printStackTrace();
-            return new Pictures(null,null,00,null);
+            return new Pictures(null,null,00,null,null);
         }
     }
 
@@ -230,14 +235,17 @@ public class DataLab {
         if (mContainerList.size() == 0){
 
             Container container1 = new Container("OOLU0119900" + 1,Const.NeedWash,Const.IgnoreRepair);
+            container1.setCompany("oocl");
             container1.save();
             mContainerList.add(container1);
 
             Container container2 = new Container("OOLU0119900" + 2,Const.IgnoreWash,Const.NeedRepair);
+            container2.setCompany("ita");
             container2.save();
             mContainerList.add(container2);
 
             Container container3 = new Container("OOLU0119900" + 3,Const.NeedWash,Const.NeedRepair);
+            container3.setCompany("cctv");
             container3.save();
             mContainerList.add(container3);
 
@@ -329,27 +337,27 @@ public class DataLab {
     //这个方法用于计算在初始化照片列表时，需要加载哪些导航图片
     private void initIcon(int size){
         if (size == 3){
-            Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,4,".png");
+            Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,4,".png",null);
             mPicturesList.add(pictures);
             nullNum = nullNum - 3;
         }
         if (size == 2){
             for (int i = 1; i <= 2;i++){
-                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i+2,".png");
+                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i+2,".png",null);
                 mPicturesList.add(pictures);
             }
             nullNum = nullNum - 2;
         }
         if (size == 1){
             for (int i = 1; i <= 3;i++){
-                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i+1,".png");
+                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i+1,".png",null);
                 mPicturesList.add(pictures);
             }
             nullNum = nullNum - 1;
         }
         if (size == 0){
             for (int i = 1; i <= 4; i++){
-                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i,".png");
+                Pictures pictures = new Pictures(Const.NullConNo,Const.NullTCode,i,".png",null);
                 mPicturesList.add(pictures);
             }
         }
@@ -360,7 +368,7 @@ public class DataLab {
 
     //这个函数的作用是，当需要拍摄的照片无上限时，用于在尾部添加一个加号空白图片的
     public void addNull(){
-        Pictures pictures2 = new Pictures(Const.NullConNo,Const.NullTCode,mPicturesList.size()+1,".png");
+        Pictures pictures2 = new Pictures(Const.NullConNo,Const.NullTCode,mPicturesList.size()+1,".png",null);
         mPicturesList.add(pictures2);
     }
 
@@ -427,7 +435,7 @@ public class DataLab {
         }
         for (Pictures p: pictures){
             File file = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            String path = file + File.separator+ p.getTCode()+ File.separator + p.getName();
+            String path = file + File.separator+ p.getConNo()+ File.separator + p.getName();
             Log.e(TAG, "getPathList: " + path);
             pathList.add(path);
         }
@@ -556,7 +564,7 @@ public class DataLab {
             case "t":
                 return "时 间";
             case "x":
-                return "未 知";
+                return "公 司";
 
         }
         return null;
@@ -728,7 +736,7 @@ public class DataLab {
             case "时 间":
                 return "t";
 
-            case "未 知":
+            case "公 司":
                 return "x";
 
             default:
@@ -834,5 +842,127 @@ public class DataLab {
             mRuleSort.save();
             return;
         }
+    }
+
+    public String getCompany(String Con){
+        for (Container container:mContainerList){
+            if (container.getConNo().equals(Con)){
+                return container.getCompany();
+            }
+        }
+        return null;
+    }
+
+    public void CreatePicName(Pictures pictures){
+        String C = pictures.getConNo();
+        String T = pictures.getTCode();
+        int S = pictures.getSeqNo();
+        String t = pictures.getDate();
+        String x = pictures.getCompany();
+
+        String p1 = null,p2 = null ,p3 = null ,p4 = null,p5 = null;
+
+        switch (mRuleSort.getP1()){
+            case "C":
+                p1 = C;
+                break;
+            case "T":
+                p1 = T;
+                break;
+            case "S":
+                p1 = String.valueOf(S);
+                break;
+            case "t":
+                p1 = t;
+                break;
+            case "x":
+                p1 = x;
+                break;
+            case "n":
+                p1 = "";
+                break;
+        }
+        switch (mRuleSort.getP2()){
+            case "C":
+                p2 = C;
+                break;
+            case "T":
+                p2 = T;
+                break;
+            case "S":
+                p2 = String.valueOf(S);
+                break;
+            case "t":
+                p2 = t;
+                break;
+            case "x":
+                p2 = x;
+                break;
+            case "n":
+                p2 = "";
+                break;
+        }
+        switch (mRuleSort.getP3()){
+            case "C":
+                p3 = C;
+                break;
+            case "T":
+                p3 = T;
+                break;
+            case "S":
+                p3 = String.valueOf(S);
+                break;
+            case "t":
+                p3 = t;
+                break;
+            case "x":
+                p3 = x;
+                break;
+            case "n":
+                p3 = "";
+                break;
+        }
+        switch (mRuleSort.getP4()){
+            case "C":
+                p4 = C;
+                break;
+            case "T":
+                p4 = T;
+                break;
+            case "S":
+                p4 = String.valueOf(S);
+                break;
+            case "t":
+                p4 = t;
+                break;
+            case "x":
+                p4 = x;
+                break;
+            case "n":
+                p4 = "";
+                break;
+        }
+        switch (mRuleSort.getP5()){
+            case "C":
+                p5 = C;
+                break;
+            case "T":
+                p5 = T;
+                break;
+            case "S":
+                p5 = String.valueOf(S);
+                break;
+            case "t":
+                p5 = t;
+                break;
+            case "x":
+                p5 = x;
+                break;
+            case "n":
+                p5 = "";
+                break;
+        }
+
+        pictures.setName(p1 + p2 + p3 + p4 + p5);
     }
 }

@@ -1,5 +1,7 @@
 package com.oocl.johngao.smartcr.Data;
 
+import com.oocl.johngao.smartcr.ToolsClass.DateTools;
+
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
@@ -14,15 +16,18 @@ public class Pictures extends DataSupport implements Serializable{
     private int SeqNo;
     private String EndCode;
     private String name;
+    private String date;
+    private String Company;
 
     public Pictures(){}
 
-    public Pictures(String ConNo,String TCode,int SeqNo,String EndCode){
+    public Pictures(String ConNo,String TCode,int SeqNo,String EndCode,String Company){
         this.ConNo = ConNo;
         this.TCode = TCode;
         this.SeqNo = SeqNo;
         this.EndCode = EndCode;
-        this.name = ConNo + TCode + SeqNo + EndCode;
+        this.Company = Company;
+        date = DateTools.getNowDate();
     }
 
     public String getConNo() {
@@ -66,5 +71,21 @@ public class Pictures extends DataSupport implements Serializable{
 
     public String getName() {
         return name;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getCompany() {
+        return Company;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

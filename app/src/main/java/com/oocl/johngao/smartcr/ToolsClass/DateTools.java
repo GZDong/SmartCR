@@ -10,7 +10,7 @@ import java.util.Date;
 public class DateTools {
     public static String getNowDate(){
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String dateStr = format.format(date);
         return dateStr;
     }

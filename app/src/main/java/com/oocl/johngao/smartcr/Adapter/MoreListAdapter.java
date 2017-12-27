@@ -63,7 +63,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.MyView
                     break;
                 case "x":
                     holder.mLinearLayout.setVisibility(View.VISIBLE);
-                    holder.mTextView.setText("未 知");
+                    holder.mTextView.setText("公 司");
                     break;
                 case "n":
                     holder.mLinearLayout.setVisibility(View.GONE);
@@ -122,7 +122,7 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.MyView
             case "时 间":
                 string = "t";
                 break;
-            case "未 知":
+            case "公 司":
                 string = "x";
                 break;
             default:

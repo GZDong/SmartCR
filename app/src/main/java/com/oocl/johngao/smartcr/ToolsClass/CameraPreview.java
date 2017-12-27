@@ -312,15 +312,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             count--;
             Log.e("Next", "onPictureTaken: 点击了拍照按钮，触发回调接口");
             //数据库操作
-            final Pictures pictures = mDataLab.addPicsToDB(ConNo,TCode,".JPG");
+            final Pictures pictures = mDataLab.addPicsToDB(ConNo,TCode,".JPG",mDataLab.getCompany(ConNo));
             Log.e("Next", "onPictureTaken: 打开拍照界面后，此时界面存储的ConNo和TCode ："+ ConNo + TCode );
             mDataLab.ConsAddOne(ConNo,TCode);
             //文件操作
             String pictureName = pictures.getName();
             Log.e("Next", "onPictureTaken: 用于存储的picture的图片名picturesname:" + pictures.getName());
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            Log.e("Next", "onPictureTaken: 此时pictures的tcode："+ pictures.getTCode() );
-            File inDir = new File(pictureDir,pictures.getTCode());
+
+            File inDir = new File(pictureDir,pictures.getConNo());
             inDir.mkdirs();
             final String picturePath = inDir + File.separator + pictureName;
             Log.e("Next", "onPictureTaken: 点击拍照后，图片储存在 :" + picturePath );
