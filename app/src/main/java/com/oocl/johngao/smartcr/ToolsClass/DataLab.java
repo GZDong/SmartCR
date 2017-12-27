@@ -584,7 +584,17 @@ public class DataLab {
     }
 
     public void addMore(String T){
-        mMoreList.add(T);
+        String s;
+        for (String r : mMoreList){
+            Log.e(TAG, "addMore: " + r );
+        }
+        for (int i = 0; i< mMoreList.size();i++){
+            s = mMoreList.get(i);
+            if (s.equals("n")){
+                mMoreList.set(i,T);
+                return;
+            }
+        }
     }
     public void deleteMore(String T){
         for (int i = 0; i < 5; i++){

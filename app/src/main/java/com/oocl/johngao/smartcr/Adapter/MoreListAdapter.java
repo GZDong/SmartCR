@@ -42,25 +42,30 @@ public class MoreListAdapter extends RecyclerView.Adapter<MoreListAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        if (mInsideList.get(position).equals("n")){
-            holder.mLinearLayout.setVisibility(View.GONE);
-        }
         if (mInsideList.size()>0){
             switch (mInsideList.get(position)){
                 case "C":
+                    holder.mLinearLayout.setVisibility(View.VISIBLE);
                     holder.mTextView.setText("柜 号");
                     break;
                 case "T":
+                    holder.mLinearLayout.setVisibility(View.VISIBLE);
                     holder.mTextView.setText("操 作 码");
                     break;
                 case "S":
+                    holder.mLinearLayout.setVisibility(View.VISIBLE);
                     holder.mTextView.setText("序 号");
                     break;
                 case "t":
+                    holder.mLinearLayout.setVisibility(View.VISIBLE);
                     holder.mTextView.setText("时 间");
                     break;
                 case "x":
+                    holder.mLinearLayout.setVisibility(View.VISIBLE);
                     holder.mTextView.setText("未 知");
+                    break;
+                case "n":
+                    holder.mLinearLayout.setVisibility(View.GONE);
                     break;
             }
         }
