@@ -12,16 +12,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.oocl.johngao.smartcr.MyView.TCodeView;
 import com.oocl.johngao.smartcr.R;
 
 import org.litepal.tablemanager.Connector;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity{
 
     private TextView mTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class TestActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 

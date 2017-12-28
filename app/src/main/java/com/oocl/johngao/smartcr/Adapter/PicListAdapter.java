@@ -85,7 +85,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
                     if (mTag.equals("W")||mTag.equals("WY")){
                         holder.imageView.setVisibility(View.VISIBLE);
                         Glide.with(mContext).load(R.drawable.flooricon).centerCrop().into(holder.imageView);
-                    }else if (mTag.equals("D")||mTag.equals("RY")){
+                    }else if (mTag.equals("D")||mTag.equals(Const.IICL1)){
                         holder.imageView.setVisibility(View.VISIBLE);
                         Glide.with(mContext).load(R.drawable.iconbig).centerCrop().into(holder.imageView);
                     }
@@ -99,7 +99,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
                     if (mTag.equals("W")||mTag.equals("WY")){
                         holder.imageView.setVisibility(View.VISIBLE);
                         Glide.with(mContext).load(R.drawable.sideicon).centerCrop().into(holder.imageView);
-                    }else if (mTag.equals("D")||mTag.equals("RY")){
+                    }else if (mTag.equals("D")||mTag.equals(Const.IICL1)){
                         holder.imageView.setVisibility(View.VISIBLE);
                         Glide.with(mContext).load(R.drawable.iconsmall).centerCrop().into(holder.imageView);
                     }
@@ -110,7 +110,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
                     }
                 }
                 if (pic.getSeqNo() == 4){
-                    if (mTag.equals("W")||mTag.equals("RY")){
+                    if (mTag.equals("W")||mTag.equals(Const.IICL1)){
                         Glide.with(mContext).load(R.drawable.plus).centerCrop().into(holder.imageView);
                     }else if (mTag.equals("D")||mTag.equals("WY")){
                         holder.imageView.setBackgroundColor(mContext.getResources().getColor(R.color.alpha));

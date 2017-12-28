@@ -15,12 +15,15 @@ public class Const {
     public static final boolean FinishWash = true;
     public static final boolean NeedRepair = true;
     public static final boolean IgnoreRepair = false;
-    public static final boolean WaitRepair = false;
-    public static final boolean FinishRepair = true;
 
-    public static final String WaterWash = "W";
-    public static final String ChemicalWash_Code = "C";
-    public static final String PaperClean_Code = "P";
-    public static final String NailClean_Code = "NIL";
-    public static final String Repair_Code = "IICL";
+    public static final String Wash = "水洗";
+    public static final String CWash = "化学洗";
+    public static final String PWash = "除纸";
+    public static final String NWash = "除钉";
+
+    public static final String IICL1 = "IICL1";
+    public static final String IICL2 = "IICL2";
+    public static final String IICL3 = "IICL3";
+    public static final String IICL4 = "IICL4";
+
 }

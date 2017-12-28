@@ -205,9 +205,7 @@ public class DataLab {
                 TCode = null;
                 break;
         }
-        if (!TCode.equals("WY")){
-            mPicturesList = DataSupport.where("TCode = ? and ConNo = ?", TCode,ConNO).find(Pictures.class);
-        }else if (TCode.equals("WY")){
+        if (TCode.equals("WY")){
             List<Pictures>  l1 = DataSupport.where("TCode = ? and ConNo = ?", "WY",ConNO).find(Pictures.class);
             List<Pictures>  l2 = DataSupport.where("TCode = ? and ConNo = ?", "C",ConNO).find(Pictures.class);
             List<Pictures>  l3 = DataSupport.where("TCode = ? and ConNo = ?", "P",ConNO).find(Pictures.class);
@@ -216,6 +214,17 @@ public class DataLab {
             mPicturesList.addAll(l2);
             mPicturesList.addAll(l3);
             mPicturesList.addAll(l4);
+        }else if (TCode.equals("RY")){
+            List<Pictures>  l1 = DataSupport.where("TCode = ? and ConNo = ?", "IICL1",ConNO).find(Pictures.class);
+            List<Pictures>  l2 = DataSupport.where("TCode = ? and ConNo = ?", "IICL2",ConNO).find(Pictures.class);
+            List<Pictures>  l3 = DataSupport.where("TCode = ? and ConNo = ?", "IICL3",ConNO).find(Pictures.class);
+            List<Pictures>  l4 = DataSupport.where("TCode = ? and ConNo = ?", "IICL4",ConNO).find(Pictures.class);
+            mPicturesList.addAll(l1);
+            mPicturesList.addAll(l2);
+            mPicturesList.addAll(l3);
+            mPicturesList.addAll(l4);
+        }else {
+            mPicturesList = DataSupport.where("TCode = ? and ConNo = ?", TCode,ConNO).find(Pictures.class);
         }
         if (mPicturesList.size() <= 4){
             initIcon(mPicturesList.size());
@@ -235,17 +244,17 @@ public class DataLab {
         if (mContainerList.size() == 0){
 
             Container container1 = new Container("OOLU0119900" + 1,Const.NeedWash,Const.IgnoreRepair);
-            container1.setCompany("oocl");
+            container1.setCompany("OOCL");
             container1.save();
             mContainerList.add(container1);
 
             Container container2 = new Container("OOLU0119900" + 2,Const.IgnoreWash,Const.NeedRepair);
-            container2.setCompany("ita");
+            container2.setCompany("ITA");
             container2.save();
             mContainerList.add(container2);
 
             Container container3 = new Container("OOLU0119900" + 3,Const.NeedWash,Const.NeedRepair);
-            container3.setCompany("cctv");
+            container3.setCompany("CCTV");
             container3.save();
             mContainerList.add(container3);
 
@@ -398,7 +407,10 @@ public class DataLab {
                         container.addRB_Count();
                         container.save();
                         break;
-                    case "RY":
+                    case Const.IICL1:
+                    case Const.IICL2:
+                    case Const.IICL3:
+                    case Const.IICL4:
                         container.addRA_Count();
                         container.save();
                         break;
@@ -449,6 +461,12 @@ public class DataLab {
         }
         return pictures;
     }
+
+
+    /**
+     * 设置界面
+     *
+     */
 
     public List<String> getSettingsList() {
         return mSettingsList;

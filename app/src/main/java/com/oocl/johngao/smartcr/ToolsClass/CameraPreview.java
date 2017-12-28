@@ -358,7 +358,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mOnCaptureListener.onCapture(pictureName,pictures.getSeqNo());
             if (count == 0 ){
                 Toast.makeText(mContext,"完成拍照！",Toast.LENGTH_SHORT).show();
-                SystemClock.sleep(500);
+                SystemClock.sleep(1000);
                 TakePhotoActivity takePhotoActivity = (TakePhotoActivity) mContext;
                 takePhotoActivity.finish();
             }

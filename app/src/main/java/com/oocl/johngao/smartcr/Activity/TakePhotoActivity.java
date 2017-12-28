@@ -35,6 +35,8 @@ import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.Data.Pictures;
 import com.oocl.johngao.smartcr.MyView.SideBar;
+import com.oocl.johngao.smartcr.MyView.TCodeView;
+import com.oocl.johngao.smartcr.MyView.TCodeView2;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.CalUtils;
 import com.oocl.johngao.smartcr.ToolsClass.CameraPreview;
@@ -47,7 +49,7 @@ import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener,SideBar.OnTouchingLetterChangedListener{
+public class TakePhotoActivity extends AppCompatActivity implements CameraPreview.OnCaptureListener{
 
     public static final String TAG = "TakePhotoActivity";
     private CameraPreview mPreview;
@@ -57,8 +59,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private RecyclerView mRecyclerView;
     private PicListAdapter mPicListAdapter;
     private List<Pictures> mPicList;
-    private TextView mDialog;
-    private SideBar mSideBar;
+
+
     private TextView mNameText;
 
     private DataLab mDataLab;
@@ -79,6 +81,9 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     private ImageButton mNextBtn;
     private OnNextBtnListener mOnNextBtnListener;
 
+    private TCodeView mTCodeView;
+    private TCodeView2 mTCodeView2;
+    private TextView mSureText;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,12 +206,11 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             }
         });
 
-        mDialog = (TextView) findViewById(R.id.dialog);
+
         mDialogBG = (ImageView) findViewById(R.id.dialog_bg);
-        applyBlur();
+
         mDialogBG.getBackground().setAlpha(230);
-        mSideBar = (SideBar) findViewById(R.id.sideBar);
-        mSideBar.setTextView(mDialog,mDialogBG);
+
 
         mNameText = (TextView) findViewById(R.id.picture_name);
 
@@ -240,11 +244,8 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             }
         });
 
-        if (mTag.equals("RepairBeforeWithZero")||mTag.equals("RepairBeforeProgress")||mTag.equals("WashBeforeWithZero")||mTag.equals("WashBeforeProgress")){
-            mSideBar.setVisibility(View.GONE);
-        }
 
-        mSideBar.setOnTouchingLetterChangedListener(this);
+
 
         mNextBtn = (ImageButton) findViewById(R.id.next_btn);
         mNextBtn.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +276,115 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
                 }*/
             }
         });
+
+        mSureText = (TextView) findViewById(R.id.be_sure_text);
+        if (mPicList.size()>0&& !mPicList.get(0).getConNo().equals(Const.NullConNo) && (mTag.equals("WashBeforeFinishWashAfterWithZero")||mTag.equals("WashBeforeFinishWashAfterProgress")||
+                mTag.equals("RepairBeforeFinishRepairAfterWithZero")||mTag.equals("RepairBeforeFinishRepairAfterProgress"))){
+            String T = mPicList.get(0).getTCode();
+            switch (T){
+                case "WY":
+                    mSureText.setText(Const.Wash);
+                    mPreview.setTCode("WY");
+                    break;
+                case "P":
+                    mSureText.setText(Const.PWash);
+                    mPreview.setTCode("P");
+                    break;
+                case "NIL":
+                    mSureText.setText(Const.NWash);
+                    mPreview.setTCode("NIL");
+                    break;
+                case "C":
+                    mSureText.setText(Const.CWash);
+                    mPreview.setTCode("C");
+                    break;
+
+                case Const.IICL1:
+                    mSureText.setText(Const.IICL1);
+                    mPreview.setTCode(Const.IICL1);
+                    break;
+                case Const.IICL2:
+                    mSureText.setText(Const.IICL2);
+                    mPreview.setTCode(Const.IICL2);
+                    break;
+                case Const.IICL3:
+                    mSureText.setText(Const.IICL3);
+                    mPreview.setTCode(Const.IICL3);
+                    break;
+                case Const.IICL4:
+                    mSureText.setText(Const.IICL4);
+                    mPreview.setTCode(Const.IICL4);
+                    break;
+            }
+            mSureText.setVisibility(View.VISIBLE);
+        }
+
+        mTCodeView = (TCodeView) findViewById(R.id.tcode_view);
+        mTCodeView.setOnTabClickListener(new TCodeView.OnTabClickListener() {
+            @Override
+            public void onTabClick(String var1) {
+                String tCode = CalUtils.calConsTCodeFromTag(mTag);
+
+                if (tCode.equals("WY")){
+                    switch (var1){
+                        case "水洗":
+                            mPreview.setTCode("WY");
+                            break;
+                        case "化学洗":
+                            mPreview.setTCode("C");
+                            break;
+                        case "除钉":
+                            mPreview.setTCode("NIL");
+                            break;
+                        case "除纸":
+                            mPreview.setTCode("P");
+                            break;
+                        default:
+                            break;
+                    }
+                    mSureText.setText(var1);
+                }
+
+            }
+        });
+        mTCodeView2 = (TCodeView2) findViewById(R.id.tcode_view_R);
+        mTCodeView2.setOnTabClickListener(new TCodeView2.OnTabClickListener() {
+            @Override
+            public void onTabClick(String var1) {
+                String tCode = CalUtils.calConsTCodeFromTag(mTag);
+
+                if (tCode.equals(Const.IICL1)){
+                    switch (var1){
+                        case Const.IICL1:
+                            mPreview.setTCode(Const.IICL1);
+                            break;
+                        case Const.IICL2:
+                            mPreview.setTCode(Const.IICL2);
+                            break;
+                        case Const.IICL3:
+                            mPreview.setTCode(Const.IICL3);
+                            break;
+                        case Const.IICL4:
+                            mPreview.setTCode(Const.IICL4);
+                            break;
+                        default:
+                            break;
+                    }
+                    mSureText.setText(var1);
+                }
+
+            }
+        });
+
+        if (mPicList.get(0).getConNo().equals(Const.NullConNo) &&(mTag.equals("WashBeforeFinishWashAfterWithZero")||mTag.equals("WashBeforeFinishWashAfterProgress")) ){
+            mTCodeView.setVisibility(View.VISIBLE);
+            mSureText.setText(Const.Wash);
+        }
+        if (mPicList.get(0).getConNo().equals(Const.NullConNo) &&( mTag.equals("RepairBeforeFinishRepairAfterWithZero")||mTag.equals("RepairBeforeFinishRepairAfterProgress"))){
+            mTCodeView2.setVisibility(View.VISIBLE);
+            mSureText.setText(Const.IICL1);
+        }
+
     }
     //聚焦回调
     /*private android.hardware.Camera.AutoFocusCallback mAutoFocusCallback = new android.hardware.Camera.AutoFocusCallback() {
@@ -291,11 +401,18 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
     public void onCapture(String name, int seq) {
         mNameText.setText(name);
         mNameText.setVisibility(View.VISIBLE);
+
+        if ((CalUtils.calConsTCodeFromTag(mTag).equals(Const.IICL1)||CalUtils.calConsTCodeFromTag(mTag).equals("WY"))){
+            mSureText.setVisibility(View.VISIBLE);
+            mTCodeView.setVisibility(View.GONE);
+            mTCodeView2.setVisibility(View.GONE);
+        }
+
         /*mPicListAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(mPicList.size()-1);*/
     }
     //siderbar的回调接口方法
-    @Override
+    /*@Override
     public void onTouchingLetterChanged(String s) {
         Log.e(TAG, "onTouchingLetterChanged: 触发回调接口后s="+s );
         String tCode = CalUtils.calConsTCodeFromTag(mTag);
@@ -319,7 +436,7 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             }
         }
         Log.e(TAG, "onTouchingLetterChanged: TCode转化后为" + tCode );
-    }
+    }*/
 
     @Override
     protected void onStop() {
@@ -366,46 +483,6 @@ public class TakePhotoActivity extends AppCompatActivity implements CameraPrevie
             mDataLab.setNextbt(false);
         }
 
-
-    }
-
-    private void applyBlur(){
-        mDialogBG.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                mDialogBG.getViewTreeObserver().removeOnPreDrawListener(this);
-                mDialogBG.buildDrawingCache();
-                Bitmap bmp = mDialogBG.getDrawingCache();
-                blur(bmp, mDialog);
-                return true;
-            }
-        });
-    }
-    /**
-     * 一个高斯模糊的算法
-     *
-     * @param bkg
-     * @param view
-     */
-    private void blur(Bitmap bkg, View view) {
-        float radius = 25;
-        Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth()),
-                (int) (view.getMeasuredHeight()), Bitmap.Config.ARGB_8888);
-
-        Canvas canvas = new Canvas(overlay);
-        canvas.translate(-view.getLeft(), -view.getTop());
-        canvas.drawBitmap(bkg, 0, 0, null);
-
-        RenderScript rs = RenderScript.create(TakePhotoActivity.this);
-
-        Allocation overlayAlloc = Allocation.createFromBitmap(rs, overlay);
-        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rs, overlayAlloc.getElement());
-        blur.setInput(overlayAlloc);
-        blur.setRadius(radius);
-        blur.forEach(overlayAlloc);
-        overlayAlloc.copyTo(overlay);
-        view.setBackground(new BitmapDrawable(getResources(), overlay));
-        rs.destroy();
 
     }
 

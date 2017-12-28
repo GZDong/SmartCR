@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="TCode">
+        <item>水洗</item>
+        <item>化学洗</item>
+        <item>除纸</item>
+        <item>除钉</item>
+    </string-array>
+</resources>

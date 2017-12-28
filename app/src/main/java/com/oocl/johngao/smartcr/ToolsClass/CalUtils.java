@@ -1,5 +1,6 @@
 package com.oocl.johngao.smartcr.ToolsClass;
 
+import com.oocl.johngao.smartcr.Const.Const;
 import com.oocl.johngao.smartcr.Data.Container;
 import com.oocl.johngao.smartcr.R;
 
@@ -64,7 +65,7 @@ public class CalUtils {
             case "RepairBeforeFinishRepairAfterWithZero":
             case "RepairBeforeFinishRepairAfterProgress":
                 //布局：根据sign标志显示；图片：TCode默认为RY，后面会根据具体的码进行改变
-                TCode = "RY";
+                TCode = Const.IICL1;
                 break;
             default:
                 TCode = null;

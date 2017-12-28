@@ -24,7 +24,38 @@
             android:layout_height="130dp"
             android:layout_above="@+id/photo_area"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"/>
+        <com.oocl.johngao.smartcr.MyView.TCodeView
+            android:id="@+id/tcode_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_above="@+id/photo_area"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            ></com.oocl.johngao.smartcr.MyView.TCodeView>
+        <TextView
+            android:id="@+id/be_sure_text"
+            android:layout_width="150px"
+            android:layout_height="90px"
+            android:background="@drawable/bg_sure"
+            android:layout_marginBottom="1dp"
+            android:layout_above="@+id/photo_area"
+            android:layout_alignParentEnd="true"
+            android:text="测试"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            />
+        <com.oocl.johngao.smartcr.MyView.TCodeView2
+            android:id="@+id/tcode_view_R"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_above="@+id/photo_area"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"></com.oocl.johngao.smartcr.MyView.TCodeView2>
 
         <TextView
             android:id="@+id/finish_text"
