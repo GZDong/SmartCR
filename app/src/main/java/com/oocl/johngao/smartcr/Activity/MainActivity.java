@@ -49,8 +49,14 @@ import com.oocl.johngao.smartcr.MyView.MyscrollView;
 import com.oocl.johngao.smartcr.MyView.NineGridImageView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
+import com.qiniu.android.dns.DnsManager;
+import com.qiniu.android.dns.IResolver;
+import com.qiniu.android.dns.NetworkInfo;
+import com.qiniu.android.dns.local.AndroidDnsServer;
+import com.qiniu.android.dns.local.Resolver;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,6 +144,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initList();
         initView();
         initViewInDrawer();
+
+        IResolver[] resolvers = new IResolver[2];
+        resolvers[0] = AndroidDnsServer.defaultResolver();
+        try {
+            resolvers[1] = new Resolver(InetAddress.getByName("119.29.29.29"));
+            DnsManager dns = new DnsManager(NetworkInfo.normal, resolvers);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void initView(){
