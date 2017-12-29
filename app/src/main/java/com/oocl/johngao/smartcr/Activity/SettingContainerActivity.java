@@ -28,7 +28,7 @@ public class SettingContainerActivity extends AppCompatActivity {
         setStatusBar();
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.black));
-        toolbar.setBackgroundColor(getResources().getColor(R.color.alpha));
+        toolbar.setBackgroundColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();

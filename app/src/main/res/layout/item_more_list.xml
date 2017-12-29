@@ -6,27 +6,38 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:background="@color/white">
         <TextView
             android:id="@+id/add_hint_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="时 间"
             />
         <RelativeLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1">
             <Button
                 android:id="@+id/add_meta_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_add_btn"
                 android:text="@string/add_btn" />
         </RelativeLayout>
 
     </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_line"/>
 
 </LinearLayout>

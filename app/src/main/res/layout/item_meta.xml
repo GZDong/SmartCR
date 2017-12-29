@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="63dp"
+    android:background="@color/white"
     >
+
     <TextView
         android:id="@+id/text_mata_name"
         android:layout_width="match_parent"
@@ -12,5 +15,34 @@
         android:layout_gravity="center"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:gravity="center"/>
+        android:gravity="center"
+
+        android:text="test"
+        android:textColor="@color/black"
+        />
+
+    <!--<FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#f33213">
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/iconinto"
+            android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="左滑删除"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"/>
+    </FrameLayout>-->
+
 </LinearLayout>

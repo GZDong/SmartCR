@@ -40,4 +40,5 @@
     <string name="settings">设  置</string>
     <string name="rule_title">长按拖动进行排序，侧滑进行删除，点击按钮进行添加</string>
     <string name="add_btn">添加</string>
+    <string name="add_hint">你还可以添加下面的选项作为规则里的元素</string>
 </resources>

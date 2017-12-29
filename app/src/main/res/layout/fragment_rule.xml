@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="55dp"
-    tools:context="com.oocl.johngao.smartcr.Fragment.RuleFragment">
+    tools:context="com.oocl.johngao.smartcr.Fragment.RuleFragment"
+    android:background="@color/white">
 
 
     <TextView
@@ -18,29 +19,46 @@
         android:textColor="@color/before"
         android:textStyle="italic"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:background="@color/search_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
+        android:background="@color/white"
         >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_hint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/white"
             android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list_meta"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/white"
             android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_hint"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/before"
+        android:textStyle="italic"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/search_gray"/>
    <android.support.v7.widget.RecyclerView
        android:id="@+id/more_list"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:overScrollMode="never">
+       android:overScrollMode="never"
+       android:background="@color/white">
    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

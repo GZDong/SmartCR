@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oocl.johngao.smartcr.Interface.onAddItemListener;
@@ -61,9 +62,11 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> 
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView mMetaTV;
+
         public MyViewHolder(View view){
             super(view);
             mMetaTV = (TextView) view.findViewById(R.id.text_mata_name);
+
         }
     }
 

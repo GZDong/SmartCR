@@ -154,10 +154,7 @@ public class NineGridImageView<T> extends ViewGroup {
      */
     public void setImagesData(List lists){
         if(lists == null || lists.isEmpty()){
-          // this.setVisibility(GONE);
-            ImageView iv = new ImageView(getContext());
-            iv.setImageResource(R.drawable.imgnull);
-            addView(iv,generateDefaultLayoutParams());
+           this.setVisibility(GONE);
             return;
         }else {
             this.setVisibility(VISIBLE);
