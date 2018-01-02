@@ -1,5 +1,9 @@
 package com.oocl.johngao.smartcr.Fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.oocl.johngao.smartcr.Adapter.HintAdapter;
 import com.oocl.johngao.smartcr.Adapter.MetaAdapter;
@@ -24,7 +31,7 @@ import com.oocl.johngao.smartcr.ToolsClass.DataLab;
 import java.util.List;
 
 
-public class RuleFragment extends Fragment {
+public class RuleFragment extends Fragment implements View.OnClickListener{
 
     public static final String TAG = "onRuleFragment";
 
@@ -38,6 +45,15 @@ public class RuleFragment extends Fragment {
 
     private MoreListAdapter mMoreListAdapter;
     private RecyclerView mMoreRY;
+
+    private FrameLayout mContainerLayout;
+    private LinearLayout mFrontLayout;
+    private FrameLayout mBackLayout;
+    private AnimatorSet mRightOutAnimSet,mLeftInAnimSet;
+    private boolean mIsShowBack = false;
+
+    private ImageView mEditImg;
+    private Button mFinishBtn;
 
     private Button mMakeSureBtn;
 
@@ -77,6 +93,12 @@ public class RuleFragment extends Fragment {
     }
 
     private void initView(View view){
+        mContainerLayout = (FrameLayout) view.findViewById(R.id.side_container);
+        mFrontLayout = (LinearLayout) view.findViewById(R.id.front_side);
+        mBackLayout = (FrameLayout) view.findViewById(R.id.back_side);
+        setAnimators();
+        setCameraDistance();
+
         mHintRY = view.findViewById(R.id.list_hint);
         mMetaRY = view.findViewById(R.id.list_meta);
         mMoreRY = view.findViewById(R.id.more_list);
@@ -106,6 +128,11 @@ public class RuleFragment extends Fragment {
         mMoreListAdapter.setOnAddItemListener(mMetaAdapter);
         mMoreListAdapter.setOnAddItemListener2(mHintAdapter);
 
+        mEditImg = (ImageView) view.findViewById(R.id.edit_img);
+        mFinishBtn = (Button) view.findViewById(R.id.finish_btn);
+        mEditImg.setOnClickListener(this);
+        mFinishBtn.setOnClickListener(this);
+
     }
 
     private void initList(){
@@ -129,5 +156,67 @@ public class RuleFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setAnimators(){
+        mRightOutAnimSet = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(),R.animator.anim_right_out);
+        mLeftInAnimSet = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(),R.animator.anim_left_in);
+
+        mRightOutAnimSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mContainerLayout.setClickable(false);
+            }
+        });
+
+        mLeftInAnimSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mContainerLayout.setClickable(true);
+            }
+        });
+    }
+
+    private void setCameraDistance(){
+        int distance = 16000;
+        float scale = getResources().getDisplayMetrics().density * distance;
+        mBackLayout.setCameraDistance(scale);
+        mFrontLayout.setCameraDistance(scale);
+    }
+
+
+    private void flipCard(){
+        if (!mIsShowBack){
+            mRightOutAnimSet.setTarget(mFrontLayout);
+            mLeftInAnimSet.setTarget(mBackLayout);
+            mRightOutAnimSet.start();
+            mLeftInAnimSet.start();
+            mIsShowBack = true;
+        }else {
+            mRightOutAnimSet.setTarget(mBackLayout);
+            mLeftInAnimSet.setTarget(mFrontLayout);
+            mRightOutAnimSet.start();
+            mLeftInAnimSet.start();
+            mIsShowBack = false;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.edit_img:
+            case R.id.finish_btn:
+                flipCard();
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRightOutAnimSet.cancel();
+        mLeftInAnimSet.cancel();
     }
 }

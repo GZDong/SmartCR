@@ -16,6 +16,7 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:text="时 间"
+            android:textSize="16sp"
             />
         <RelativeLayout
             android:background="@color/white"
