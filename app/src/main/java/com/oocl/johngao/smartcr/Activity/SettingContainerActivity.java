@@ -34,7 +34,9 @@ public class SettingContainerActivity extends AppCompatActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+            actionBar.setElevation(1.0f);
+
         }
         actionBar.setTitle("设置规则");
     }

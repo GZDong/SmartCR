@@ -11,15 +11,15 @@
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:text="@string/rule_title"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="@color/before"
         android:textStyle="italic"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:background="@color/search_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,17 +42,22 @@
             android:background="@color/white"
             android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
+    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_line"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_hint"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="@color/before"
         android:textStyle="italic"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:background="@color/search_gray"/>
    <android.support.v7.widget.RecyclerView
        android:id="@+id/more_list"

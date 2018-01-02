@@ -4,8 +4,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="63dp"
     android:background="@color/white"
+    android:layout_marginBottom="50dp"
     >
 
     <TextView
@@ -16,7 +16,7 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
         android:gravity="center"
-
+        android:textSize="17sp"
         android:text="test"
         android:textColor="@color/black"
         />

@@ -83,7 +83,7 @@ public class HintAdapter extends RecyclerView.Adapter<HintAdapter.MyViewHolder> 
        /* mDataLab.addHint();
         updateList(mDataLab.getHintList());*/
        int i = mInsideList.size() + 1;
-       String s = "Part" + i;
+       String s = "Part " + i;
        mInsideList.add(s);
        notifyDataSetChanged();
     }

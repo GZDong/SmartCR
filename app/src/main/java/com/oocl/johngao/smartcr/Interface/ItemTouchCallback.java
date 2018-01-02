@@ -2,6 +2,7 @@ package com.oocl.johngao.smartcr.Interface;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.Adapter.MetaAdapter;
 import com.oocl.johngao.smartcr.R;
@@ -28,6 +30,8 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
     private MetaAdapter mMetaAdapter;
     private Context mContext;
     private DataLab mDataLab;
+    private onAddItemListener mOnAddItemListener;
+    private onCancelAddListener mOnCancelAddListener;
 
     //限制ImageView长度所能增加的最大值
     private double ICON_MAX_SIZE = 50;
@@ -83,7 +87,10 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        int adapterPostion = viewHolder.getAdapterPosition();
+        final int adapterPostion = viewHolder.getAdapterPosition();
+
+        final String str = mDataLab.exchangeToP(mMetaAdapter.getInsideList().get(adapterPostion));
+
         Log.e("sdfsd", "onSwiped: 列表上被滑动的位置为  " + adapterPostion + "对应的中文为 "+  mMetaAdapter.getInsideList().get(adapterPostion) );
         mDataLab.deleteItem( mMetaAdapter.getInsideList().get(adapterPostion));
         Log.e("fdff", "onSwiped: " + mMetaAdapter.getInsideList().get(adapterPostion));
@@ -94,6 +101,17 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
 
         mMetaAdapter.getOnMoveItem().onMove();
 
+
+
+        Snackbar.make(viewHolder.itemView,"选项已删除",Snackbar.LENGTH_LONG).setAction("撤销删除", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mMetaAdapter.CancelAdd(adapterPostion,str);
+                mOnAddItemListener.onAddItem(" ");
+                mOnCancelAddListener.cancelAdd(adapterPostion,str);
+            }
+        }).setActionTextColor(mContext.getResources().getColor(R.color.theme_blue)).show();
     }
 
     @Override
@@ -166,4 +184,12 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
         ((MetaAdapter.MyViewHolder) viewHolder).mIV.setVisibility(View.INVISIBLE);
 
     }*/
+
+    public void setOnAddItemListener(onAddItemListener onAddItemListener) {
+        mOnAddItemListener = onAddItemListener;
+    }
+
+    public void setOnCancelAddListener(onCancelAddListener onCancelAddListener) {
+        mOnCancelAddListener = onCancelAddListener;
+    }
 }

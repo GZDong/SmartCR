@@ -862,6 +862,40 @@ public class DataLab {
         }
     }
 
+    public void addItemAndMetaByPos(int pos, String s){
+        switch (pos){
+            case 0:
+                mRuleSort.setP5(mRuleSort.getP4());
+                mRuleSort.setP4(mRuleSort.getP3());
+                mRuleSort.setP3(mRuleSort.getP2());
+                mRuleSort.setP2(mRuleSort.getP1());
+                mRuleSort.setP1(s);
+                break;
+            case 1:
+                mRuleSort.setP5(mRuleSort.getP4());
+                mRuleSort.setP4(mRuleSort.getP3());
+                mRuleSort.setP3(mRuleSort.getP2());
+                mRuleSort.setP2(s);
+                break;
+            case 2:
+                mRuleSort.setP5(mRuleSort.getP4());
+                mRuleSort.setP4(mRuleSort.getP3());
+                mRuleSort.setP3(s);
+                break;
+            case 3:
+                mRuleSort.setP5(mRuleSort.getP4());
+                mRuleSort.setP4(s);
+                break;
+            case 4:
+                mRuleSort.setP5(s);
+                break;
+            default:
+                break;
+        }
+        mRuleSort.save();
+        addMeta(s);
+    }
+
     public String getCompany(String Con){
         for (Container container:mContainerList){
             if (container.getConNo().equals(Con)){

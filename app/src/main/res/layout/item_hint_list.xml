@@ -13,8 +13,8 @@
         android:layout_centerHorizontal="true"
         android:scaleType="centerInside"
         android:src="@drawable/iconplus"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"
         android:background="@color/white"/>
 
@@ -22,7 +22,7 @@
         android:id="@+id/text_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:textSize="17sp"
         android:textColor="@color/black"
         android:gravity="center"
         android:paddingBottom="10dp"

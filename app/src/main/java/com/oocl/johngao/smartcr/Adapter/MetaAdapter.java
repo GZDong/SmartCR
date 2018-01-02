@@ -28,6 +28,7 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> 
     private onMoveItem mOnMoveItem;
     private onDeleteItemListener mOnDeleteItemListener;
     private DataLab mDataLab;
+
     public MetaAdapter(Context context, List<String> list,onMoveItem onmoveItem,onDeleteItemListener onDeleteItemListener){
         mContext = context;
         mInsideList = list;
@@ -88,5 +89,10 @@ public class MetaAdapter extends RecyclerView.Adapter<MetaAdapter.MyViewHolder> 
 
     public onDeleteItemListener getOnDeleteItemListener() {
         return mOnDeleteItemListener;
+    }
+
+    public void CancelAdd(int pos,String s){
+        mDataLab.addItemAndMetaByPos(pos,s);
+        updateList(mDataLab.getMetaList());
     }
 }
