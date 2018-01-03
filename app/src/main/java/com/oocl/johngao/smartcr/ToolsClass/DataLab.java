@@ -588,6 +588,25 @@ public class DataLab {
         return null;
     }
 
+    public String exchangDataWithoutSpace(String s){
+        switch (s){
+            case "C":
+                return "柜号";
+            case "T":
+                return "操作码";
+            case "S":
+                return "序号";
+            case "n":
+                return "";
+            case "t":
+                return "时间";
+            case "x":
+                return "公司";
+
+        }
+        return null;
+    }
+
     public void initMorelist(){
         mMoreList = new ArrayList<>();
 
@@ -1016,5 +1035,103 @@ public class DataLab {
         }
 
         pictures.setName(p1 + p2 + p3 + p4 + p5);
+    }
+
+    public String getResult(){
+        StringBuilder result = new StringBuilder();
+        if (!mRuleSort.getP1().equals("n")){
+            result.append(exchangDataWithoutSpace(mRuleSort.getP1()));
+        }
+        if (!mRuleSort.getP2().equals("n")){
+            result.append(" + ");
+            result.append(exchangDataWithoutSpace(mRuleSort.getP2()));
+        }
+
+        if (!mRuleSort.getP3().equals("n")){
+            result.append(" + ");
+            result.append(exchangDataWithoutSpace(mRuleSort.getP3()));
+        }
+        if (!mRuleSort.getP4().equals("n")){
+            result.append(" + ");
+            result.append(exchangDataWithoutSpace(mRuleSort.getP4()));
+        }
+        if (!mRuleSort.getP5().equals("n")){
+            result.append(" + ");
+            result.append(exchangDataWithoutSpace(mRuleSort.getP5()));
+        }
+        return result.toString();
+    }
+    public String getExample(){
+        StringBuilder example = new StringBuilder();
+
+            example.append(getExampleCon(mRuleSort.getP1()));
+            example.append(getExampleCon(mRuleSort.getP2()));
+            example.append(getExampleCon(mRuleSort.getP3()));
+            example.append(getExampleCon(mRuleSort.getP4()));
+            example.append(getExampleCon(mRuleSort.getP5()));
+        example.append(".JPG");
+        return example.toString();
+    }
+
+    public String getExampleCon(String s){
+        switch (s){
+            case "C":
+                return "OOLU0119903";
+            case "T":
+                return "WY";
+            case "S":
+                return "05";
+            case "t":
+                return "20181023";
+            case "x":
+                return "OOCL";
+            default:
+                return "";
+        }
+    }
+
+    public String getExampleTag(){
+        StringBuilder result = new StringBuilder();
+        if (!mRuleSort.getP1().equals("n")){
+            result.append(calExampleTag(mRuleSort.getP1()));
+
+        }
+        if (!mRuleSort.getP2().equals("n")){
+            result.append( ", ");
+            result.append(calExampleTag(mRuleSort.getP2()));
+
+        }
+        if (!mRuleSort.getP3().equals("n")){
+            result.append( ", ");
+            result.append(calExampleTag(mRuleSort.getP3()));
+
+        }
+        if (!mRuleSort.getP4().equals("n")){
+            result.append( ", ");
+            result.append(calExampleTag(mRuleSort.getP4()));
+
+        }
+        if (!mRuleSort.getP5().equals("n")){
+            result.append( ", ");
+            result.append(calExampleTag(mRuleSort.getP5()));
+
+        }
+        return result.toString();
+    }
+    public String calExampleTag(String s){
+        switch (s){
+            case "C":
+                return "柜号：OOLU0119903" ;
+            case "T":
+                return "操作码：WY";
+            case "S":
+                return "序号：05";
+            case "t":
+                return "时间：20181023";
+            case "x":
+                return "公司：OOCL";
+            default:
+                return "";
+        }
     }
 }

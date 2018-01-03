@@ -44,4 +44,6 @@
     <string name="hint_1">当前图片的命名规则为：</string>
     <string name="hint_2">例如：</string>
     <string name="hint_3">完成编辑</string>
+    <string name="hint_4">编  辑</string>
+    <string name="hint_5">最后生成的图片名称如下：</string>
 </resources>
