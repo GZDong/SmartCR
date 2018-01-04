@@ -68,14 +68,33 @@
             android:layout_height="match_parent"
             android:background="@color/white">
 
-            <com.oocl.johngao.smartcr.MyView.NineGridImageView
-                android:id="@+id/pics_iv"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/null_img"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/imgnull"
+                    android:scaleType="centerInside"
+                    android:padding="5dp"
+                    android:background="#eeeeee"  />
 
-                android:background="#eeeeee" />
+                <com.oocl.johngao.smartcr.MyView.NineGridImageView
+                    android:id="@+id/pics_iv"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#eeeeee"
+                    android:visibility="gone"/>
+            </FrameLayout>
+
+
+
+
         </LinearLayout>
     </LinearLayout>
 

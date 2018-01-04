@@ -18,6 +18,7 @@ public class Pictures extends DataSupport implements Serializable{
     private String name;
     private String date;
     private String Company;
+    private boolean isPush = false;
 
     public Pictures(){}
 
@@ -87,5 +88,13 @@ public class Pictures extends DataSupport implements Serializable{
 
     public String getDate() {
         return date;
+    }
+
+    public boolean isPush() {
+        return isPush;
+    }
+
+    public void setPush(boolean push) {
+        isPush = push;
     }
 }

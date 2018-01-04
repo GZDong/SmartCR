@@ -24,6 +24,13 @@ import android.widget.Toast;
 
 import com.oocl.johngao.smartcr.Activity.TakePhotoActivity;
 import com.oocl.johngao.smartcr.Data.Pictures;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
+
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -316,7 +323,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.e("Next", "onPictureTaken: 打开拍照界面后，此时界面存储的ConNo和TCode ："+ ConNo + TCode );
             mDataLab.ConsAddOne(ConNo,TCode);
             //文件操作
-            String pictureName = pictures.getName();
+            final String pictureName = pictures.getName();
             Log.e("Next", "onPictureTaken: 用于存储的picture的图片名picturesname:" + pictures.getName());
             File pictureDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
@@ -342,7 +349,36 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                         Intent intent = new Intent("com.oocl.john.fresh");
                         intent.putExtra("index",pictures.getSeqNo());
                         mContext.sendBroadcast(intent);
-                        Log.e(TAG, "run: 线程执行完毕。。。");
+                        Log.e(TAG, "run: 存储线程执行完毕。。。开启云储存线程");
+
+                        /**
+                         * 上传七牛
+                         */
+                        String data = picturePath;
+                        String key = pictureName;
+                        String token = WebLab.get(mContext).getToken();
+                        Log.e(TAG, "run: 上传指定的参数" + data + " " + key + " " + token);
+                        UploadManager uploadManager = WebLab.get(mContext).getUploadManager();
+                        uploadManager.put(data, null, token, new UpCompletionHandler() {
+                            @Override
+                            public void complete(String key, ResponseInfo info, JSONObject response) {
+                                //res包含hash、key等信息，具体字段取决于上传策略的设置
+                                if(info.isOK()) {
+                                    Log.e("qiniu", "Upload Success");
+                                } else {
+                                    Log.e("qiniu", "Upload Fail");
+                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                                }
+                                Log.e("qiniu", key + ",\r\n " + info + ",\r\n " + response);
+                            }
+                        },new UploadOptions(null, null, false, new UpProgressHandler() {
+                            @Override
+                            public void progress(String key, double percent) {
+                                Log.e("qiniu", key + ": " + percent);
+                            }
+                        },null));
+
+
                     }catch (FileNotFoundException e){
                         e.printStackTrace();
                     }catch (IOException e){

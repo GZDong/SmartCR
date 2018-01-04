@@ -226,6 +226,8 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
         private TextView mRepairTX;
         private ImageView mRepairIMG;
 
+        private ImageView mNullIV;
+
 
         public MyViewHolder(View view){
             super(view);
@@ -242,6 +244,8 @@ public class ConListAdapter extends RecyclerView.Adapter<ConListAdapter.MyViewHo
             mWashStateIMG = (ImageView) view.findViewById(R.id.wash_state_img);
             mRepairTX = (TextView) view.findViewById(R.id.repair_state_text);
             mRepairIMG = (ImageView) view.findViewById(R.id.repair_state_img);
+
+            mNullIV = (ImageView) view.findViewById(R.id.null_img);
         }
     }
 

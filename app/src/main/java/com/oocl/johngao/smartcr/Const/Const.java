@@ -26,4 +26,6 @@ public class Const {
     public static final String IICL3 = "IICL3";
     public static final String IICL4 = "IICL4";
 
+    public static final String HOST_TOKEN = "http://10.222.225.55:3000/";
+
 }

@@ -49,6 +49,7 @@ import com.oocl.johngao.smartcr.MyView.MyscrollView;
 import com.oocl.johngao.smartcr.MyView.NineGridImageView;
 import com.oocl.johngao.smartcr.R;
 import com.oocl.johngao.smartcr.ToolsClass.DataLab;
+import com.oocl.johngao.smartcr.ToolsClass.WebLab;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -126,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SettingsListAdapter mSettingsListAdapter;
     private RecyclerView mSettingsRL;
     private List<String> mSettingsDataList;
+
+    private WebLab mWebLab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,13 +285,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSettingsRL.setAdapter(mSettingsListAdapter);
     }
     public void initList(){
+        mWebLab = WebLab.get(this);
+
         mDataLab = DataLab.get(this);
         mConList = mDataLab.getContainerList(1);
         mSettingsDataList = mDataLab.getSettingsList();
         if (mConList.size() == 0){
             Log.e(TAG, "initList: *****");
         }
-
     }
 
     public void initViewInDrawer(){
